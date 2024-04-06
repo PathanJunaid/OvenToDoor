@@ -1,52 +1,45 @@
-import crypto from 'crypto';
-import axios from 'axios';
-// const (salt_key, merchant_id] = require('./secret')
+import Razorpay from 'razorpay'
 export const newPayment = async (req, res) => {
-    const merchant_id = "Junaid";
-    const salt_key = "";
-    try {
-        const merchantTransactionId = req.body.transactionId;
-        const data = {
-            merchantId: merchant_id,
-            merchantTransactionId: merchantTransactionId,
-            merchantUserId: req.body.merchantUserId,
-            name: req.body.name,
-            amount: req.body.amount * 100,
-            redirectUrl: `http://localhost:4000/status/${merchantTransactionId}`,
-            redirectMode: "POST",
-            mobileNumber: req.body.number,
-            paymentInstrument: {
-                type: 'PAY PAGE',
-            }
-        }
-        const payload = JSON.stringify(data);
-        const payloadMain = Buffer.from(payload).toString('base64');
-        const keyIndex = 1;
-        const string = payloadMain + '/pg/v1/pay' + salt_key;
-        const sha256 = crypto.createHash('sha256').update(string).digest('hex');
-        const checksum = sha256 + '###' + keyIndex;
+    var instance = new Razorpay({ key_id: process.env.key_id, key_secret: process.env.key_secret })
+    const params = {
+        amount: 100, // Amount in paisa (e.g., ₹100.00 is 10000 paisa)
+        currency: 'INR',
+        receipt: 'order_rcptid_11', // Unique receipt ID for the payment
+        payment_capture: 1, // Auto-capture payments (1 for true, 0 for false)
+        method: 'upi' // Specify UPI as the payment method
+    };
 
-        const prod_URL = "https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay"
-        const options = {
-            method: 'POST',
-            url: prod_URL,
-            headers: {
-                accept: 'application/json',
-                'Content-Type': 'application/json',
-                'X-VERIFY': checksum
-            },
-            data: {
-                request: payloadMain
-            }
-        };
-        axios.request(options).then(function (response) {
-            console.log(response.data)
-            return res.redirect(response.data.data.instrumentResponse.redirectInfo.url)
-        }).catch((e) => {
-            console.log(e);
-        });
-    } catch (e) {
-        console.log(e);
-    }
+    instance.orders.create(params, (err, order) => {
+        if (err) {
+            console.error(err);
+            // Handle error
+        } else {
+            console.log(order);
+            // Process the order object, which contains the payment link
+            console.log('UPI Payment Link:', order.short_url);
+        }
+    });
+
+    // const data = instance.paymentLink.create({
+    //     upi_link: true,
+    //     amount: 500,
+    //     currency: "INR",
+    //     accept_partial: false,
+    //     first_min_partial_amount: 100,
+    //     description: "For XYZ purpose",
+    //     customer: {
+    //       name: "Junaid Khan",
+    //       email: "zunaid931@gmail.com",
+    //       contact: "+919580055187"
+    //     },
+    //     notify: {
+    //       sms: true,
+    //       email: true
+    //     },
+    //     reminder_enable: true,
+    //     notes: {
+    //       policy_name: "Test"
+    //     }
+    //   })
 }
 
