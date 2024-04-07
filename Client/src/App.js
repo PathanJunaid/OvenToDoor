@@ -6,6 +6,13 @@ import Error from "./Component/Error/Error";
 import Add_Pizza from "./Component/Restorent/Add_Pizza";
 function App() {
   const [UserLoggedIn,setUserLoggedIn]  = useState(false)
+  const [Pizza_Data,setPizza_Data] = useState([])
+  useEffect(()=>{
+    axios.get('http://localhost:4000/ShowPizza').then((res)=>{
+      setPizza_Data(res.data)
+    }).catch((e)=>console.log("data not found"))
+  },{})
+  console.log(Pizza_Data);
   return (
     <div>
       <Error error = {"this is Error"}/>
