@@ -1,6 +1,6 @@
 import express  from "express";
 import { ForgetPassword, Login_Cont, Logout_control, Sign_Cont, User_Authenticated,  ValidateOTP } from "../Controllers/Auth_control.js";
-import { Addtocart, User_PreviousOrder, removeitem_cart } from "../Controllers/Control.js";
+import { Addtocart, ShowPizza, User_PreviousOrder, removeitem_cart } from "../Controllers/Control.js";
 import { newPayment } from "../Controllers/Payment.js";
 const User_routes = express.Router(); 
     // Login route 
@@ -25,5 +25,6 @@ const User_routes = express.Router();
     User_routes.post('/Orders',User_Authenticated,User_PreviousOrder);
 
     User_routes.post('/newPayment',newPayment)
+    User_routes.get('/ShowPizza',ShowPizza)
 
 export default User_routes;

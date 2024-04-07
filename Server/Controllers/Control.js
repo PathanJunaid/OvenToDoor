@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { Order_Details_Connect, User_Connect } from '../Mongodb/Schema.js';
-import { type } from 'os';
+import { Add_Pizza_Db } from '../Mongodb/Pizza_Schema.js';
 
 export const Addtocart = async (req, res) => {
     // Getting unique Pizza  id 
@@ -116,4 +116,12 @@ export const User_PreviousOrder = async (req, res) => {
     const User_Orders = await Order_Details_Connect.find({ User_Email: user_Details.Email }).then(response => { return response }).catch((e) => { });
     res.send(User_Orders);
 
+}
+
+
+
+
+export const ShowPizza = async (req,res)=>{
+    const data = await Add_Pizza_Db.find({}).then((res)=>{return res}).catch((e)=>{return "data not found"});
+    res.status(200).send(data);
 }
