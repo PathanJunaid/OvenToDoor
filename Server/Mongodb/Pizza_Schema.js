@@ -29,10 +29,12 @@ const Add_New_Pizza_Schema = new mongoose.Schema({
     Pizza_id: {
         type:String,
         required:true,
+        unique : true
     },
     Pizza_Name: {
         type:String,
         required: true,
+        unique:true
     },
     Veg : {
         type:Boolean,
@@ -54,5 +56,13 @@ const Add_New_Pizza_Schema = new mongoose.Schema({
         type: [Size],
         required:true
     },
+    created_at : {
+        type:Date,
+        default:Date.now()
+    },
+    updated_at:{
+        type:Date,
+        default:Date.now()
+    }
 })
 export const Add_Pizza_Db = mongoose.model('Pizza',Add_New_Pizza_Schema);
