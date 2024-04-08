@@ -11,6 +11,6 @@ Admin_Routes.post('/Admin/Showcart',AdminAuthenticated,AdminPreviousOrder);
 Admin_Routes.put('/Admin/Update/Location',AdminUpdateLocation);
 Admin_Routes.post('/Admin/AddDeliveryPartner',AdminAuthenticated,AdminAddDelivaryPartner);
 Admin_Routes.post('/Admin/NewPizza',upload.single("file"),AddPizza);
-Admin_Routes.put(`/Admin/Edit_Item/:Pizza_id`,Edit_item);
+Admin_Routes.put(`/Admin/Edit_Item/:Pizza_id`,upload.single('file'),Edit_item);
 Admin_Routes.delete('/Admin/Delete_Item/:Pizza_id',Delete_Item)
 export default Admin_Routes;
