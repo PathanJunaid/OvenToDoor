@@ -4,11 +4,17 @@ import cookieParser from "cookie-parser";
 import fs from 'fs';
 import {Db_Connection} from './Mongodb/Db_Connection.js';
 import cors from 'cors';
-import User_routes from "./Routes/user_routes.js";
+import User_routes from "./Routes/User_routes.js";
 import Admin_Routes from './Routes/Admin_Routes.js'
 import multer from "multer";
+import session from "express-session";
 dotenv.config();
 const app = express();
+app.use(session({
+  secret: 'your_secret_here',
+  resave: false,
+  saveUninitialized: true
+}));
 const corsOptions = {
   origin: 'http://localhost:3000',
   methods:["POST","GET"],

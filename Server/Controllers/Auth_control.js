@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { OTP_Connect, Order_Details_Connect, User_Connect } from "../Mongodb/Schema.js";
-import nodemailer from 'nodemailer'
+import nodemailer from 'nodemailer';
 export const User_Authenticated = async (req, res, next) => {
     try {
         const jwt_Token = req.cookies[process.env.cookiename];
@@ -32,6 +32,8 @@ export const User_Authenticated = async (req, res, next) => {
 export const Login_Cont = async (req, res) => {
     const { Email, Password } = req.body;
     // finding user in database 
+    console.log(req.session);
+    console.log(req.sessionStore);
     const isuser = await User_Connect.findOne({
         Email
     }).then().catch((e) => {
