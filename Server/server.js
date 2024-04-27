@@ -7,21 +7,11 @@ import cors from 'cors';
 import User_routes from "./Routes/User_routes.js";
 import Admin_Routes from './Routes/Admin_Routes.js'
 import multer from "multer";
-import session from "express-session";
 dotenv.config();
 const app = express();
-// Create a ConnectMongo instance
-// const connectMongo = new ConnectMongo(session);
-
 // Connect to MongoDB
 Db_Connection();
 
-// Use express-session middleware
-app.use(session({
-  secret: 'your_secret_key_here',
-  resave: false,
-  saveUninitialized: false,
-}));
 const corsOptions = {
   origin: 'http://localhost:3000',
   methods: ["POST", "GET", "PUT"],
