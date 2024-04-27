@@ -14,7 +14,7 @@ Db_Connection();
 
 const corsOptions = {
   origin: 'http://localhost:3000',
-  methods: ["POST", "GET", "PUT"],
+  methods: ["POST", "GET", "PUT","DELETE"],
   credentials: true,
 };
 // MiddleWare 

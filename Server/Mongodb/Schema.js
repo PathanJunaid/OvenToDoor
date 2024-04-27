@@ -38,6 +38,11 @@ const User_Schema = new mongoose.Schema({
         type:String,
         unique:true,
     },
+    Mobile_No:{
+        type:Number,
+        required:true,
+
+    },
     createdAt : {type: Date, default: Date.now},
 })
 export const User_Connect = mongoose.model('Userdata',User_Schema);

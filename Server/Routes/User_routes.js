@@ -25,7 +25,7 @@ User_routes.delete('/removeitem', User_Authenticated, removeitem_cart)
 User_routes.post('/Orders', User_Authenticated, User_PreviousOrder);
 // Pending 
 User_routes.post('/payment',User_Authenticated,Payment)
-User_routes.get('/payment/status',User_Authenticated,PaymentStatus)
+User_routes.get('/payment/status',PaymentStatus)
 // Pending 
 User_routes.get('/ShowPizza', ShowPizza)
 
