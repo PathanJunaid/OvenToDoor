@@ -34,6 +34,15 @@ const User_Schema = new mongoose.Schema({
     Cart: {
         type:[Add_to_cart_Schema],
     },
+    Seesion_id:{
+        type:String,
+        unique:true,
+    },
+    Mobile_No:{
+        type:Number,
+        required:true,
+
+    },
     createdAt : {type: Date, default: Date.now},
 })
 export const User_Connect = mongoose.model('Userdata',User_Schema);
@@ -44,7 +53,7 @@ const Order_Schema = new mongoose.Schema({
         required:true,
         unique:true
     },
-    User_Email :{
+    User_id :{
         type:String,
         required:true,
     },
@@ -56,6 +65,11 @@ const Order_Schema = new mongoose.Schema({
         type:Number,
         required:true,
     },
+    Status:{
+        type:String,
+        required:true,
+        default:false
+    }
 })
 export const Order_Details_Connect = mongoose.model('Order_Details',Order_Schema);
 const OTP_Schema = new mongoose.Schema({

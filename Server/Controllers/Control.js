@@ -17,11 +17,7 @@ export const Addtocart = async (req, res) => {
         }
     });
     // Getting user info using id 
-    const user = await User_Connect.findById(id).then((response) => {
-        return response
-    }).catch((e) => {
-        console.log("error" + e)
-    });
+    const user = await User_Connect.findById(id).then().catch((e)=>{console.log(e)})
     // checking if pizza already in cart 
     const Cart_data = user.Cart;
     const isPizza = Cart_data.find(ele => {

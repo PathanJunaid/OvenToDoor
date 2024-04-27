@@ -1,13 +1,13 @@
 import multer from "multer";
 
-const storage = multer.diskStorage({
-    destination: function(req,file,cb){
-        cb (null , './uploads');
-    },
-     filename : function(req,file,cb){
-        cb(null, `${Date.now()}-${file.originalname}`);
-    }}
-)
+// const storage = multer.diskStorage({
+//     destination: function(req,file,cb){
+//         cb (null , './uploads');
+//     },
+//      filename : function(req,file,cb){
+//         cb(null, `${Date.now()}-${file.originalname}`);
+//     }}
+// )
 const fileFilter = (req, file, cb) => {
     // Accept only images
     if (file.mimetype.startsWith('image/')) {
@@ -18,12 +18,13 @@ const fileFilter = (req, file, cb) => {
         cb(error);
     }
 };
+const storage = multer.memoryStorage();
 
 export const upload = multer({
     storage:storage,
     fileFilter: fileFilter,
-    limits:{
-        fileSize:1024*1024
-    }
+    // limits:{
+    //     fileSize:1024*1024
+    // }
 
 });
