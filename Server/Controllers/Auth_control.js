@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { OTP_Connect, Order_Details_Connect, User_Connect } from "../Mongodb/Schema.js";
+import { OTP_Connect, User_Connect } from "../Mongodb/Schema.js";
 import nodemailer from 'nodemailer';
 export const User_Authenticated = async (req, res, next) => {
     try {
@@ -31,29 +31,41 @@ export const User_Authenticated = async (req, res, next) => {
 
 export const Login_Cont = async (req, res) => {
     const { Email, Password } = req.body;
+    let response = {
+        error:false,
+        msg:""
+    }
     // finding user in database 
-    console.log(req.session);
-    console.log(req.sessionStore);
     const isuser = await User_Connect.findOne({
         Email
     }).then().catch((e) => {
-        res.send("Try Again");
+        response.error = true;
+        response.msg = "MongoDb error";
+        console.log(e)
         return;
     });
     // Checking reponse from database 
     if (!isuser) {
-        res.send("User not registered");
+        response.error = true;
+        response.msg = "User not registered";
+        res.send(response);
         return
     }
     // comparing password 
     const comparedpass = bcrypt.compareSync(Password, isuser.Password);
     // Checking response and setting Cookie or Authenticating user
     if (comparedpass) {
+        // console.log(req)
+
         const jwt_token = jwt.sign({ id: isuser._id }, process.env.jwtsecrettoken);
         res.cookie(process.env.cookiename, jwt_token, { maxAge: 6000000, httpOnly: false })
-        res.send("Sign in completed")
+        response.error = false;
+        response.msg = "Sign in Completed";
+        res.send(response);
     } else {
-        res.send("wrong password")
+        response.error = true;
+        response.msg = "Wrong Password";
+        res.send(response);
     }
 }
 

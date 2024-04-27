@@ -17,15 +17,15 @@ User_routes.post('/logout', Logout_control)
 // User_routes.post('/Payment',)
 
 // Addt to Cart Route 
-User_routes.put('/addtocart', User_Authenticated, Addtocart);
+User_routes.put('/addtocart',User_Authenticated, Addtocart);
 
 // remove from cart 
 User_routes.delete('/removeitem', User_Authenticated, removeitem_cart)
 // Orders route
 User_routes.post('/Orders', User_Authenticated, User_PreviousOrder);
 // Pending 
-User_routes.post('/payment',Payment)
-User_routes.get('/payment/status',PaymentStatus)
+User_routes.post('/payment',User_Authenticated,Payment)
+User_routes.get('/payment/status',User_Authenticated,PaymentStatus)
 // Pending 
 User_routes.get('/ShowPizza', ShowPizza)
 
