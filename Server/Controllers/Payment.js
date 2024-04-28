@@ -1,6 +1,7 @@
 import Razorpay from 'razorpay'
 import jwt from 'jsonwebtoken'
-import { Order_Details_Connect, User_Connect } from '../Mongodb/Schema.js';
+import { Admin_Connect, Order_Details_Connect, User_Connect } from '../Mongodb/Schema.js';
+import nodemailer from 'nodemailer';
 export const Payment = async (req, res) => {
     const {Amount} = req.body;
     var response = {
@@ -89,7 +90,6 @@ export const Payment = async (req, res) => {
                 msg: "Link Created",
                 URL:data.short_url
             }
-            console.log(response)
             res.send(response);
         }
 
@@ -116,8 +116,58 @@ export const PaymentStatus = async (req, res) => {
         res.send(response)
         return
     }
+    
+    if(req.query.razorpay_payment_link_status){
+        const admin = await Admin_Connect.find({}).then().catch((e)=>{
+            response={
+                error:true,
+                msg:'Unable to connect to Admin'
+            }
+            return;
+        });
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: process.env.usergmail,
+                pass: process.env.usergmailpass
+            }
+        })
+        // Creating the mail for admin 
+        let mailOptionsAdmin = {
+            from: 'noreply@gmail.com', // Sender email address
+            to: admin[0].Email, // Receiver email address
+            subject: 'Order Confirmed', // Subject line
+            text: `Dear Admin,
+                Order with Order ID ${req.query.razorpay_payment_link_id} is confirmed.
+                Please Check your visit your order page.
+                http://localhost:3000/Admin/Order
+            ` 
+            // Plaese add Order Link 
+        };
+        // Creating the mail for admin 
+        let mailOptionsUser = {
+            from: 'noreply@gmail.com', // Sender email address
+            to: update_order.User_id, // Receiver email address
+            subject: 'Order Confirmed', // Subject line
+            text: `Dear ${update_order.User_Name},
+                Order with Order ID ${req.query.razorpay_payment_link_id} is confirmed.
+                Please Check your visit your order page.
+                http://localhost:3000/Orders
+            ` 
+            // Plaese add Order Link 
+        };
+        // Sending mail 
+        try {
+            let info = await transporter.sendMail(mailOptionsAdmin);
+            let infoUser = await transporter.sendMail(mailOptionsUser);
+            console.log('Email sent successfully:', info);
+        } catch (error) {
+            console.log('Error occurred:', error);
+            res.send("Please try again");
+            return
+        }
+    }
     //pending Update admin regrading the order 
-
     // front end order page 
     res.redirect('http://localhost:3000/orders')
     // redirect to order page 
