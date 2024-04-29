@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { Order_Details_Connect, User_Connect } from '../Mongodb/Schema.js';
 import { Add_Pizza_Db } from '../Mongodb/Pizza_Schema.js';
+import { error } from 'console';
 
 export const Addtocart = async (req, res) => {
     // Getting unique Pizza  id 
@@ -120,4 +121,31 @@ export const User_PreviousOrder = async (req, res) => {
 export const ShowPizza = async (req,res)=>{
     const data = await Add_Pizza_Db.find({}).then((res)=>{return res}).catch((e)=>{return "data not found"});
     res.status(200).send(data);
+}
+
+
+
+// req params contains order id 
+export const Specific_Order = async(req,res)=>{
+    let response = {
+        error:false,
+        msg : "Try again later",
+        data: ""
+    }
+    const {id} = req.params
+    console.log(id)
+    const Order_detail = await Order_Details_Connect.findOne({Order_id:id}).then().catch((e)=>{
+        response = {
+            error:true,
+            msg : "Try Again Later"
+        }
+    });
+    if(!response.error){
+        response = {
+            error:false,
+            msg : "Success",
+            data: Order_detail
+        }
+    }
+    res.send(response);
 }
