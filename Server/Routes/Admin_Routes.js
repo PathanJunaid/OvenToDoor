@@ -12,7 +12,7 @@ Admin_Routes.post('/Admin/Showcart',AdminAuthenticated,AdminPreviousOrder);
 // Pending 
 Admin_Routes.put('/Admin/Update/Location',AdminUpdateLocation);
 // Pending 
-Admin_Routes.post('/Admin/AddDeliveryPartner',AdminAuthenticated,AdminAddDelivaryPartner);
+// Admin_Routes.post('/Admin/AddDeliveryPartner',AdminAuthenticated,AdminAddDelivaryPartner);
 // Admin add Pizza to menu 
 Admin_Routes.post('/Admin/NewPizza',upload.single("file"),AddPizza);
 Admin_Routes.put(`/Admin/Edit_Item/:Pizza_id`,upload.single('file'),Edit_item);

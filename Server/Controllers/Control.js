@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { Order_Details_Connect, User_Connect } from '../Mongodb/Schema.js';
 import { Add_Pizza_Db } from '../Mongodb/Pizza_Schema.js';
-import { error } from 'console';
 
 export const Addtocart = async (req, res) => {
     // Getting unique Pizza  id 
