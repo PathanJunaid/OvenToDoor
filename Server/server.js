@@ -13,7 +13,7 @@ const app = express();
 Db_Connection();
 
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: 'http://localhost:5173',
   methods: ["POST", "GET", "PUT","DELETE"],
   credentials: true,
 };

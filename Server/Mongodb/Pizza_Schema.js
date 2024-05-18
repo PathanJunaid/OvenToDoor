@@ -34,11 +34,11 @@ const Add_New_Pizza_Schema = new mongoose.Schema({
     Pizza_Name: {
         type:String,
         required: true,
-        unique:true
+        // unique:true
     },
     Veg : {
         type:Boolean,
-        required:true,
+        // required:true,
     },
     Price : {
         type:Number,
@@ -54,7 +54,7 @@ const Add_New_Pizza_Schema = new mongoose.Schema({
     },
     sizeandcrust : {
         type: [Size],
-        required:true
+        // required:true
     },
     created_at : {
         type:Date,
