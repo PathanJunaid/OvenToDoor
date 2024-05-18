@@ -29,7 +29,7 @@ export const cartitems = async (req,res)=>{
 
 export const Addtocart = async (req, res) => {
     // Getting unique Pizza  id 
-    const { itemId } = req.body;
+    const { Pizza_id } = req.body;
     // finding if logged in or not 
     const jwt_token = req.cookies[process.env.cookiename];
 
@@ -43,16 +43,17 @@ export const Addtocart = async (req, res) => {
     });
     // Getting user info using id 
     const user = await User_Connect.findById(id).then().catch((e)=>{console.log(e)})
+    console.log(Pizza_id)
     // checking if pizza already in cart 
     const Cart_data = user.Cart;
     const isPizza = Cart_data.find(ele => {
-        return ele.Pizza_id == itemId;
+        return ele.Pizza_id == Pizza_id;
     })
     // item was not in cart i.e  new item 
     if (!isPizza) {
         await User_Connect.findByIdAndUpdate(user.id, {
             Cart: [...user.Cart, {
-                Pizza_id: itemId,
+                Pizza_id: Pizza_id,
                 quantity: 1,
             }]
         }).then((res) => {
@@ -64,7 +65,7 @@ export const Addtocart = async (req, res) => {
     } 
     // item was already in cart only need to increase the quantity 
     else {
-        const updatedUser = await User_Connect.findOneAndUpdate({ 'Cart.Pizza_id': itemId },
+        const updatedUser = await User_Connect.findOneAndUpdate({ 'Cart.Pizza_id': Pizza_id },
             { 'Cart.$.quantity': isPizza.quantity + 1 }
         ).then((res)).catch((err) => {
             // error = err;
@@ -79,7 +80,7 @@ export const Addtocart = async (req, res) => {
 
 
 export const removeitem_cart = async (req, res) => {
-    const { itemId } = req.body;
+    const { Pizza_id } = req.body;
     // console.log(typeof(pizza_id));
     // finding if logged in or not 
     const jwt_token = req.cookies[process.env.cookiename];
@@ -99,20 +100,20 @@ export const removeitem_cart = async (req, res) => {
     });
     // Finding specific Pizza id in cart 
     const isPizza = user.Cart.find(ele => {
-        return ele.Pizza_id == itemId;
+        return ele.Pizza_id == Pizza_id;
     });
     console.log()
     if (isPizza) {
         // quantity of item is less than 1
         if (isPizza.quantity <= 1) {
             const updatedCart = user.Cart.filter(item => {
-                return item.Pizza_id !== parseInt(itemId)
+                return item.Pizza_id !== parseInt(Pizza_id)
             });
             const us = await User_Connect.findByIdAndUpdate(user.id, { Cart: updatedCart });
         } 
         // quantity of item is greater than 1
         else {
-            const updatedUser = await User_Connect.findOneAndUpdate({ 'Cart.Pizza_id': itemId },
+            const updatedUser = await User_Connect.findOneAndUpdate({ 'Cart.Pizza_id': Pizza_id },
                 { 'Cart.$.quantity': isPizza.quantity - 1 }
             ).then((res)).catch((err) => {
                 return;
