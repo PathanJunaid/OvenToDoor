@@ -7,7 +7,7 @@ export const User_Authenticated = async (req, res, next) => {
         const jwt_Token = req.cookies[process.env.cookiename];
         const id = jwt.verify(jwt_Token, process.env.jwtsecrettoken, (err, decoded) => {
             if (err) {
-                console.error("Error decoding token");
+                console.error("Error decoding auth token");
             } else {
                 return decoded.id;
             }
@@ -19,7 +19,10 @@ export const User_Authenticated = async (req, res, next) => {
             console.log("error")
         });
         if (!isuser) {
-            res.send("User not available");
+            res.send({
+                msg : "User not available",
+                auth : false
+            });
             return
         }
         next();
