@@ -1,0 +1,67 @@
+.each_item{
+    display: grid;
+    grid-template-columns: 0.5fr 2fr 1fr 1fr 1fr;
+    border-bottom: 2px solid grey;
+    /* margin-top: 5px; */
+    align-items: center;
+    padding: 5px 0px;
+}
+.each_item_header{
+    color: grey;
+    font-weight: 600;
+    font-size: 18px;
+}
+.food-item-counter_cart{
+    /* position: absolute;
+    bottom: 15px;
+    right: 15px; */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px;
+    border-radius: 50px;
+    background-color: white;
+
+
+}
+.Cart_items_container{
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+}
+.Cart_items_container_header{
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+
+}
+.food-item-counter_cart img{
+    width: 30px;
+}
+.cart_total{
+    margin: 5rem 0px;
+    width: 50%;
+}
+.cart_total_each{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 1rem 0rem;
+    color: grey;
+    border-bottom: 2px solid grey;
+}
+.cart_total_am{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 1rem 0rem;
+    color: black;
+    border-bottom: 2px solid grey;
+    font-weight: 500;
+}
+.PaymentButton{
+    padding: 10px 10px;
+    font-size: 18px;
+    background-color: #fb341f;
+    border: 2px solid #c6493c;
+    border-radius: 5px;
+    color: white;
+}

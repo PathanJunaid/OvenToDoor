@@ -141,7 +141,8 @@ export const User_PreviousOrder = async (req, res) => {
     });
     const user_Details = await User_Connect.findById(id).then((response) => { return response }).catch((e) => { });
     // console.log(user_Details);
-    const User_Orders = await Order_Details_Connect.find({ User_Email: user_Details.Email }).then(response => { return response }).catch((e) => { });
+    const User_Orders = await Order_Details_Connect.find({ User_id: user_Details.Email }).then(response => { return response }).catch((e) => { });
+    // console.log(User_Orders)
     res.send(User_Orders);
 
 }

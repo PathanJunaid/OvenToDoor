@@ -1,12 +1,15 @@
 import React, { useContext } from 'react'
 import './Cart.css'
-import { StoreContext } from '../../context/StoreContext'
+import CartItem from '../../components/CartItem/CartItem'
+import { StoreContext } from '../../context/StoreContext';
 
 const Cart = () => {
-  const [cartItems] = useContext(StoreContext);
+  const {cartItems} = useContext(StoreContext);
+  console.log(cartItems)
   return (
-    <div>
-      
+    <div style={{margin:"3rem 0rem"}}>
+      {/* <Header/> */}
+      <CartItem Items={cartItems}/>
     </div>
   )
 }
