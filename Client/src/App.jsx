@@ -14,7 +14,7 @@ import Specific_Order from './pages/SpecificOrder/Specific_Order'
 const App = () => {
 
   const [showLogin, setShowLogin] = useState(false)
-  const { setCartItems, setOrders_Details } = useContext(StoreContext);
+  const { setCartItems, setOrders_Details,Authenticated ,setAuthenticated} = useContext(StoreContext);
   const fetchcartitems = async () => {
     const res = await axios.post('http://localhost:4000/cartitems', {}, { withCredentials: true }).then((res) => { return res }).catch((e) => { });
     // console.log(res);
@@ -33,6 +33,13 @@ const App = () => {
     try {
       const response = await axios.post('http://localhost:4000/Orders', {}, { withCredentials: true });
       setOrders_Details(response.data); // Assuming response.data is the array of orders
+      console.log(response.data)
+      if(!response.data.auth){
+        return;
+      }else{
+
+        setAuthenticated(true);
+      }
     } catch (e) {
     }
   }
@@ -41,7 +48,7 @@ const App = () => {
   useEffect(() => {
     fetchcartitems();
     fetchOrdersdetails();
-  }, []);
+  }, [Authenticated]);
 
   return (
     <>

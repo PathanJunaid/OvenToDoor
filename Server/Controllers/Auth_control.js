@@ -37,7 +37,8 @@ export const Login_Cont = async (req, res) => {
     const { Email, Password } = req.body;
     let response = {
         error:false,
-        msg:""
+        msg:"",
+        auth:false
     }
     // finding user in database 
     const isuser = await User_Connect.findOne({
@@ -65,6 +66,7 @@ export const Login_Cont = async (req, res) => {
         res.cookie(process.env.cookiename, jwt_token, { maxAge: 6000000, httpOnly: false })
         response.error = false;
         response.msg = "Sign in Completed";
+        response.auth = true
         res.send(response);
     } else {
         response.error = true;
@@ -102,13 +104,19 @@ export const Sign_Cont = async (req, res) => {
 
 export const Logout_control = (req, res) => {
     const cookies = req.cookies[process.env.cookiename];
-    console.log(cookies)
+    let response = {
+        msg : "",
+        auth: false,
+        error: false
+    }
     if (cookies) {
         try {
             const value = cookies.substr(cookies.indexOf("=") + 1, cookies.length);
             res.cookie(process.env.cookiename, value, { maxAge: 0, httpOnly: true });
-            res.send("Cookie Deleted")
+            response.msg = "Logged Out"
+            res.send(response)
         } catch (e) {
+            response.msg = "Logged Out"
             res.send("failed to logout");
         }
     } else {

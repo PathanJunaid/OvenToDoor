@@ -9,6 +9,7 @@ const StoreContextProvider = (props) => {
 
     const [cartItems, setCartItems] = useState({});
     const [Orders_Details , setOrders_Details] = useState(null);
+    const [Authenticated,setAuthenticated] = useState(false)
     const addToCart = async (Pizza_id) => {
         try {
             const res = await axios.put('http://localhost:4000/addtocart', { Pizza_id }, {withCredentials:true});
@@ -55,7 +56,9 @@ const StoreContextProvider = (props) => {
         addToCart,
         removeFromCart,
         Orders_Details,
-        setOrders_Details
+        setOrders_Details,
+        Authenticated,
+        setAuthenticated
     }
 
     return (
