@@ -3,8 +3,14 @@ import './Placeholder.css'
 import { StoreContext } from '../../context/StoreContext'
 import Header from '../../components/Header/Header'
 import Orders from '../../components/Orders/Orders'
+import { Navigate } from 'react-router-dom'
 const Placeholder = () => {
-  const { Orders_Details } = useContext(StoreContext);
+  const { Orders_Details,Authenticated } = useContext(StoreContext);
+  if (!Authenticated) {
+    return (
+      <Navigate to="/" />
+    )
+  }
   console.log(Orders_Details)
   return (
     <div>

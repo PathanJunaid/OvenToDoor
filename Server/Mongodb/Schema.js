@@ -33,15 +33,13 @@ const User_Schema = new mongoose.Schema({
     Cart: {
         type: [Add_to_cart_Schema],
     },
-    Seesion_id: {
-        type: String,
-        unique: true,
-    },
-    Mobile_No: {
-        type: Number,
-        required: true,
+    // Seesion_id: {
+    //     type: String,
+    // },
+    // Mobile_No: {
+    //     type: Number,
 
-    },
+    // },
     createdAt: { type: Date, default: Date.now },
 })
 export const User_Connect = mongoose.model('Userdata', User_Schema);

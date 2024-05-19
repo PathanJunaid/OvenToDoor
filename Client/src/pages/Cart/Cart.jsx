@@ -4,8 +4,12 @@ import CartItem from '../../components/CartItem/CartItem'
 import { StoreContext } from '../../context/StoreContext';
 
 const Cart = () => {
-  const {cartItems} = useContext(StoreContext);
-  console.log(cartItems)
+  const {cartItems, Authenticated} = useContext(StoreContext);
+  if (!Authenticated) {
+    return (
+      <h5 className='Inavlid-request'>Invalid request</h5>
+    )
+  }
   return (
     <div style={{margin:"3rem 0rem"}}>
       {/* <Header/> */}

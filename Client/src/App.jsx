@@ -17,7 +17,7 @@ const App = () => {
   const { setCartItems, setOrders_Details,Authenticated ,setAuthenticated} = useContext(StoreContext);
   const fetchcartitems = async () => {
     const res = await axios.post('http://localhost:4000/cartitems', {}, { withCredentials: true }).then((res) => { return res }).catch((e) => { });
-    // console.log(res);
+    console.log(res);
     if ((!res.code || res.auth)&& res.data.length!==undefined) {
       const transformData = () => {
         return res.data.data.reduce((acc, item) => {
@@ -32,13 +32,13 @@ const App = () => {
   const fetchOrdersdetails = async() => {
     try {
       const response = await axios.post('http://localhost:4000/Orders', {}, { withCredentials: true });
-      setOrders_Details(response.data); // Assuming response.data is the array of orders
+      setOrders_Details(response.data.data); // Assuming response.data is the array of orders
       console.log(response.data)
-      if(!response.data.auth){
+      if(response.data.auth){
+        setAuthenticated(true);
         return;
       }else{
-
-        setAuthenticated(true);
+        return
       }
     } catch (e) {
     }

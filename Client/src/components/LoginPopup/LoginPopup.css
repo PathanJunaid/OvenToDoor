@@ -10,6 +10,15 @@
     color: red;
     /* margin: 10px 0px; */
 }
+.Forget-Password{
+    text-align: right;
+    cursor: pointer;
+    font-size: 12px;
+}
+.Forget-Password:hover{
+    color: rgb(217, 82, 19);
+    cursor: pointer;
+}
 .login-popup-container{
     place-self: center;
     width: max(23vw,330px) ;
