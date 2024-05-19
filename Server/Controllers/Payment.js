@@ -4,6 +4,7 @@ import { Admin_Connect, Order_Details_Connect, User_Connect } from '../Mongodb/S
 import nodemailer from 'nodemailer';
 export const Payment = async (req, res) => {
     const {Amount} = req.body;
+    console.log(Amount)
     var response = {
         error:false,
         msg:"",
@@ -54,7 +55,7 @@ export const Payment = async (req, res) => {
         notes: {
             policy_name: "Pizza Order"
         },
-        callback_url: "http://localhost:4000/payment/status",
+        callback_url: `http://localhost:4000/payment/status/${id}`,
         callback_method: "get"
     }).then().catch((e) => { 
         console.log(e)
@@ -99,12 +100,14 @@ export const Payment = async (req, res) => {
     // res.send(data)
 }
 export const PaymentStatus = async (req, res) => {
+    const {id} = req.params
+    console.log(id)
     let response = {
         error : false,
         msg: ""
     }
     // pending  Update to database 
-    const update_order = await Order_Details_Connect.findOneAndUpdate({Order_id:req.query.razorpay_payment_link_id},{Status:req.query.razorpay_payment_link_status}).then().catch((e)=>{
+    const update_order = await Order_Details_Connect.findOneAndUpdate({Order_id:req.query.razorpay_payment_link_id},{Status:req.query.razorpay_payment_link_status,}).then().catch((e)=>{
         console.log(e)
         response = {
             error : true,
@@ -140,7 +143,7 @@ export const PaymentStatus = async (req, res) => {
             text: `Dear Admin,
                 Order with Order ID ${req.query.razorpay_payment_link_id} is confirmed.
                 Please Check your visit your order page.
-                http://localhost:3000/Admin/Order
+                http://localhost:5173/Admin/Order
             ` 
             // Plaese add Order Link 
         };
@@ -152,7 +155,7 @@ export const PaymentStatus = async (req, res) => {
             text: `Dear ${update_order.User_Name},
                 Order with Order ID ${req.query.razorpay_payment_link_id} is confirmed.
                 Please Check your visit your order page.
-                http://localhost:3000/Orders
+                http://localhost:5173/Orders
             ` 
             // Plaese add Order Link 
         };
@@ -160,7 +163,7 @@ export const PaymentStatus = async (req, res) => {
         try {
             let info = await transporter.sendMail(mailOptionsAdmin);
             let infoUser = await transporter.sendMail(mailOptionsUser);
-            console.log('Email sent successfully:', info);
+            console.log('Email sent successfully:');
         } catch (error) {
             console.log('Error occurred:', error);
             res.send("Please try again");
@@ -168,7 +171,14 @@ export const PaymentStatus = async (req, res) => {
         }
     }
     //pending Update admin regrading the order 
+    User_Connect.updateOne({ _id: id }, { $set: { Cart: [] } })
+    .then(() => {
+        console.log('Cart has been emptied successfully.');
+    })
+    .catch(err => {
+        console.error('Error emptying the cart:', err);
+    });
     // front end order page 
-    res.redirect('http://localhost:3000/orders')
+    res.redirect('http://localhost:5173/')
     // redirect to order page 
 }

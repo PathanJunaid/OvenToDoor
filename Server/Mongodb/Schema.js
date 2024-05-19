@@ -68,7 +68,8 @@ const Order_Schema = new mongoose.Schema({
         type: String,
         required: true,
         default: false
-    }
+    },
+    createdAt: { type: Date, default: Date.now },
 })
 export const Order_Details_Connect = mongoose.model('Order_Details', Order_Schema);
 const OTP_Schema = new mongoose.Schema({

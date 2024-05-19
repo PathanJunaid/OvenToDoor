@@ -1,0 +1,8 @@
+.food-display-list-order {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin-top: 30px;
+    gap: 30px;
+    row-gap: 50px;
+}
+

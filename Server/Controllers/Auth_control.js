@@ -5,6 +5,7 @@ import nodemailer from 'nodemailer';
 export const User_Authenticated = async (req, res, next) => {
     try {
         const jwt_Token = req.cookies[process.env.cookiename];
+        // console.log()
         const id = jwt.verify(jwt_Token, process.env.jwtsecrettoken, (err, decoded) => {
             if (err) {
                 console.error("Error decoding auth token");

@@ -8,7 +8,7 @@ export const StoreContext = createContext(null)
 const StoreContextProvider = (props) => {
 
     const [cartItems, setCartItems] = useState({});
-
+    const [Orders_Details , setOrders_Details] = useState(null);
     const addToCart = async (Pizza_id) => {
         try {
             const res = await axios.put('http://localhost:4000/addtocart', { Pizza_id }, {withCredentials:true});
@@ -36,7 +36,7 @@ const StoreContextProvider = (props) => {
             const res = await axios.put('http://localhost:4000/removeitem', { Pizza_id }, {withCredentials:true});
             console.log(res);
 
-            setCartItems((prev) => ({ ...prev, [Pizza_id]: prev[Pizza_id] - 1 }))
+            setCartItems((prev) => ({ ...prev, [Pizza_id]: prev[Pizza_id]>1 ? prev[Pizza_id] - 1 : prev[Pizza_id] = 0}))
         } catch (e) {
             console.error("Error Occured: ", e);
         }
@@ -45,7 +45,7 @@ const StoreContextProvider = (props) => {
 
 
     useEffect(() => {
-        console.log(cartItems)
+
     }, [cartItems])
 
     const contextValue = {
@@ -53,7 +53,9 @@ const StoreContextProvider = (props) => {
         cartItems,
         setCartItems,
         addToCart,
-        removeFromCart
+        removeFromCart,
+        Orders_Details,
+        setOrders_Details
     }
 
     return (

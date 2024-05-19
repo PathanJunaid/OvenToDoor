@@ -29,7 +29,7 @@ User_routes.post('/Orders', User_Authenticated, User_PreviousOrder);
 User_routes.post('/Orders/:id',User_Authenticated,Specific_Order)
 // Completed 
 User_routes.post('/payment',User_Authenticated,Payment)
-User_routes.get('/payment/status',PaymentStatus)
+User_routes.get('/payment/status/:id',PaymentStatus)
 // Pending 
 User_routes.get('/ShowPizza', ShowPizza)
 
