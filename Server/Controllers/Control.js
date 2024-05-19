@@ -5,23 +5,27 @@ import { Add_Pizza_Db } from '../Mongodb/Pizza_Schema.js';
 export const cartitems = async (req,res)=>{
     // finding if logged in or not 
     const jwt_token = req.cookies[process.env.cookiename];
-    let error = true;
+    let error = false
     // decoding user id using jwt token from cookie 
     const id = jwt.verify(jwt_token, process.env.jwtsecrettoken, (err, decoded) => {
         if (err) {
             console.error('Error decoding token:', err);
-            error = false;
+            error = true;
         } else {
             return decoded.id
+
         }
     });
     // Getting user info using id 
-    const user = await User_Connect.findById(id).then().catch((e)=>{console.log(e);error=false})
+    const user = await User_Connect.findById(id).then((res)=>{
+        return res
+    }).catch((e)=>{console.log(e);error=false})
     // checking if pizza already in cart 
     const Cart_data = user.Cart;
     const response = {
         data : Cart_data,
-        code: error,
+        auth:true,
+        error
     }
     res.send(response);
 }
@@ -131,6 +135,7 @@ export const removeitem_cart = async (req, res) => {
 
 
 export const User_PreviousOrder = async (req, res) => {
+    let error = false;
     const jwt_Token = req.cookies[process.env.cookiename];
     const id = jwt.verify(jwt_Token, process.env.jwtsecrettoken, (err, res) => {
         if (err) {
@@ -139,11 +144,16 @@ export const User_PreviousOrder = async (req, res) => {
             return res.id;
         }
     });
-    const user_Details = await User_Connect.findById(id).then((response) => { return response }).catch((e) => { });
+    const user_Details = await User_Connect.findById(id).then((response) => { return response }).catch((e) => {error = true });
     // console.log(user_Details);
-    const User_Orders = await Order_Details_Connect.find({ User_id: user_Details.Email }).then(response => { return response }).catch((e) => { });
+    const User_Orders = await Order_Details_Connect.find({ User_id: user_Details.Email }).then(response => { return response }).catch((e) => { error = true});
     // console.log(User_Orders)
-    res.send(User_Orders);
+    const response = {
+        data : User_Orders,
+        auth:true,
+        error
+    }
+    res.send(response);
 
 }
 
