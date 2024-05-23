@@ -6,18 +6,21 @@ import Cart from './pages/Cart/Cart'
 import Placeholder from './pages/Placeholder/Placeholder'
 import Footer from './components/Footer/Footer'
 import LoginPopup from './components/LoginPopup/LoginPopup'
+import ForgetPassPopup from './components/ForgetPassPopup/ForgetPassPopup'
 import { StoreContext } from './context/StoreContext'
 import axios from 'axios'
 import Specific_Order from './pages/SpecificOrder/Specific_Order'
+import Spinner from './components/Spinner/Spinner'
 
 
 const App = () => {
 
   const [showLogin, setShowLogin] = useState(false)
-  const { setCartItems, setOrders_Details,Authenticated ,setAuthenticated} = useContext(StoreContext);
+  const [forgetPassword, setforgetPassword] = useState(false)
+  const { setCartItems, setOrders_Details,Authenticated ,setAuthenticated,Loading} = useContext(StoreContext);
   const fetchcartitems = async () => {
     const res = await axios.post('http://localhost:4000/cartitems', {}, { withCredentials: true }).then((res) => { return res }).catch((e) => { });
-    console.log(res);
+    // console.log(res);
     if ((!res.code || res.auth)&& res.data.length!==undefined) {
       const transformData = () => {
         return res.data.data.reduce((acc, item) => {
@@ -33,7 +36,7 @@ const App = () => {
     try {
       const response = await axios.post('http://localhost:4000/Orders', {}, { withCredentials: true });
       setOrders_Details(response.data.data); // Assuming response.data is the array of orders
-      console.log(response.data)
+      // console.log(response.data)
       if(response.data.auth){
         setAuthenticated(true);
         return;
@@ -43,8 +46,6 @@ const App = () => {
     } catch (e) {
     }
   }
-
-  // }
   useEffect(() => {
     fetchcartitems();
     fetchOrdersdetails();
@@ -52,7 +53,9 @@ const App = () => {
 
   return (
     <>
-      {showLogin ? <LoginPopup setShowLogin={setShowLogin} /> : <></>}
+    {Loading? <Spinner/>: <></>}
+      {showLogin ? <LoginPopup setShowLogin={setShowLogin} setforgetPassword={setforgetPassword} /> : <></>}
+      {forgetPassword ? <ForgetPassPopup setShowLogin={setShowLogin} setforgetPassword={setforgetPassword} forgetPassword={forgetPassword}/> : <></>}
       <div className='app'>
         <Navbar setShowLogin={setShowLogin} />
         <Routes>

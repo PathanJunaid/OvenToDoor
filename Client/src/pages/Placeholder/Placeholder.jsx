@@ -11,7 +11,6 @@ const Placeholder = () => {
       <Navigate to="/" />
     )
   }
-  console.log(Orders_Details)
   return (
     <div>
       <Header />

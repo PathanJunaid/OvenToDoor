@@ -155,7 +155,7 @@ export const PaymentStatus = async (req, res) => {
             text: `Dear ${update_order.User_Name},
                 Order with Order ID ${req.query.razorpay_payment_link_id} is confirmed.
                 Please Check your visit your order page.
-                http://localhost:5173/Orders
+                http://localhost:5173/order
             ` 
             // Plaese add Order Link 
         };

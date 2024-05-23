@@ -24,7 +24,6 @@ const Navbar = ({ setShowLogin }) => {
     }
   }
   const HandleLogout = async()=>{
-    console.log("Log")
     const res = await axios.post('http://localhost:4000/logout',{},{withCredentials:true}).then((res)=>{
       console.log(res)
       return res.data
