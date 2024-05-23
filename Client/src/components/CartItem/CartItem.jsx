@@ -31,53 +31,69 @@ const CartItem = (Items) => {
         )
     }
     );
-    let Amount = totalamount+Delivery;
-    const ProceedtoCheckout = async()=>{
-        const res = await axios.post('http://localhost:4000/payment',{Amount},{withCredentials:true}).then((res)=>{
+    let Amount
+    if (totalamount > 0) {
+        Delivery = 30
+        Amount = totalamount + Delivery
+    } else {
+        Delivery = 0
+
+    }
+    const ProceedtoCheckout = async () => {
+        const res = await axios.post('http://localhost:4000/payment', { Amount }, { withCredentials: true }).then((res) => {
             console.log(res)
-            if(!res.data.error){
+            if (!res.data.error) {
                 // window.location.href = res.URL;
                 window.location.replace(res.data.URL);
             }
-        }).catch((e)=>{console.log(e)})
+        }).catch((e) => { console.log(e) })
     }
     return (
         <>
-        <div className='Cart_items_container'>
-            <div className="each_item_header each_item">
-                <div className="items">Item</div>
-                <div className="items">Title</div>
-                <div className="items">Price</div>
-                <div className='items'>Quantity</div>
-                <div className="items">Total</div>
+            <div className='Cart_items_container'>
+                <div className="each_item_header each_item">
+                    <div className="items">Item</div>
+                    <div className="items">Title</div>
+                    <div className="items">Price</div>
+                    <div className='items'>Quantity</div>
+                    <div className="items">Total</div>
+                </div>
+                {
+                    cartItemsArray.length === 0 ? <h4 className='empty-cart'>
+                        No item in cart
+                    </h4>
+                     : ""
+                }
+
+                {cartItemsArray}
+
             </div>
             {
-                cartItemsArray.length === 0 ? "No item in cart" : ""
+                Amount > 0 ?
+
+                    <div className="cart_total">
+                        <div>
+                            <h3>Cart Total</h3>
+                        </div>
+                        <div className='cart_total_each'>
+                            <span>Subtotal</span>
+                            <span>{totalamount}</span>
+                        </div>
+                        <div className='cart_total_each'>
+                            <span>Delivery Fee</span>
+                            <span>{totalamount > 0 ? Delivery : 0}</span>
+                        </div>
+                        <div className='cart_total_am'>
+                            <span>Total</span>
+                            <span>{Delivery + totalamount}</span>
+                        </div>
+                        <div className=''>
+                            <button className='PaymentButton' onClick={(e) => { ProceedtoCheckout() }}>Proceed to Checkout</button>
+                        </div>
+                    </div>
+                    :
+                    ""
             }
-
-            {cartItemsArray}
-
-        </div>
-        <div className="cart_total">
-            <div>
-                <h3>Cart Total</h3>
-            </div>
-            <div className='cart_total_each'>
-                <span>Subtotal</span>
-                <span>{totalamount}</span>
-            </div>
-            <div className='cart_total_each'>
-                <span>Delivery Fee</span>
-                <span>{Delivery}</span>
-            </div>
-            <div className='cart_total_am'>
-                <span>Total</span>
-                <span>{Delivery+totalamount}</span>
-            </div>
-            <div className=''>
-                <button className='PaymentButton' onClick={(e)=>{ProceedtoCheckout()}}>Proceed to Checkout</button>
-            </div>
-        </div>
 
         </>
     )
