@@ -14,7 +14,6 @@ const StoreContextProvider = (props) => {
     const addToCart = async (Pizza_id) => {
         try {
             const res = await axios.put('http://localhost:4000/addtocart', { Pizza_id }, {withCredentials:true});
-            console.log(res);
             if(!res.auth && res.status){
                 new Error("Not Authenticated");
             }

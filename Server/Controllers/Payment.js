@@ -179,6 +179,6 @@ export const PaymentStatus = async (req, res) => {
         console.error('Error emptying the cart:', err);
     });
     // front end order page 
-    res.redirect('http://localhost:5173/')
+    res.redirect('http://localhost:5173/order')
     // redirect to order page 
 }

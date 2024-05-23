@@ -2,7 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import './Order.css'
 const Orders = ({ Orders_Det }) => {
-  console.log(Orders_Det);
 
   return (
     <>
