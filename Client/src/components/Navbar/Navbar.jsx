@@ -48,16 +48,26 @@ const Navbar = ({ setShowLogin, setShowAddressPopup }) => { // Add setShowAddres
         <a href='#footer' onClick={() => setMenu("contact-us")} className={menu === 'contact-us' ? 'active' : ''}> contact-us</a>
       </ul>
       <div className="navbar-right">
-        <div className="navbar-search-icon" onClick={() => fetchcartitems()}>
-          {Authenticated ?
-            <>
-              <div className='Parent-ele'>
-                <div className='Child-ele'>{Object.values(cartItems).reduce((sum,item)=>sum+item , 0)}</div>
-              </div>
-              <Link to="/cart">
-                <img src={assets.basket_icon} alt="" />
-              </Link>
-            </> : ""}
+        {/* <img src={assets.search_icon} alt="" /> */}
+        <div className="navbar-search-icon" onClick={() => { fetchcartitems }}>
+          {
+            Authenticated ?
+              <>
+                <div className='Parent-ele'>
+                  <div className='Child-ele'>
+                    {
+                      Object.values(cartItems).reduce((sum,prev)=>sum+prev,0)
+                    }
+                  </div>
+                </div>
+                <Link to="/cart">
+                  <img src={assets.basket_icon} alt="" />
+                  {/* <div className="dot"></div> */}
+                </Link>
+
+              </>
+              : ""
+          }
         </div>
         <div>
           {Authenticated ?
