@@ -54,19 +54,23 @@ const Navbar = ({ setShowLogin }) => {
       <div className="navbar-right">
         {/* <img src={assets.search_icon} alt="" /> */}
         <div className="navbar-search-icon" onClick={() => { fetchcartitems }}>
-          <div className='Parent-ele'>
-            <div className='Child-ele'>
-              {
-                Object.keys(cartItems).length
-              }
-            </div>
-          </div>
           {
             Authenticated ?
-              <Link to="/cart">
-                <img src={assets.basket_icon} alt="" />
-                {/* <div className="dot"></div> */}
-              </Link> : ""
+              <>
+                <div className='Parent-ele'>
+                  <div className='Child-ele'>
+                    {
+                      Object.keys(cartItems).length
+                    }
+                  </div>
+                </div>
+                <Link to="/cart">
+                  <img src={assets.basket_icon} alt="" />
+                  {/* <div className="dot"></div> */}
+                </Link>
+
+              </>
+              : ""
           }
         </div>
         <div>
