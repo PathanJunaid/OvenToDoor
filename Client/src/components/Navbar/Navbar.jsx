@@ -8,7 +8,7 @@ import axios from 'axios';
 
 const Navbar = ({ setShowLogin }) => {
   const [menu, setMenu] = useState("menu");
-  const {setCartItems,Authenticated, setAuthenticated} = useContext(StoreContext)
+  const { setCartItems, Authenticated, setAuthenticated, cartItems } = useContext(StoreContext)
   const fetchcartitems = async () => {
     const res = await axios.post('http://localhost:4000/cartitems', {}, { withCredentials: true }).then((res) => { return res }).catch((e) => { });
     console.log(res);
@@ -23,46 +23,62 @@ const Navbar = ({ setShowLogin }) => {
       setCartItems(transformData);
     }
   }
-  const HandleLogout = async()=>{
-    const res = await axios.post('http://localhost:4000/logout',{},{withCredentials:true}).then((res)=>{
+  const HandleLogout = async () => {
+    const res = await axios.post('http://localhost:4000/logout', {}, { withCredentials: true }).then((res) => {
       console.log(res)
       return res.data
-    }).catch((e)=>{
+    }).catch((e) => {
       console.log(e)
     });
-    if(!res.error){
+    if (!res.error) {
       setAuthenticated(false)
     }
-    
+
   }
   return (
-    <div className='navbar'>
+    <div className='navbar' id='Navbar'>
       <img className='logo' src={assets.logo} alt="" />
       <ul className='navbar-menu'>
-        <Link to='/' onClick={() => setMenu("home")} className={menu === 'home' ? 'active' : ''}>home</Link>
+        <Link to='/' onClick={() => setMenu("home")} className={menu === 'home' ? 'active' : ''}>
+          <a href="#navbar">
+            home
+
+          </a>
+        </Link>
         {
-          Authenticated?
-          <Link to='/order' onClick={() => setMenu("mobile-app")} className={menu === 'mobile-app' ? 'active' : ''}>Order</Link>:""
+          Authenticated ?
+            <Link to='/order' onClick={() => setMenu("mobile-app")} className={menu === 'mobile-app' ? 'active' : ''}>Order</Link> : ""
         }
         <a href='#footer' onClick={() => setMenu("contact-us")} className={menu === 'contact-us' ? 'active' : ''}> contact-us</a>
       </ul>
       <div className="navbar-right">
         {/* <img src={assets.search_icon} alt="" /> */}
-        <div className="navbar-search-icon" onClick={() => { fetchcartitems}}>
+        <div className="navbar-search-icon" onClick={() => { fetchcartitems }}>
           {
-            Authenticated?
-          <Link to="/cart">
-            <img src={assets.basket_icon} alt="" />
-            <div className="dot"></div>
-          </Link> : ""
+            Authenticated ?
+              <>
+                <div className='Parent-ele'>
+                  <div className='Child-ele'>
+                    {
+                      Object.keys(cartItems).length
+                    }
+                  </div>
+                </div>
+                <Link to="/cart">
+                  <img src={assets.basket_icon} alt="" />
+                  {/* <div className="dot"></div> */}
+                </Link>
+
+              </>
+              : ""
           }
         </div>
         <div>
           {
-            Authenticated?
-            <button onClick={() => {HandleLogout()}}>Logout</button>
-            :
-            <button onClick={() => setShowLogin(true)}> sign in</button>
+            Authenticated ?
+              <button onClick={() => { HandleLogout() }}>Logout</button>
+              :
+              <button onClick={() => setShowLogin(true)}> sign in</button>
 
           }
 

@@ -14,7 +14,6 @@ const StoreContextProvider = (props) => {
     const addToCart = async (Pizza_id) => {
         try {
             const res = await axios.put('http://localhost:4000/addtocart', { Pizza_id }, {withCredentials:true});
-            console.log(res);
             if(!res.auth && res.status){
                 new Error("Not Authenticated");
             }
@@ -22,7 +21,7 @@ const StoreContextProvider = (props) => {
                 const updatedItems = { ...prev };
                 if (!updatedItems[Pizza_id]) {
                     updatedItems[Pizza_id] = 1;
-                } else {
+                }else{
                     updatedItems[Pizza_id] += 1;
                 }
                 return updatedItems;
@@ -36,13 +35,20 @@ const StoreContextProvider = (props) => {
     const removeFromCart = async(Pizza_id) => {
         try {
             const res = await axios.put('http://localhost:4000/removeitem', { Pizza_id }, {withCredentials:true});
-            console.log(res);
+            // console.log(res);
 
-            setCartItems((prev) => ({ ...prev, [Pizza_id]: prev[Pizza_id]>1 ? prev[Pizza_id] - 1 : prev[Pizza_id] = 0}))
+            setCartItems((prev) => {
+                const updatedCart = { ...prev };
+                if (updatedCart[Pizza_id] > 1) {
+                    updatedCart[Pizza_id] -= 1;
+                } else {
+                    delete updatedCart[Pizza_id];
+                }
+                return updatedCart;
+            });
         } catch (e) {
             console.error("Error Occured: ", e);
         }
-
     }
 
 

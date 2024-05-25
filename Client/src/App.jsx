@@ -19,11 +19,10 @@ const App = () => {
   const [forgetPassword, setforgetPassword] = useState(false)
   const { setCartItems, setOrders_Details,Authenticated ,setAuthenticated,Loading} = useContext(StoreContext);
   const fetchcartitems = async () => {
-    const res = await axios.post('http://localhost:4000/cartitems', {}, { withCredentials: true }).then((res) => { return res }).catch((e) => { });
-    // console.log(res);
+    const res = await axios.post('http://localhost:4000/cartitems', {}, { withCredentials: true }).then((res) => { return res.data }).catch((e) => { });
     if ((!res.code || res.auth)&& res.data.length!==undefined) {
       const transformData = () => {
-        return res.data.data.reduce((acc, item) => {
+        return res.data.reduce((acc, item) => {
           // Convert Pizza_id to string to ensure it works as a key in Mongoose Map
           acc[item.Pizza_id.toString()] = item.quantity;
           return acc;

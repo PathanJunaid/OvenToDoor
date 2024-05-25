@@ -3,6 +3,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background-color: #FFFFFF
 
 }
 .navbar .logo{
@@ -108,4 +112,16 @@
     }
 
     
+}
+.Parent-ele{
+    position: relative;
+}
+.Child-ele{
+    position: absolute;
+    top: 0;
+    left: 100%;
+    transform: translate(-50%, -50%);
+    color: red;
+    font-size: small;
+
 }
