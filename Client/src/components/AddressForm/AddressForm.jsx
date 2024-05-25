@@ -31,7 +31,7 @@ const AddressForm = ({ setShowAddressPopup }) => {
       <div className="address-popup-header">
       </div>
       <div className="address-popup-container">
-        <h2>Add Address</h2>
+        <h2>Your Address</h2>
         <button className="close-btn" onClick={()=>setShowAddressPopup(false)}>
           {/* Small close button in the upper left corner */}
           <img src={assets.cross_icon} alt="Close" />

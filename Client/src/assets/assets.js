@@ -119,7 +119,7 @@ export const food_list = [
         Pizza_id: "1",
         Pizza_Name: "Greek salad",
         Image: food_1,
-        Price: 12,
+        Price: 129,
         Description: "Food provides essential nutrients for overall health and well-being",
         Category: "Salad"
     },
@@ -127,77 +127,77 @@ export const food_list = [
         Pizza_id: "2",
         Pizza_Name: "Veg salad",
         Image: food_2,
-        Price: 18,
+        Price: 189,
         Description: "Food provides essential nutrients for overall health and well-being",
         Category: "Salad"
     }, {
         Pizza_id: "3",
         Pizza_Name: "Clover Salad",
         Image: food_3,
-        Price: 16,
+        Price: 169,
         Description: "Food provides essential nutrients for overall health and well-being",
         Category: "Salad"
     }, {
         Pizza_id: "4",
         Pizza_Name: "Chicken Salad",
         Image: food_4,
-        Price: 24,
+        Price: 249,
         Description: "Food provides essential nutrients for overall health and well-being",
         Category: "Salad"
     }, {
         Pizza_id: "5",
         Pizza_Name: "Lasagna Rolls",
         Image: food_5,
-        Price: 14,
+        Price: 149,
         Description: "Food provides essential nutrients for overall health and well-being",
         Category: "Rolls"
     }, {
         Pizza_id: "6",
         Pizza_Name: "Peri Peri Rolls",
         Image: food_6,
-        Price: 12,
+        Price: 129,
         Description: "Food provides essential nutrients for overall health and well-being",
         Category: "Rolls"
     }, {
         Pizza_id: "7",
         Pizza_Name: "Chicken Rolls",
         Image: food_7,
-        Price: 20,
+        Price: 209,
         Description: "Food provides essential nutrients for overall health and well-being",
         Category: "Rolls"
     }, {
         Pizza_id: "8",
         Pizza_Name: "Veg Rolls",
         Image: food_8,
-        Price: 15,
+        Price: 159,
         Description: "Food provides essential nutrients for overall health and well-being",
         Category: "Rolls"
     }, {
         Pizza_id: "9",
         Pizza_Name: "Ripple Ice Cream",
         Image: food_9,
-        Price: 14,
+        Price: 149,
         Description: "Food provides essential nutrients for overall health and well-being",
         Category: "Deserts"
     }, {
         Pizza_id: "10",
         Pizza_Name: "Fruit Ice Cream",
         Image: food_10,
-        Price: 22,
+        Price: 229,
         Description: "Food provides essential nutrients for overall health and well-being",
         Category: "Deserts"
     }, {
         Pizza_id: "11",
         Pizza_Name: "Jar Ice Cream",
         Image: food_11,
-        Price: 10,
+        Price: 109,
         Description: "Food provides essential nutrients for overall health and well-being",
         Category: "Deserts"
     }, {
         Pizza_id: "12",
         Pizza_Name: "Vanilla Ice Cream",
         Image: food_12,
-        Price: 12,
+        Price: 129,
         Description: "Food provides essential nutrients for overall health and well-being",
         Category: "Deserts"
     },
@@ -205,7 +205,7 @@ export const food_list = [
         Pizza_id: "13",
         Pizza_Name: "Chicken Sandwich",
         Image: food_13,
-        Price: 12,
+        Price: 129,
         Description: "Food provides essential nutrients for overall health and well-being",
         Category: "Sandwich"
     },
@@ -213,77 +213,77 @@ export const food_list = [
         Pizza_id: "14",
         Pizza_Name: "Vegan Sandwich",
         Image: food_14,
-        Price: 18,
+        Price: 189,
         Description: "Food provides essential nutrients for overall health and well-being",
         Category: "Sandwich"
     }, {
         Pizza_id: "15",
         Pizza_Name: "Grilled Sandwich",
         Image: food_15,
-        Price: 16,
+        Price: 169,
         Description: "Food provides essential nutrients for overall health and well-being",
         Category: "Sandwich"
     }, {
         Pizza_id: "16",
         Pizza_Name: "Bread Sandwich",
         Image: food_16,
-        Price: 24,
+        Price: 249,
         Description: "Food provides essential nutrients for overall health and well-being",
         Category: "Sandwich"
     }, {
         Pizza_id: "17",
         Pizza_Name: "Cup Cake",
         Image: food_17,
-        Price: 14,
+        Price: 149,
         Description: "Food provides essential nutrients for overall health and well-being",
         Category: "Cake"
     }, {
         Pizza_id: "18",
         Pizza_Name: "Vegan Cake",
         Image: food_18,
-        Price: 12,
+        Price: 129,
         Description: "Food provides essential nutrients for overall health and well-being",
         Category: "Cake"
     }, {
         Pizza_id: "19",
         Pizza_Name: "Butterscotch Cake",
         Image: food_19,
-        Price: 20,
+        Price: 209,
         Description: "Food provides essential nutrients for overall health and well-being",
         Category: "Cake"
     }, {
         Pizza_id: "20",
         Pizza_Name: "Sliced Cake",
         Image: food_20,
-        Price: 15,
+        Price: 159,
         Description: "Food provides essential nutrients for overall health and well-being",
         Category: "Cake"
     }, {
         Pizza_id: "21",
         Pizza_Name: "Garlic Mushroom ",
         Image: food_21,
-        Price: 14,
+        Price: 149,
         Description: "Food provides essential nutrients for overall health and well-being",
         Category: "Pure Veg"
     }, {
         Pizza_id: "22",
         Pizza_Name: "Fried Cauliflower",
         Image: food_22,
-        Price: 22,
+        Price: 229,
         Description: "Food provides essential nutrients for overall health and well-being",
         Category: "Pure Veg"
     }, {
         Pizza_id: "23",
         Pizza_Name: "Mix Veg Pulao",
         Image: food_23,
-        Price: 10,
+        Price: 109,
         Description: "Food provides essential nutrients for overall health and well-being",
         Category: "Pure Veg"
     }, {
         Pizza_id: "24",
         Pizza_Name: "Rice Zucchini",
         Image: food_24,
-        Price: 12,
+        Price: 129,
         Description: "Food provides essential nutrients for overall health and well-being",
         Category: "Pure Veg"
     },
@@ -291,7 +291,7 @@ export const food_list = [
         Pizza_id: "25",
         Pizza_Name: "Cheese Pasta",
         Image: food_25,
-        Price: 12,
+        Price: 129,
         Description: "Food provides essential nutrients for overall health and well-being",
         Category: "Pasta"
     },
@@ -299,49 +299,49 @@ export const food_list = [
         Pizza_id: "26",
         Pizza_Name: "Tomato Pasta",
         Image: food_26,
-        Price: 18,
+        Price: 189,
         Description: "Food provides essential nutrients for overall health and well-being",
         Category: "Pasta"
     }, {
         Pizza_id: "27",
         Pizza_Name: "Creamy Pasta",
         Image: food_27,
-        Price: 16,
+        Price: 169,
         Description: "Food provides essential nutrients for overall health and well-being",
         Category: "Pasta"
     }, {
         Pizza_id: "28",
         Pizza_Name: "Chicken Pasta",
         Image: food_28,
-        Price: 24,
+        Price: 249,
         Description: "Food provides essential nutrients for overall health and well-being",
         Category: "Pasta"
     }, {
         Pizza_id: "29",
         Pizza_Name: "Buttter Noodles",
         Image: food_29,
-        Price: 14,
+        Price: 149,
         Description: "Food provides essential nutrients for overall health and well-being",
         Category: "Noodles"
     }, {
         Pizza_id: "30",
         Pizza_Name: "Veg Noodles",
         Image: food_30,
-        Price: 12,
+        Price: 129,
         Description: "Food provides essential nutrients for overall health and well-being",
         Category: "Noodles"
     }, {
         Pizza_id: "31",
         Pizza_Name: "Somen Noodles",
         Image: food_31,
-        Price: 20,
+        Price: 209,
         Description: "Food provides essential nutrients for overall health and well-being",
         Category: "Noodles"
     }, {
         Pizza_id: "32",
         Pizza_Name: "Cooked Noodles",
         Image: food_32,
-        Price: 15,
+        Price: 159,
         Description: "Food provides essential nutrients for overall health and well-being",
         Category: "Noodles"
     }
