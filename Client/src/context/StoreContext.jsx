@@ -13,19 +13,21 @@ const StoreContextProvider = (props) => {
     const [Loading,setLoading] = useState(false)
     const addToCart = async (Pizza_id) => {
         try {
-            const res = await axios.put('http://localhost:4000/addtocart', { Pizza_id }, {withCredentials:true});
+            const res = await axios.put('http://localhost:4000/addtocart', { Pizza_id }, {withCredentials:true}).then((res)=>{
+                setCartItems((prev) => {
+                    const updatedItems = { ...prev };
+                    if (!updatedItems[Pizza_id]) {
+                        updatedItems[Pizza_id] = 1;
+                    }else{
+                        updatedItems[Pizza_id] += 1;
+                    }
+                    return updatedItems;
+                });
+                return res;
+            });
             if(!res.auth && res.status){
                 new Error("Not Authenticated");
             }
-            setCartItems((prev) => {
-                const updatedItems = { ...prev };
-                if (!updatedItems[Pizza_id]) {
-                    updatedItems[Pizza_id] = 1;
-                }else{
-                    updatedItems[Pizza_id] += 1;
-                }
-                return updatedItems;
-            });
         } catch (e) {
             console.error("Error Occured: ", e);
         }

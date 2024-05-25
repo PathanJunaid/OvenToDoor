@@ -60,7 +60,7 @@ const Navbar = ({ setShowLogin }) => {
                 <div className='Parent-ele'>
                   <div className='Child-ele'>
                     {
-                      Object.keys(cartItems).length
+                      Object.values(cartItems).reduce((sum,prev)=>sum+prev,0)
                     }
                   </div>
                 </div>
