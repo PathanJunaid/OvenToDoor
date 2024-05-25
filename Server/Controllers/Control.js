@@ -96,7 +96,7 @@ export const Addtocart = async (req, res) => {
     } 
     // item was already in cart only need to increase the quantity 
     else {
-        const updatedUser = await User_Connect.findOneAndUpdate({ 'Cart.Pizza_id': Pizza_id },
+        const updatedUser = await User_Connect.findOneAndUpdate({_id:user._id, 'Cart.Pizza_id': Pizza_id },
             { 'Cart.$.quantity': isPizza.quantity + 1 }
         ).then((res)).catch((err) => {
             // error = err;
