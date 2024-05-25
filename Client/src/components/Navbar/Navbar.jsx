@@ -1,14 +1,14 @@
-
-import React, { useContext, useState } from 'react'
-import './Navbar.css'
-import { assets } from '../../assets/assets'
+import React, { useContext, useState } from 'react';
+import './Navbar.css';
+import { assets } from '../../assets/assets';
 import { Link } from 'react-router-dom';
 import { StoreContext } from '../../context/StoreContext';
 import axios from 'axios';
 
-const Navbar = ({ setShowLogin }) => {
+const Navbar = ({ setShowLogin, setShowAddressPopup }) => { // Add setShowAddressPopup prop
   const [menu, setMenu] = useState("menu");
-  const { setCartItems, Authenticated, setAuthenticated, cartItems } = useContext(StoreContext)
+  const { setCartItems, Authenticated, setAuthenticated, cartItems } = useContext(StoreContext);
+
   const fetchcartitems = async () => {
     const res = await axios.post('http://localhost:4000/cartitems', {}, { withCredentials: true }).then((res) => { return res }).catch((e) => { });
     console.log(res);
@@ -22,33 +22,29 @@ const Navbar = ({ setShowLogin }) => {
       };
       setCartItems(transformData);
     }
-  }
+  };
+
   const HandleLogout = async () => {
     const res = await axios.post('http://localhost:4000/logout', {}, { withCredentials: true }).then((res) => {
-      console.log(res)
-      return res.data
+      console.log(res);
+      return res.data;
     }).catch((e) => {
-      console.log(e)
+      console.log(e);
     });
     if (!res.error) {
-      setAuthenticated(false)
+      setAuthenticated(false);
     }
+  };
 
-  }
   return (
     <div className='navbar' id='Navbar'>
       <img className='logo' src={assets.logo} alt="" />
       <ul className='navbar-menu'>
         <Link to='/' onClick={() => setMenu("home")} className={menu === 'home' ? 'active' : ''}>
-          <a href="#navbar">
-            home
-
-          </a>
+          <a href="#navbar">home</a>
         </Link>
-        {
-          Authenticated ?
-            <Link to='/order' onClick={() => setMenu("mobile-app")} className={menu === 'mobile-app' ? 'active' : ''}>Order</Link> : ""
-        }
+        {Authenticated ?
+          <Link to='/order' onClick={() => setMenu("mobile-app")} className={menu === 'mobile-app' ? 'active' : ''}>Order</Link> : ""}
         <a href='#footer' onClick={() => setMenu("contact-us")} className={menu === 'contact-us' ? 'active' : ''}> contact-us</a>
       </ul>
       <div className="navbar-right">
@@ -74,20 +70,14 @@ const Navbar = ({ setShowLogin }) => {
           }
         </div>
         <div>
-          {
-            Authenticated ?
-              <button onClick={() => { HandleLogout() }}>Logout</button>
-              :
-              <button onClick={() => setShowLogin(true)}> sign in</button>
-
-          }
-
+          {Authenticated ?
+            <button onClick={() => { HandleLogout() }}>Logout</button> :
+            <button onClick={() => setShowLogin(true)}> sign in</button>}
         </div>
+        <button onClick={() => setShowAddressPopup(true)}>Add Address</button> {/* Add button to trigger address popup */}
       </div>
-
-
     </div>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
