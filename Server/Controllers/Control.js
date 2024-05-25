@@ -29,6 +29,33 @@ export const cartitems = async (req,res)=>{
     }
     res.send(response);
 }
+export const Address = async (req,res)=>{
+    // finding if logged in or not 
+    const jwt_token = req.cookies[process.env.cookiename];
+    let error = false
+    // decoding user id using jwt token from cookie 
+    const id = jwt.verify(jwt_token, process.env.jwtsecrettoken, (err, decoded) => {
+        if (err) {
+            console.error('Error decoding token:', err);
+            error = true;
+        } else {
+            return decoded.id
+
+        }
+    });
+    // Getting user info using id 
+    const user = await User_Connect.findById(id).then((res)=>{
+        return res
+    }).catch((e)=>{console.log(e);error=false})
+    // checking if pizza already in cart 
+    const Addresses = user.Address;
+    const response = {
+        data : Addresses,
+        auth:true,
+        error
+    }
+    res.send(response);
+}
 
 
 export const Addtocart = async (req, res) => {
@@ -69,7 +96,7 @@ export const Addtocart = async (req, res) => {
     } 
     // item was already in cart only need to increase the quantity 
     else {
-        const updatedUser = await User_Connect.findOneAndUpdate({ 'Cart.Pizza_id': Pizza_id },
+        const updatedUser = await User_Connect.findOneAndUpdate({_id:user._id, 'Cart.Pizza_id': Pizza_id },
             { 'Cart.$.quantity': isPizza.quantity + 1 }
         ).then((res)).catch((err) => {
             // error = err;

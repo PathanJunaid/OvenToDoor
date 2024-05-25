@@ -52,7 +52,7 @@ const Navbar = ({ setShowLogin, setShowAddressPopup }) => { // Add setShowAddres
           {Authenticated ?
             <>
               <div className='Parent-ele'>
-                <div className='Child-ele'>{Object.keys(cartItems).length}</div>
+                <div className='Child-ele'>{Object.values(cartItems).reduce((sum,item)=>sum+item , 0)}</div>
               </div>
               <Link to="/cart">
                 <img src={assets.basket_icon} alt="" />
