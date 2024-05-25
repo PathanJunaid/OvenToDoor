@@ -9,7 +9,7 @@ const StoreContextProvider = (props) => {
 
     const [cartItems, setCartItems] = useState({});
     const [Orders_Details , setOrders_Details] = useState(null);
-    const [Authenticated,setAuthenticated] = useState(true)
+    const [Authenticated,setAuthenticated] = useState(false)
     const [Loading,setLoading] = useState(false)
     const addToCart = async (Pizza_id) => {
         try {
