@@ -2,16 +2,17 @@
 
 import React, { useState } from 'react';
 import './AddressForm.css'; // Import the CSS file for styling
-import {assets} from '../../assets/assets'
+import {assets} from '../../assets/assets';
+import axios from "axios"
 // assets/cross_icon'; // Import the close icon image
 
 const AddressForm = ({ setShowAddressPopup }) => {
   const [formData, setFormData] = useState({
-    name: '',
-    houseNo: '',
-    area: '',
-    city: '',
-    pincode: ''
+    Name: '',
+    House_No: '',
+    Area: '',
+    City: '',
+    PIN: ''
   });
 
   const handleChange = (e) => {
@@ -19,11 +20,24 @@ const AddressForm = ({ setShowAddressPopup }) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     // Add logic here to handle form submission, such as sending data to backend
+    const res = await axios.post('http://localhost:4000/Add/Address',{...formData},{withCredentials:true}).then((res)=>{
+      setFormData({
+        Name: '',
+        House_No: '',
+        Area: '',
+        City: '',
+        PIN: ''
+      })
+      return res;
+    }).catch((e)=>{
+      console.log(e)
+    })
     console.log(formData);
-    onClose(); // Close the address form popup after submission
+    setShowAddressPopup(false);
+    // onClose(); // Close the address form popup after submission
   };
 
   return (
@@ -40,41 +54,41 @@ const AddressForm = ({ setShowAddressPopup }) => {
           {/* Input fields */}
           <input
             type="text"
-            name="name"
+            name="Name"
             placeholder="Name"
-            value={formData.name}
+            value={formData.Name}
             onChange={handleChange}
             required
           />
           <input
             type="text"
-            name="houseNo"
+            name="House_No"
             placeholder="House No."
-            value={formData.houseNo}
+            value={formData.House_No}
             onChange={handleChange}
             required
           />
           <input
             type="text"
-            name="area"
+            name="Area"
             placeholder="Area"
-            value={formData.area}
+            value={formData.Area}
             onChange={handleChange}
             required
           />
           <input
             type="text"
-            name="city"
+            name="City"
             placeholder="City"
-            value={formData.city}
+            value={formData.City}
             onChange={handleChange}
             required
           />
           <input
             type="text"
-            name="pincode"
+            name="PIN"
             placeholder="Pincode"
-            value={formData.pincode}
+            value={formData.PIN}
             onChange={handleChange}
             required
           />

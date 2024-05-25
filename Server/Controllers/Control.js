@@ -56,6 +56,46 @@ export const Address = async (req,res)=>{
     }
     res.send(response);
 }
+export const Add_Address = async (req,res)=>{
+    const {Name,House_No,Area,City,PIN} = req.body;
+    // finding if logged in or not 
+    const jwt_token = req.cookies[process.env.cookiename];
+    let error = false;
+    let msg = "Address added successfully"
+    // decoding user id using jwt token from cookie 
+    const id = jwt.verify(jwt_token, process.env.jwtsecrettoken, (err, decoded) => {
+        if (err) {
+            console.error('Error decoding token:', err);
+            error = true;
+        } else {
+            return decoded.id
+
+        }
+    });
+    // Getting user info using id 
+    const user = await User_Connect.findById(id).then((res)=>{
+        return res
+    }).catch((e)=>{console.log(e);error=false})
+    // checking if pizza already in cart 
+    const updated = await User_Connect.findByIdAndUpdate(user._id, {
+        Address: [...user.Address, {
+            Name,House_No,Area,City,PIN
+        }]
+    }).then((res) => {
+        console.log(res);
+        return;
+    }).catch((er) => {
+        // error = er;
+        error = true;
+        msg ="Failed";
+        return;
+    })
+    res.send({
+        msg,
+        error
+
+    });
+}
 
 
 export const Addtocart = async (req, res) => {
@@ -82,7 +122,7 @@ export const Addtocart = async (req, res) => {
     })
     // item was not in cart i.e  new item 
     if (!isPizza) {
-        await User_Connect.findByIdAndUpdate(user.id, {
+        await User_Connect.findByIdAndUpdate(user._id, {
             Cart: [...user.Cart, {
                 Pizza_id: Pizza_id,
                 quantity: 1,

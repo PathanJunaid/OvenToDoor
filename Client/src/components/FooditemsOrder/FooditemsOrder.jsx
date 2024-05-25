@@ -8,6 +8,7 @@ const FooditemsOrder = ({ Orders_Details }) => {
     const [items, setitems] = useState([]);
     const [id, setid] = useState(useParams().id)
     // const []
+    console.log(Orders_Details);
     let total_amount = 0;
     useEffect(() => {
         try {
@@ -61,6 +62,25 @@ const FooditemsOrder = ({ Orders_Details }) => {
             }
             <div className='food-item-order'>
                 <div className='Total_amount'>
+                    <h3>Delivery Charges</h3>
+                </div>
+                <div className='food-item-info-order'>
+
+                </div>
+                <div>
+
+                </div>
+
+                <div>
+                    <h3>
+
+                        Rs.30/-
+                    </h3>
+
+                </div>
+            </div>
+            <div className='food-item-order'>
+                <div className='Total_amount'>
                     <h3>Total Amount</h3>
                 </div>
                 <div className='food-item-info-order'>
@@ -73,7 +93,7 @@ const FooditemsOrder = ({ Orders_Details }) => {
                 <div>
                     <h3>
 
-                        Rs.{total_amount}/-
+                        Rs.{total_amount+30}/-
                     </h3>
 
                 </div>

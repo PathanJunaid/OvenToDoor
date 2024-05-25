@@ -25,14 +25,18 @@ const Navbar = ({ setShowLogin, setShowAddressPopup }) => { // Add setShowAddres
   };
 
   const HandleLogout = async () => {
-    const res = await axios.post('http://localhost:4000/logout', {}, { withCredentials: true }).then((res) => {
-      console.log(res);
-      return res.data;
-    }).catch((e) => {
-      console.log(e);
-    });
-    if (!res.error) {
-      setAuthenticated(false);
+    const data = window.confirm("Do you want to Logout?")
+    if(data){
+      const res = await axios.post('http://localhost:4000/logout', {}, { withCredentials: true }).then((res) => {
+        console.log(res);
+        return res.data;
+      }).catch((e) => {
+        console.log(e);
+      });
+      if (!res.error) {
+        setAuthenticated(false);
+      }
+
     }
   };
 
