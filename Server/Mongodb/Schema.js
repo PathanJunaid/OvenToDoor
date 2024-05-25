@@ -8,6 +8,26 @@ const Add_to_cart_Schema = new mongoose.Schema({
     quantity: { type: Number, default: 1 },
     Delivered: { type: Boolean, default: false },
 })
+const Address = new mongoose.Schema({
+    Name: {
+        type: String,
+    },
+    Mobile_No:{
+        type:Number,
+    },
+    Street:{
+        type:String,
+    },
+    Area:{
+        type:String
+    },
+    City:{
+        type:String
+    },
+    PIN : {
+        type :Number,
+    }
+})
 
 // export const Add_to_Cart_Connect = mongoose.model('carts',Add_to_cart_Schema);
 
@@ -32,6 +52,9 @@ const User_Schema = new mongoose.Schema({
     },
     Cart: {
         type: [Add_to_cart_Schema],
+    },
+    Address: {
+        type: [Address],
     },
     // Seesion_id: {
     //     type: String,

@@ -1,6 +1,6 @@
 import express from "express";
 import { ForgetPassword, Login_Cont, Logout_control, Sign_Cont, User_Authenticated, ValidateOTP } from "../Controllers/Auth_control.js";
-import { Addtocart, ShowPizza, Specific_Order, User_PreviousOrder, cartitems, removeitem_cart } from "../Controllers/Control.js";
+import { Address, Addtocart, ShowPizza, Specific_Order, User_PreviousOrder, cartitems, removeitem_cart } from "../Controllers/Control.js";
 import { Payment, PaymentStatus } from "../Controllers/Payment.js";
 const User_routes = express.Router();
 // Login route 
@@ -15,6 +15,8 @@ User_routes.post('/ValidateOTP', ValidateOTP);
 User_routes.post('/logout', Logout_control)
 // Check out route 
 // User_routes.post('/Payment',)
+// Show Address 
+User_routes.post('/Address',User_Authenticated,Address)
 // Show Cart 
 User_routes.post('/cartitems',User_Authenticated,cartitems)
 // Addt to Cart Route 
