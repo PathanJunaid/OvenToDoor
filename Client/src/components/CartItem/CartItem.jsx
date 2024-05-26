@@ -1,12 +1,12 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { StoreContext } from '../../context/StoreContext';
 import './CartItem.css'
 import { assets } from '../../assets/assets';
 import axios from 'axios';
 
 const CartItem = (Items) => {
-    // const { cartItems,setCartItems } = useContext(StoreContext);
-    const { cartItems, food_list, addToCart, removeFromCart } = useContext(StoreContext);
+    const { cartItems, food_list, addToCart, removeFromCart, Address } = useContext(StoreContext);
+    const [ChooseAddress, setChoosedAddress] = useState(null);
     let count = 0;
     let totalamount = 0;
     let Delivery = 30;
@@ -40,7 +40,7 @@ const CartItem = (Items) => {
 
     }
     const ProceedtoCheckout = async () => {
-        const res = await axios.post('http://localhost:4000/payment', { Amount }, { withCredentials: true }).then((res) => {
+        const res = await axios.post('http://localhost:4000/payment', { Amount, ChooseAddress }, { withCredentials: true }).then((res) => {
             console.log(res)
             if (!res.data.error) {
                 // window.location.href = res.URL;
@@ -62,12 +62,62 @@ const CartItem = (Items) => {
                     cartItemsArray.length === 0 ? <h4 className='empty-cart'>
                         No item in cart
                     </h4>
-                     : ""
+                        : ""
                 }
 
                 {cartItemsArray}
 
             </div>
+            {
+                ChooseAddress === null ?
+                    <div>
+                        {Address.length === 0 ? <div>No address</div> :
+                            <>
+                                <h3>Choose from saved Addreses</h3>
+                                <ul className='cart-address'>
+                                    {Address.map((address, index) => {
+                                        // console.log(address)
+                                        return (
+                                            <li key={address._id}>
+                                                <>
+                                                    <div>
+                                                        <p>{address.Name}</p>
+                                                        <p>{address.House_No}, {address.Area}, {address.City}, {address.PIN}</p>
+
+                                                    </div>
+                                                    <button onClick={() => setChoosedAddress(address)}>Choose Address</button>
+                                                </>
+
+                                            </li>
+                                        )
+                                    })}
+                                </ul>
+                            </>
+                        }
+                    </div> :
+                    <div>
+                        {Address.length === 0 ? <div>No address</div> :
+                            <>
+                                <h3>Selected Addreses</h3>
+                                <ul className='cart-address'>
+                                    {
+                                        <li key={ChooseAddress._id}>
+                                            <>
+                                                <div>
+                                                    <p>{ChooseAddress.Name}</p>
+                                                    <p>{ChooseAddress.House_No}, {ChooseAddress.Area}, {ChooseAddress.City}, {ChooseAddress.PIN}</p>
+
+                                                </div>
+                                                <button onClick={() => setChoosedAddress(null)}>Change Address</button>
+                                            </>
+
+                                        </li>
+                                    }
+                                </ul>
+                            </>
+                        }
+                    </div>
+            }
             {
                 Amount > 0 ?
 

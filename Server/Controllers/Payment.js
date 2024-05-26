@@ -3,8 +3,8 @@ import jwt from 'jsonwebtoken'
 import { Admin_Connect, Order_Details_Connect, User_Connect } from '../Mongodb/Schema.js';
 import nodemailer from 'nodemailer';
 export const Payment = async (req, res) => {
-    const {Amount} = req.body;
-    console.log(Amount)
+    const {Amount,ChooseAddress} = req.body;
+    console.log(ChooseAddress)
     var response = {
         error:false,
         msg:"",
@@ -53,7 +53,7 @@ export const Payment = async (req, res) => {
         },
         reminder_enable: true,
         notes: {
-            policy_name: "Pizza Order"
+            policy_name: "food Order"
         },
         callback_url: `http://localhost:4000/payment/status/${id}`,
         callback_method: "get"
@@ -75,7 +75,8 @@ export const Payment = async (req, res) => {
             User_id:user.Email,
             Items_id: Cart_data,
             Payment_of:Amount,
-            Status:false,
+            Address: ChooseAddress,
+            Status:"Failed",
         })
 
     }catch{
