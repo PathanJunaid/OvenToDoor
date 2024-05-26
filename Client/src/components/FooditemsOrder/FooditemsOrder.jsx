@@ -4,17 +4,17 @@ import { useParams } from 'react-router-dom';
 import './FooditemsOrder.css'
 const FooditemsOrder = ({ Orders_Details }) => {
     const { food_list } = useContext(StoreContext);
-
+    const [Address, setAddress] = useState(null);
     const [items, setitems] = useState([]);
     const [id, setid] = useState(useParams().id)
     // const []
-    console.log(Orders_Details);
     let total_amount = 0;
     useEffect(() => {
         try {
             const order = Orders_Details.find((ele) => ele.Order_id === id);
             if (order) {
                 setitems(order.Items_id);
+                setAddress(...order.Address)
             }
             console.log(order)
 
@@ -22,6 +22,7 @@ const FooditemsOrder = ({ Orders_Details }) => {
 
         }
     }, [Orders_Details, id]);
+    console.log(Address);
     return (
         <>
 
@@ -60,6 +61,26 @@ const FooditemsOrder = ({ Orders_Details }) => {
 
                     : ""
             }
+            <div className='Order-Address-container'>
+                <h3>Delivered Address</h3>
+                <ul className='Order-address'>
+                    {
+                        Address !==null?
+                        <li key={Address._id}>
+                            <>
+                                <div>
+                                    <p>{Address.Name}</p>
+                                    <p>{Address.House_No}, {Address.Area}, {Address.City}, {Address.PIN}</p>
+
+                                </div>
+                            </>
+
+                        </li>
+                        : ""
+                    }
+                </ul>
+
+            </div>
             <div className='food-item-order'>
                 <div className='Total_amount'>
                     <h3>Delivery Charges</h3>
@@ -93,7 +114,7 @@ const FooditemsOrder = ({ Orders_Details }) => {
                 <div>
                     <h3>
 
-                        Rs.{total_amount+30}/-
+                        Rs.{total_amount + 30}/-
                     </h3>
 
                 </div>

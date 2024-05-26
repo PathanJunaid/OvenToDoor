@@ -28,7 +28,14 @@
     align-items: center;
     margin-bottom: 10px;
 }
-
+.Order-Address-container{
+    border-top: 2px solid grey;
+    border-bottom: 2px solid grey;
+    padding: 1rem 0px;
+}
+.Order-address{
+    list-style: none;
+}
 
 
 .food-item-desc-order {

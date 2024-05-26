@@ -76,11 +76,7 @@ const Navbar = ({ setShowLogin, setShowAddressPopup }) => { // Add setShowAddres
               : ""
           }
         </div>
-        <div>
-          {Authenticated ?
-            <button onClick={() => { HandleLogout() }}>Logout</button> :
-            <button onClick={() => setShowLogin(true)}> sign in</button>}
-        </div>
+        
         <div className="address-dropdown">
           {
             Authenticated ?
@@ -94,6 +90,11 @@ const Navbar = ({ setShowLogin, setShowAddressPopup }) => { // Add setShowAddres
 
               : ""
           }
+        </div>
+        <div>
+          {Authenticated ?
+            <button onClick={() => { HandleLogout() }}>Logout</button> :
+            <button onClick={() => setShowLogin(true)}> sign in</button>}
         </div>
         {
           ShowSavedAddresses && (
