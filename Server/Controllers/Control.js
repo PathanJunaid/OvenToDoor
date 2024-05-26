@@ -57,7 +57,7 @@ export const Address = async (req, res) => {
     res.send(response);
 }
 export const Add_Address = async (req, res) => {
-    const { Name, House_No, Area, City, PIN } = req.body;
+    const { Name, House_No, Area, City, PIN,Mobile_No } = req.body;
     // finding if logged in or not 
     const jwt_token = req.cookies[process.env.cookiename];
     let error = false;
@@ -79,7 +79,7 @@ export const Add_Address = async (req, res) => {
     // checking if pizza already in cart 
     const updated = await User_Connect.findByIdAndUpdate(user._id, {
         Address: [...user.Address, {
-            Name, House_No, Area, City, PIN
+            Name, House_No, Area, City, PIN,Mobile_No
         }]
     }).then((res) => {
         console.log(res);
@@ -97,7 +97,7 @@ export const Add_Address = async (req, res) => {
     });
 }
 export const Edit_Address = async (req, res) => {
-    const { Name, House_No, Area, City, PIN, index } = req.body;
+    const { Name, House_No, Area, City, PIN,Mobile_No, index } = req.body;
     // finding if logged in or not 
     const jwt_token = req.cookies[process.env.cookiename];
     let error = false;
@@ -125,7 +125,8 @@ export const Edit_Address = async (req, res) => {
                 "Address.$[elem].House_No": House_No,
                 "Address.$[elem].Area": Area,
                 "Address.$[elem].City": City,
-                "Address.$[elem].PIN": PIN
+                "Address.$[elem].PIN": PIN,
+                "Address.$[elem].Mobile_No": Mobile_No,
             }
         },
         {

@@ -13,7 +13,8 @@ const SavedAddress = ({ onClose }) => {
     House_No: '',
     Area: '',
     City: '',
-    PIN: ''
+    PIN: '',
+    Mobile_No:''
   });
   console.log(editFormData)
   const handleEditChange = (e) => {
@@ -117,10 +118,20 @@ const SavedAddress = ({ onClose }) => {
                     required
                   />
                   <input
-                    type="text"
+                    type="number"
                     name="PIN"
+                    minLength={6} maxLength={6}
                     placeholder="Pincode"
                     value={editFormData.PIN}
+                    onChange={handleEditChange}
+                    required
+                  />
+                  <input
+                    type="number"
+                    minLength={10} maxLength={10}
+                    name="Mobile_No"
+                    placeholder="Mobile No"
+                    value={editFormData.Mobile_No}
                     onChange={handleEditChange}
                     required
                   />
@@ -129,6 +140,7 @@ const SavedAddress = ({ onClose }) => {
               ) : (
                 <>
                   <p>{address.Name}</p>
+                  <p>{address.Mobile_No}</p>
                   <p>{address.House_No}, {address.Area}, {address.City}, {address.PIN}</p>
                   <button onClick={() => handleEdit(address._id)}>Edit</button>
                   <button onClick={() => handleDelete(address._id)}>Delete</button>

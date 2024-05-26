@@ -82,6 +82,7 @@ const CartItem = (Items) => {
                                                 <>
                                                     <div>
                                                         <p>{address.Name}</p>
+                                                        <p>{address.Mobile_No}</p>
                                                         <p>{address.House_No}, {address.Area}, {address.City}, {address.PIN}</p>
 
                                                     </div>

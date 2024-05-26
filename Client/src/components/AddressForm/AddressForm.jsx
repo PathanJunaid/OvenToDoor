@@ -12,7 +12,8 @@ const AddressForm = ({ setShowAddressPopup }) => {
     House_No: '',
     Area: '',
     City: '',
-    PIN: ''
+    PIN: '',
+    Mobile_No:""
   });
 
   const handleChange = (e) => {
@@ -29,7 +30,8 @@ const AddressForm = ({ setShowAddressPopup }) => {
         House_No: '',
         Area: '',
         City: '',
-        PIN: ''
+        PIN: '',
+        Mobile_No:""
       })
       return res;
     }).catch((e)=>{
@@ -61,6 +63,14 @@ const AddressForm = ({ setShowAddressPopup }) => {
             required
           />
           <input
+            type="number"
+            name="Mobile_No"
+            placeholder="Mobile No"
+            value={formData.Mobile_No}
+            onChange={handleChange}
+            required
+          />
+          <input
             type="text"
             name="House_No"
             placeholder="House No."
@@ -85,13 +95,14 @@ const AddressForm = ({ setShowAddressPopup }) => {
             required
           />
           <input
-            type="text"
+            type="number"
             name="PIN"
             placeholder="Pincode"
             value={formData.PIN}
             onChange={handleChange}
             required
           />
+          
 
           <button type="submit">Add Address</button>
         </form>

@@ -70,6 +70,7 @@ const FooditemsOrder = ({ Orders_Details }) => {
                             <>
                                 <div>
                                     <p>{Address.Name}</p>
+                                    <p>{Address.Mobile_No}</p>
                                     <p>{Address.House_No}, {Address.Area}, {Address.City}, {Address.PIN}</p>
 
                                 </div>
