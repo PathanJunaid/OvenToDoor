@@ -2,10 +2,12 @@ import React, { useContext, useState } from 'react';
 import './SavedAddress.css'; // Import the CSS file for styling
 import { assets } from '../../assets/assets'; // Import the assets, including cross_icon
 import { StoreContext } from '../../context/StoreContext';
+import axios from 'axios';
 
 const SavedAddress = ({ onClose }) => {
-  const {Address} = useContext(StoreContext);
+  const {Address,setAddress} = useContext(StoreContext);
   const [editingIndex, setEditingIndex] = useState(null);
+  const [msg,setmsg] = useState("")
   const [editFormData, setEditFormData] = useState({
     Name: '',
     House_No: '',
@@ -16,6 +18,7 @@ const SavedAddress = ({ onClose }) => {
   console.log(editFormData)
   const handleEditChange = (e) => {
     const { name, value } = e.target;
+    console.log(name + "\t" + value)
     setEditFormData({ ...editFormData, [name]: value });
   };
 
@@ -28,18 +31,42 @@ const SavedAddress = ({ onClose }) => {
     setEditFormData(data);
   };
 
-  const handleSave = (index) => {
-    const updatedAddresses = [...savedAddresses];
-    updatedAddresses[index] = editFormData;
-    setSavedAddresses(updatedAddresses);
+  const handleSave = async(index) => {
+    const response = await axios.post(`http://localhost:4000/Address/edit`,{...editFormData,index},{withCredentials:true}).then((res)=>{
+      console.log(res);
+      setAddress(res.data.data)
+      setmsg(res.data.msg);
+      setTimeout(() => {
+        setmsg("")
+      }, 2000);
+      return res;
+    }).catch((e)=>{
+      console.log(e)
+    })
+    if(response.data.error){
+
+    }
     setEditingIndex(null);
   };
 
-  const handleDelete = (index) => {
-    const updatedAddresses = savedAddresses.filter((_, i) => i !== index);
-    setSavedAddresses(updatedAddresses);
-  };
+  const handleDelete = async(index) => {
+    const response = await axios.post(`http://localhost:4000/Address/delete`,{index},{withCredentials:true}).then((res)=>{
+      console.log(res);
+      setAddress(res.data.data)
+      setmsg(res.data.msg);
+      setTimeout(() => {
+        setmsg("")
+      }, 2000);
+      return res;
+    }).catch((e)=>{
+      console.log(e)
+    })
+    if(response.data.error){
 
+    }
+    setEditingIndex(null);
+    
+  };
   return (
     <div className="saved-address-popup">
       <div className="saved-address-header">
@@ -49,6 +76,7 @@ const SavedAddress = ({ onClose }) => {
       </div>
       <div className="saved-address-container">
         <h2>Saved Addresses</h2>
+        {Address.length===0? <div>No address</div> : ""}
         <ul>
           {Address.map((address, index) => {
           // console.log(address)
@@ -58,7 +86,7 @@ const SavedAddress = ({ onClose }) => {
                 <form className="edit-address-form" onSubmit={() => handleSave(address._id)}>
                   <input
                     type="text"
-                    name="name"
+                    name="Name"
                     placeholder="Name"
                     value={editFormData.Name}
                     onChange={handleEditChange}
@@ -66,7 +94,7 @@ const SavedAddress = ({ onClose }) => {
                   />
                   <input
                     type="text"
-                    name="houseNo"
+                    name="House_No"
                     placeholder="House No."
                     value={editFormData.House_No}
                     onChange={handleEditChange}
@@ -74,7 +102,7 @@ const SavedAddress = ({ onClose }) => {
                   />
                   <input
                     type="text"
-                    name="area"
+                    name="Area"
                     placeholder="Area"
                     value={editFormData.Area}
                     onChange={handleEditChange}
@@ -82,7 +110,7 @@ const SavedAddress = ({ onClose }) => {
                   />
                   <input
                     type="text"
-                    name="city"
+                    name="City"
                     placeholder="City"
                     value={editFormData.City}
                     onChange={handleEditChange}
@@ -90,7 +118,7 @@ const SavedAddress = ({ onClose }) => {
                   />
                   <input
                     type="text"
-                    name="pincode"
+                    name="PIN"
                     placeholder="Pincode"
                     value={editFormData.PIN}
                     onChange={handleEditChange}
@@ -109,6 +137,9 @@ const SavedAddress = ({ onClose }) => {
             </li>
           )})}
         </ul>
+        <p>
+          {msg}
+        </p>
       </div>
     </div>
   );

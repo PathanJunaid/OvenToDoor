@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import { Order_Details_Connect, User_Connect } from '../Mongodb/Schema.js';
 import { Add_Pizza_Db } from '../Mongodb/Pizza_Schema.js';
 
-export const cartitems = async (req,res)=>{
+export const cartitems = async (req, res) => {
     // finding if logged in or not 
     const jwt_token = req.cookies[process.env.cookiename];
     let error = false
@@ -17,19 +17,19 @@ export const cartitems = async (req,res)=>{
         }
     });
     // Getting user info using id 
-    const user = await User_Connect.findById(id).then((res)=>{
+    const user = await User_Connect.findById(id).then((res) => {
         return res
-    }).catch((e)=>{console.log(e);error=false})
+    }).catch((e) => { console.log(e); error = false })
     // checking if pizza already in cart 
     const Cart_data = user.Cart;
     const response = {
-        data : Cart_data,
-        auth:true,
+        data: Cart_data,
+        auth: true,
         error
     }
     res.send(response);
 }
-export const Address = async (req,res)=>{
+export const Address = async (req, res) => {
     // finding if logged in or not 
     const jwt_token = req.cookies[process.env.cookiename];
     let error = false
@@ -44,20 +44,20 @@ export const Address = async (req,res)=>{
         }
     });
     // Getting user info using id 
-    const user = await User_Connect.findById(id).then((res)=>{
+    const user = await User_Connect.findById(id).then((res) => {
         return res
-    }).catch((e)=>{console.log(e);error=false})
+    }).catch((e) => { console.log(e); error = false })
     // checking if pizza already in cart 
     const Addresses = user.Address;
     const response = {
-        data : Addresses,
-        auth:true,
+        data: Addresses,
+        auth: true,
         error
     }
     res.send(response);
 }
-export const Add_Address = async (req,res)=>{
-    const {Name,House_No,Area,City,PIN} = req.body;
+export const Add_Address = async (req, res) => {
+    const { Name, House_No, Area, City, PIN } = req.body;
     // finding if logged in or not 
     const jwt_token = req.cookies[process.env.cookiename];
     let error = false;
@@ -73,13 +73,13 @@ export const Add_Address = async (req,res)=>{
         }
     });
     // Getting user info using id 
-    const user = await User_Connect.findById(id).then((res)=>{
+    const user = await User_Connect.findById(id).then((res) => {
         return res
-    }).catch((e)=>{console.log(e);error=false})
+    }).catch((e) => { console.log(e); error = false })
     // checking if pizza already in cart 
     const updated = await User_Connect.findByIdAndUpdate(user._id, {
         Address: [...user.Address, {
-            Name,House_No,Area,City,PIN
+            Name, House_No, Area, City, PIN
         }]
     }).then((res) => {
         console.log(res);
@@ -87,12 +87,106 @@ export const Add_Address = async (req,res)=>{
     }).catch((er) => {
         // error = er;
         error = true;
-        msg ="Failed";
+        msg = "Failed";
         return;
     })
     res.send({
         msg,
         error
+
+    });
+}
+export const Edit_Address = async (req, res) => {
+    const { Name, House_No, Area, City, PIN, index } = req.body;
+    // finding if logged in or not 
+    const jwt_token = req.cookies[process.env.cookiename];
+    let error = false;
+    let msg = "Address added successfully"
+    // decoding user id using jwt token from cookie 
+    const id = jwt.verify(jwt_token, process.env.jwtsecrettoken, (err, decoded) => {
+        if (err) {
+            console.error('Error decoding token:', err);
+            error = true;
+        } else {
+            return decoded.id
+
+        }
+    });
+    // Getting user info using id 
+    const user = await User_Connect.findById(id).then((res) => {
+        return res
+    }).catch((e) => { console.log(e); error = false })
+    console.log(index)
+    const updated = await User_Connect.findOneAndUpdate(
+        { _id: id, "Address._id": index },
+        {
+            $set: {
+                "Address.$[elem].Name": Name,
+                "Address.$[elem].House_No": House_No,
+                "Address.$[elem].Area": Area,
+                "Address.$[elem].City": City,
+                "Address.$[elem].PIN": PIN
+            }
+        },
+        {
+            arrayFilters: [{ "elem._id": index }],
+            new: true,
+            runValidators: true
+        }
+    ).then((res) => {
+        return res;
+    }).catch((er) => {
+        // error = er;
+        error = true;
+        msg = "Failed";
+        return;
+    })
+    console.log(updated)
+    res.send({
+        msg,
+        error,
+        data: updated.Address
+
+    });
+}
+export const Delete_Address = async (req, res) => {
+    const {index } = req.body;
+    // finding if logged in or not 
+    const jwt_token = req.cookies[process.env.cookiename];
+    let error = false;
+    let msg = "Address deleted successfully"
+    // decoding user id using jwt token from cookie 
+    const id = jwt.verify(jwt_token, process.env.jwtsecrettoken, (err, decoded) => {
+        if (err) {
+            console.error('Error decoding token:', err);
+            error = true;
+        } else {
+            return decoded.id
+
+        }
+    });
+    // Getting user info using id 
+    const user = await User_Connect.findById(id).then((res) => {
+        return res
+    }).catch((e) => { console.log(e); error = false })
+    console.log(index)
+    const updated = await User_Connect.findOneAndUpdate(
+        { _id: user._id },
+        { $pull: { Address: { _id: index } } },
+        { new: true, runValidators: true }
+    ).then((res) => {
+        return res;
+    }).catch((er) => {
+        // error = er;
+        error = true;
+        msg = "Failed";
+        return;
+    })
+    console.log(updated)
+    res.send({
+        msg,
+        error,
+        data: updated.Address
 
     });
 }
@@ -113,7 +207,7 @@ export const Addtocart = async (req, res) => {
         }
     });
     // Getting user info using id 
-    const user = await User_Connect.findById(id).then().catch((e)=>{console.log(e)})
+    const user = await User_Connect.findById(id).then().catch((e) => { console.log(e) })
     console.log(Pizza_id)
     // checking if pizza already in cart 
     const Cart_data = user.Cart;
@@ -133,10 +227,10 @@ export const Addtocart = async (req, res) => {
             // error = er;
             return;
         })
-    } 
+    }
     // item was already in cart only need to increase the quantity 
     else {
-        const updatedUser = await User_Connect.findOneAndUpdate({ _id:user._id,'Cart.Pizza_id': Pizza_id },
+        const updatedUser = await User_Connect.findOneAndUpdate({ _id: user._id, 'Cart.Pizza_id': Pizza_id },
             { 'Cart.$.quantity': isPizza.quantity + 1 }
         ).then((res)).catch((err) => {
             // error = err;
@@ -181,10 +275,10 @@ export const removeitem_cart = async (req, res) => {
                 return item.Pizza_id !== parseInt(Pizza_id)
             });
             const us = await User_Connect.findByIdAndUpdate(user.id, { Cart: updatedCart });
-        } 
+        }
         // quantity of item is greater than 1
         else {
-            const updatedUser = await User_Connect.findOneAndUpdate({_id:user._id, 'Cart.Pizza_id': Pizza_id },
+            const updatedUser = await User_Connect.findOneAndUpdate({ _id: user._id, 'Cart.Pizza_id': Pizza_id },
                 { 'Cart.$.quantity': isPizza.quantity - 1 }
             ).then((res)).catch((err) => {
                 return;
@@ -211,13 +305,13 @@ export const User_PreviousOrder = async (req, res) => {
             return res.id;
         }
     });
-    const user_Details = await User_Connect.findById(id).then((response) => { return response }).catch((e) => {error = true });
+    const user_Details = await User_Connect.findById(id).then((response) => { return response }).catch((e) => { error = true });
     // console.log(user_Details);
-    const User_Orders = await Order_Details_Connect.find({ User_id: user_Details.Email }).then(response => { return response }).catch((e) => { error = true});
+    const User_Orders = await Order_Details_Connect.find({ User_id: user_Details.Email }).then(response => { return response }).catch((e) => { error = true });
     // console.log(User_Orders)
     const response = {
-        data : User_Orders,
-        auth:true,
+        data: User_Orders,
+        auth: true,
         error
     }
     res.send(response);
@@ -227,32 +321,32 @@ export const User_PreviousOrder = async (req, res) => {
 
 
 
-export const ShowPizza = async (req,res)=>{
-    const data = await Add_Pizza_Db.find({}).then((res)=>{return res}).catch((e)=>{return "data not found"});
+export const ShowPizza = async (req, res) => {
+    const data = await Add_Pizza_Db.find({}).then((res) => { return res }).catch((e) => { return "data not found" });
     res.status(200).json(data);
 }
 
 
 
 // req params contains order id 
-export const Specific_Order = async(req,res)=>{
+export const Specific_Order = async (req, res) => {
     let response = {
-        error:false,
-        msg : "Try again later",
+        error: false,
+        msg: "Try again later",
         data: ""
     }
-    const {id} = req.params
+    const { id } = req.params
     console.log(id)
-    const Order_detail = await Order_Details_Connect.findOne({Order_id:id}).then().catch((e)=>{
+    const Order_detail = await Order_Details_Connect.findOne({ Order_id: id }).then().catch((e) => {
         response = {
-            error:true,
-            msg : "Try Again Later"
+            error: true,
+            msg: "Try Again Later"
         }
     });
-    if(!response.error){
+    if (!response.error) {
         response = {
-            error:false,
-            msg : "Success",
+            error: false,
+            msg: "Success",
             data: Order_detail
         }
     }
