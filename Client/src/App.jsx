@@ -19,7 +19,7 @@ const App = () => {
   const [showLogin, setShowLogin] = useState(false)
   const [forgetPassword, setforgetPassword] = useState(false)
   const [showAddressPopup, setShowAddressPopup] = useState(false);
-  const { setCartItems, setOrders_Details,Authenticated ,setAuthenticated,Loading} = useContext(StoreContext);
+  const { setCartItems, setOrders_Details,Authenticated ,setAuthenticated,Loading,setAddress} = useContext(StoreContext);
   const fetchcartitems = async () => {
     const res = await axios.post('http://localhost:4000/cartitems', {}, { withCredentials: true }).then((res) => { return res.data }).catch((e) => { });
     if ((!res.code || res.auth)&& res.data.length!==undefined) {
@@ -47,9 +47,19 @@ const App = () => {
     } catch (e) {
     }
   }
+  const fetchAddressdetails = async() => {
+    try {
+      const response = await axios.post('http://localhost:4000/Address', {}, { withCredentials: true });
+      console.log(response.data.data)
+      setAddress(response.data.data); // Assuming response.data is the array of orders
+      // console.log(response.data)
+    } catch (e) {
+    }
+  }
   useEffect(() => {
     fetchcartitems();
     fetchOrdersdetails();
+    fetchAddressdetails();
   }, [Authenticated]);
 
   return (
