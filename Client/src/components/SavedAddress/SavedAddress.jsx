@@ -70,12 +70,12 @@ const SavedAddress = ({ onClose }) => {
   return (
     <div className="saved-address-popup">
       <div className="saved-address-header">
-        <button className="close-btn" onClick={onClose}>
-          <img src={assets.cross_icon} alt="Close" />
-        </button>
       </div>
       <div className="saved-address-container">
         <h2>Saved Addresses</h2>
+        <button id="close-btn-address" onClick={onClose}>
+          <img src={assets.cross_icon} alt="Close" />
+        </button>
         {Address.length===0? <div>No address</div> : ""}
         <ul>
           {Address.map((address, index) => {
