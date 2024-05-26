@@ -52,7 +52,7 @@ const AddressForm = ({ setShowAddressPopup }) => {
           {/* Small close button in the upper left corner */}
           <img src={assets.cross_icon} alt="Close" />
         </button>
-        <form className="address-form" onSubmit={handleSubmit}>
+        <form className="address-form" onSubmit={handleSubmit} required>
           {/* Input fields */}
           <input
             type="text"
@@ -65,6 +65,7 @@ const AddressForm = ({ setShowAddressPopup }) => {
           <input
             type="number"
             name="Mobile_No"
+            minLength={10} maxLength={10}
             placeholder="Mobile No"
             value={formData.Mobile_No}
             onChange={handleChange}
@@ -97,6 +98,7 @@ const AddressForm = ({ setShowAddressPopup }) => {
           <input
             type="number"
             name="PIN"
+            minLength={6} maxLength={6}
             placeholder="Pincode"
             value={formData.PIN}
             onChange={handleChange}

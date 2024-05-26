@@ -94,6 +94,15 @@ const SavedAddress = ({ onClose }) => {
                     required
                   />
                   <input
+                    type="number"
+                    minLength={10} maxLength={10}
+                    name="Mobile_No"
+                    placeholder="Mobile No"
+                    value={editFormData.Mobile_No}
+                    onChange={handleEditChange}
+                    required
+                  />
+                  <input
                     type="text"
                     name="House_No"
                     placeholder="House No."
@@ -126,15 +135,7 @@ const SavedAddress = ({ onClose }) => {
                     onChange={handleEditChange}
                     required
                   />
-                  <input
-                    type="number"
-                    minLength={10} maxLength={10}
-                    name="Mobile_No"
-                    placeholder="Mobile No"
-                    value={editFormData.Mobile_No}
-                    onChange={handleEditChange}
-                    required
-                  />
+                  
                   <button type="button" onClick={() => handleSave(address._id)}>Save</button>
                 </form>
               ) : (

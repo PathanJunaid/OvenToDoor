@@ -106,6 +106,7 @@ const CartItem = (Items) => {
                                             <>
                                                 <div>
                                                     <p>{ChooseAddress.Name}</p>
+                                                    <p>{ChooseAddress.Mobile_No}</p>
                                                     <p>{ChooseAddress.House_No}, {ChooseAddress.Area}, {ChooseAddress.City}, {ChooseAddress.PIN}</p>
 
                                                 </div>
