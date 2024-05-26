@@ -62,10 +62,11 @@ const CartItem = (Items) => {
                     cartItemsArray.length === 0 ? <h4 className='empty-cart'>
                         No item in cart
                     </h4>
-                        : ""
-                }
+                        : 
 
                 {cartItemsArray}
+                }
+
 
             </div>
             {
