@@ -11,17 +11,7 @@ import Admin from "./AdminPages/AdminLogin.jsx";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <StoreContextProvider>
     <AdminStoreContextProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route
-            path="/user/*"
-            element={
-              <App />
-            }
-          />
-        </Routes>
-      </BrowserRouter>
-      <StrictMode>
+      {/* <StrictMode> */}
         <BrowserRouter>
           <Routes>
             <Route
@@ -30,10 +20,16 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                 <AdminRoutes />
               }
             />
+            <Route
+              path="/*"
+              element={
+                <App />
+              }
+            />
           </Routes>
-
         </BrowserRouter>
-      </StrictMode>
+
+      {/* </StrictMode> */}
     </AdminStoreContextProvider >
   </StoreContextProvider >
 );

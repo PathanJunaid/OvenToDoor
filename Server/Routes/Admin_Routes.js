@@ -8,7 +8,7 @@ const Admin_Routes = express.Router();
 Admin_Routes.post('/Admin/Register', AdminRegister);
 Admin_Routes.post('/Admin/login', AdminLogin);
 Admin_Routes.post('/Admin/logout', AdminLogout);
-Admin_Routes.post('/Admin/Showcart',AdminAuthenticated,AdminPreviousOrder);
+Admin_Routes.post('/Admin/orders',AdminAuthenticated,AdminPreviousOrder);
 // Pending 
 Admin_Routes.put('/Admin/Update/Location',AdminUpdateLocation);
 // Pending 

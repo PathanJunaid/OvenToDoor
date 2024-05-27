@@ -4,9 +4,11 @@ export const AdminStoreContext = createContext(null);
 
 const AdminStoreContextProvider = (props) => {
     const [AdminAuthenticated, setAdminAuthenticated] = useState(false);
+    const [Orders, setOrders] = useState([]);
+    const [ShowloginModel, setShowloginModel] = useState(false);
 
     const Adminvalues = {
-        AdminAuthenticated, setAdminAuthenticated
+        AdminAuthenticated, setAdminAuthenticated, Orders, setOrders, ShowloginModel, setShowloginModel
     }
 
     return (

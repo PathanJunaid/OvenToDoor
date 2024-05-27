@@ -1,27 +1,44 @@
 import { Admin_Connect, Order_Details_Connect } from "../Mongodb/Schema.js";
 import brcypt from 'bcrypt';
+import { response } from "express";
 import jwt from 'jsonwebtoken'
 export const AdminAuthenticated = async (req, res, next) => {
+    let response = {
+        error: false,
+        msg: "Inavlid request",
+        data: [],
+        auth: false
+    }
     try {
         const Cookie_Value = req.cookies[process.env.AdminCookie];
-        const id = jwt.verify(Cookie_Value, process.env.jwtsecrettoken,(err,res)=>{
-            if(err){
-                
-            }else{
+        const id = jwt.verify(Cookie_Value, process.env.jwtsecrettoken, (err, res) => {
+            if (err) {
+
+            } else {
                 return res.id;
             }
         });
         const Admin_Details = await Admin_Connect.findById(id).then().catch((e) => {
-            console.log("Admin Error");
+            response = {
+                error: true,
+                msg: "Admin not found",
+                data: [],
+                auth: false
+            }
         });
         if (!Admin_Details) {
-            res.send("Plaese login");
+            res.send(response);
             return;
         }
         next();
 
     } catch (e) {
-        res.send("Please Login");
+        res.send({
+            error: true,
+            msg: "Admin not found",
+            data: [],
+            auth: false
+        });
     }
 }
 export const AdminRegister = async (req, res) => {
@@ -45,53 +62,75 @@ export const AdminRegister = async (req, res) => {
 }
 export const AdminLogin = async (req, res) => {
     const { Email, Password } = req.body;
+    let response = {
+        error: false,
+        msg: "Login Successfully",
+        data: "",
+        auth: false
+    }
     const isAdmin = await Admin_Connect.findOne({ Email: Email }).then().catch((e) => {
-        res.send("Try Again");
+        response.error = true;
+        res.msg = "Invalid Admin Email";
         return;
     });
     // console.log(isAdmin);
     if (!isAdmin) {
-        res.send({
-            IsLogged: false,
-            massage: "Email not Registered"
-        });
+        res.send(response);
         return;
     }
     const Comparepass = brcypt.compareSync(Password, isAdmin.Password);
     if (!Comparepass) {
-        res.send({
-            IsLogged: false,
-            massage: "Wrong Password"
-        });
+        response.msg = "Wrong Password";
+        response.error = true
+        res.send(response);
         return;
     }
     const jwtToken = jwt.sign({ id: isAdmin._id }, process.env.jwtsecrettoken);
     res.cookie(process.env.AdminCookie, jwtToken, { maxAge: 6000000, httpOnly: false });
-    res.send({
-        IsLogged: true,
-        massage: "Admin Logged in"
-    });
+    response.error ?response.auth = false :response.auth = true;
+    res.send(response);
 }
 export const AdminLogout = async (req, res) => {
     const Admincookies = req.cookies[process.env.AdminCookie];
+    let response = {
+        error: false,
+        msg: "Logged out Successfully",
+        data: "",
+        auth: false
+    }
     if (Admincookies) {
         try {
             // const value = cookies.substr(cookies.indexOf("=") + 1, cookies.length);
             res.cookie(process.env.AdminCookie, Admincookies, { maxAge: 0, httpOnly: true });
-            res.send("Cookie Deleted")
+            res.send(response)
         } catch (e) {
-            res.send("failed to logout");
+            response.error = true;
+            response.msg = "Failed to Logout";
+            res.send(response);
         }
     } else {
-        res.send("No cookie")
+        response.error = true;
+        response.msg = "Invalid Request";
+        res.send(response);
     }
 }
 export const AdminPreviousOrder = async (req, res) => {
-    const Orders = await Order_Details_Connect.find().then().catch((e) => {
-        res.send("Try Again");
+    let response = {
+        error: false,
+        msg: "Request Fullfilled",
+        data: [],
+        auth: true
+    }
+    const Orders = await Order_Details_Connect.find({Status:"paid"}).then().catch((e) => {
+        response.error=true;
+        response.msg = "Please login again";
+        response.auth = false;
+        res.send(response);
         return;
     });
-    res.send(Orders);
+    console.log(Orders)
+    response.data = Orders;
+    res.send(response);
 }
 export const AdminUpdateLocation = async (req, res) => {
     const { Latitude, Longitude } = req.body;
