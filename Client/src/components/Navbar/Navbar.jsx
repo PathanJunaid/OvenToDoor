@@ -9,7 +9,7 @@ import SavedAddress from '../SavedAddress/SavedAddress';
 const Navbar = ({ setShowLogin, setShowAddressPopup }) => { // Add setShowAddressPopup prop
   const [menu, setMenu] = useState("menu");
   const { setCartItems, Authenticated, setAuthenticated, cartItems, Address } = useContext(StoreContext);
-  const [ShowSavedAddresses,setShowSavedAddresses]= useState(false)
+  const [ShowSavedAddresses, setShowSavedAddresses] = useState(false)
   console.log(Address)
 
   const fetchcartitems = async () => {
@@ -48,7 +48,7 @@ const Navbar = ({ setShowLogin, setShowAddressPopup }) => { // Add setShowAddres
       <img className='logo' src={assets.logo} alt="" />
       <ul className='navbar-menu'>
         <Link to='/' onClick={() => setMenu("home")} className={menu === 'home' ? 'active' : ''}>
-          <a href="#navbar">home</a>
+          home
         </Link>
         {Authenticated ?
           <Link to='/order' onClick={() => setMenu("mobile-app")} className={menu === 'mobile-app' ? 'active' : ''}>Order</Link> : ""}
@@ -76,7 +76,7 @@ const Navbar = ({ setShowLogin, setShowAddressPopup }) => { // Add setShowAddres
               : ""
           }
         </div>
-        
+
         <div className="address-dropdown">
           {
             Authenticated ?
@@ -98,9 +98,9 @@ const Navbar = ({ setShowLogin, setShowAddressPopup }) => { // Add setShowAddres
         </div>
         {
           ShowSavedAddresses && (
-            <SavedAddress 
-            
-          onClose={() => setShowSavedAddresses(false)}/>
+            <SavedAddress
+
+              onClose={() => setShowSavedAddresses(false)} />
           )
         }
       </div>
