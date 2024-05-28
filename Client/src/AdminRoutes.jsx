@@ -10,7 +10,7 @@ import Admin_Navbar from './AdminComponent/Navbar/Admin_Navbar'
 import ErrorPopup from './AdminComponent/ErrorPopup/ErrorPopup'
 
 const AdminRoutes = () => {
-    const { AdminAuthenticated, setAdminAuthenticated, setOrders, ShowloginModel,setShowloginModel,responsemsg,setresponsemsg } = useContext(AdminStoreContext);
+    const { AdminAuthenticated, setAdminAuthenticated, setOrders, ShowloginModel,setShowloginModel,responsemsg } = useContext(AdminStoreContext);
     const fetchadminorders = async () => {
         try {
             const response = await axios.post("http://localhost:4000/Admin/orders", {}, { withCredentials: true }).then((res) => {
@@ -39,7 +39,7 @@ const AdminRoutes = () => {
             {
                 responsemsg !== "" ? <ErrorPopup Error = {responsemsg}/> : ""
             }
-            <div>
+            <div className='app'>
                 <StrictMode>
                     <Admin_Navbar />
                     <Routes>
