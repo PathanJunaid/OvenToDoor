@@ -70,25 +70,30 @@ export const AdminLogin = async (req, res) => {
     }
     const isAdmin = await Admin_Connect.findOne({ Email: Email }).then().catch((e) => {
         response.error = true;
-        res.msg = "Invalid Admin Email";
-        return;
+        response.msg = "Invalid Admin Email";
+        return
     });
-    // console.log(isAdmin);
     if (!isAdmin) {
+        console.log(isAdmin);
+        response.error = true;
+        response.msg = "Invalid Admin Email";
         res.send(response);
         return;
     }
     const Comparepass = brcypt.compareSync(Password, isAdmin.Password);
+    console.log(Comparepass)
     if (!Comparepass) {
         response.msg = "Wrong Password";
         response.error = true
         res.send(response);
         return;
+    } else {
+        const jwtToken = jwt.sign({ id: isAdmin._id }, process.env.jwtsecrettoken);
+        res.cookie(process.env.AdminCookie, jwtToken, { maxAge: 6000000, httpOnly: false });
+        response.error ? response.auth = false : response.auth = true;
+        res.send(response);
+
     }
-    const jwtToken = jwt.sign({ id: isAdmin._id }, process.env.jwtsecrettoken);
-    res.cookie(process.env.AdminCookie, jwtToken, { maxAge: 6000000, httpOnly: false });
-    response.error ?response.auth = false :response.auth = true;
-    res.send(response);
 }
 export const AdminLogout = async (req, res) => {
     const Admincookies = req.cookies[process.env.AdminCookie];
@@ -121,8 +126,8 @@ export const AdminPreviousOrder = async (req, res) => {
         data: [],
         auth: true
     }
-    const Orders = await Order_Details_Connect.find({Status:"paid"}).then().catch((e) => {
-        response.error=true;
+    const Orders = await Order_Details_Connect.find({ Status: "paid" }).then().catch((e) => {
+        response.error = true;
         response.msg = "Please login again";
         response.auth = false;
         res.send(response);

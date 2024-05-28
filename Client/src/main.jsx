@@ -11,7 +11,7 @@ import Admin from "./AdminPages/AdminLogin.jsx";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <StoreContextProvider>
     <AdminStoreContextProvider>
-      {/* <StrictMode> */}
+      <StrictMode>
         <BrowserRouter>
           <Routes>
             <Route
@@ -29,7 +29,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           </Routes>
         </BrowserRouter>
 
-      {/* </StrictMode> */}
+      </StrictMode>
     </AdminStoreContextProvider >
   </StoreContextProvider >
 );

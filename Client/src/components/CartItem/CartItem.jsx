@@ -4,7 +4,7 @@ import './CartItem.css'
 import { assets } from '../../assets/assets';
 import axios from 'axios';
 
-const CartItem = (Items) => {
+const CartItem = ({Items}) => {
     const { cartItems, food_list, addToCart, removeFromCart, Address } = useContext(StoreContext);
     const [ChooseAddress, setChoosedAddress] = useState(null);
     let count = 0;
@@ -12,8 +12,8 @@ const CartItem = (Items) => {
     let Delivery = 30;
     const cartItemsArray = Object.entries(cartItems).map(([key, value]) => {
         totalamount += food_list[key - 1].Price * value;
+        {console.log(key)}
         return (
-            // {console.log(key)}
             <div key={key} className="each_item">
                 <div className="items">{count += 1}</div>
                 <div className="items">{food_list[key - 1].Pizza_Name}</div>
@@ -64,7 +64,11 @@ const CartItem = (Items) => {
                     </h4>
                         : 
 
-                {cartItemsArray}
+                cartItemsArray.map((ele)=>{
+                    return (
+                        ele
+                    )
+                })
                 }
 
 

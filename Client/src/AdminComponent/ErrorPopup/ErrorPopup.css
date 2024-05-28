@@ -1,0 +1,33 @@
+.ErrorPopup-container{
+    position: absolute;
+    z-index: 10;
+    top:0;
+    left: 50%;
+    background-color: white;
+    color: red;
+    margin: 2rem 0px;
+    padding: 0.5rem 2rem;
+    border: 3px solid white;
+    border-radius: 5px;
+    transform: translate(-50%, -50%) !important;
+    animation: border-animate-top-right 2s ease infinite;
+}
+
+@keyframes border-animate-top-right {
+   0% { 
+    border-top: 2px solid red;
+   }
+   25% { 
+    border-right: 2px solid red;
+   }
+   50% { 
+    border-bottom: 2px solid red;
+   }
+   75% { 
+    border-left: 2px solid red;
+   }
+}
+
+@keyframes border-animate-bottom-left {
+   
+}

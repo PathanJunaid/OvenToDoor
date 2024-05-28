@@ -4,7 +4,7 @@ import { AdminStoreContext } from '../context/AdminStoreContextProvider';
 import axios from 'axios';
 
 const AdminLogin = () => {
-  const { AdminAuthenticated, setAdminAuthenticated,setShowloginModel } = useContext(AdminStoreContext)
+  const { AdminAuthenticated, setAdminAuthenticated, setShowloginModel,setresponsemsg } = useContext(AdminStoreContext)
   const [currState, setCurrState] = useState("AdminLogin");
   const [error, seterror] = useState("");
   const [formdata, setformdata] = useState({
@@ -27,19 +27,27 @@ const AdminLogin = () => {
     }).catch((e) => {
       console.log(e)
     })
-    if (res.auth) {
+    console.log(res)
+    if (res.error) {
+      seterror(res.msg)
+      setresponsemsg(res.msg)
+      const timeot = setTimeout(() => {
+        seterror("")
+        setresponsemsg("")
+      }, 3000);
+    } else {
       setformdata({
         Email: "",
         Password: ""
       });
+      setresponsemsg(res.msg)
+      const timeot = setTimeout(() => {
+        seterror("")
+        setresponsemsg("")
+      }, 2000);
       // ShowloginModel(false);
       setAdminAuthenticated(true);
       setShowloginModel(false)
-    } else {
-      seterror(res.msg)
-      const timeot = setTimeout(() => {
-        seterror("")
-      }, 3000);
     }
   }
   return (
