@@ -64,7 +64,9 @@ const CartItem = (Items) => {
                     </h4>
                         : 
 
-                {cartItemsArray}
+                cartItemsArray.map((ele)=>{
+                    return ele
+                })
                 }
 
 
