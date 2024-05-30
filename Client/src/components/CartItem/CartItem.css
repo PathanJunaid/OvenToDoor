@@ -24,6 +24,9 @@
 
 
 }
+.Address-container{
+    margin: 2rem 0px;
+}
 .Cart_items_container{
     display: grid;
     margin: 20px 0px;
