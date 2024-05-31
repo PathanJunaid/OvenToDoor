@@ -1,10 +1,10 @@
 import Razorpay from 'razorpay'
 import jwt from 'jsonwebtoken'
-import { Admin_Connect, Order_Details_Connect, User_Connect } from '../Mongodb/Schema.js';
+import { Admin_Connect, Order_Details_Connect, User_Connect,Notification_Connect } from '../Mongodb/Schema.js';
 import nodemailer from 'nodemailer';
 export const Payment = async (req, res) => {
     const {Amount,ChooseAddress} = req.body;
-    console.log(ChooseAddress)
+    // console.log(ChooseAddress)
     var response = {
         error:false,
         msg:"",
@@ -102,20 +102,20 @@ export const Payment = async (req, res) => {
 }
 export const PaymentStatus = async (req, res) => {
     const {id} = req.params
-    console.log(id)
+    // console.log(id)
     let response = {
         error : false,
         msg: ""
     }
     // pending  Update to database 
     const update_order = await Order_Details_Connect.findOneAndUpdate({Order_id:req.query.razorpay_payment_link_id},{Status:req.query.razorpay_payment_link_status,}).then().catch((e)=>{
-        console.log(e)
+        // console.log(e)
         response = {
             error : true,
             msg: "Unable to update order"
         }
     })
-    console.log(response)
+    // console.log(response)
     if(response.error){
         res.send(response)
         return
@@ -171,15 +171,31 @@ export const PaymentStatus = async (req, res) => {
             return
         }
     }
+    
+
+
     //pending Update admin regrading the order 
-    User_Connect.updateOne({ _id: id }, { $set: { Cart: [] } })
-    .then(() => {
+    const User = await User_Connect.findOneAndUpdate({ _id: id }, { $set: { Cart: [] } })
+    .then((res) => {
         console.log('Cart has been emptied successfully.');
+        // console.log(res)
+        return res;
     })
     .catch(err => {
         console.error('Error emptying the cart:', err);
     });
+console.log(User.User_Name)
+    const Nt = await Notification_Connect.create({
+        Order_id: update_order._id,
+        User_Name:User.User_Name,
+        User_id:User._id,
+    }).then((res)=>{
+        return res
+    }).catch((e)=>{
+        console.log(e)
+    });
+    // console.log(Nt)
     // front end order page 
-    res.redirect('http://localhost:5173/order')
+    res.redirect('http://localhost:5173/order');
     // redirect to order page 
 }
