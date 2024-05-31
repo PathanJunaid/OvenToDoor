@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from 'dotenv';
+import http from 'http'
 import cookieParser from "cookie-parser";
 import fs from 'fs';
 import { Db_Connection } from './Mongodb/Db_Connection.js';
@@ -7,14 +8,24 @@ import cors from 'cors';
 import User_routes from "./Routes/User_routes.js";
 import Admin_Routes from './Routes/Admin_Routes.js'
 import multer from "multer";
+import { Server } from 'socket.io';
+import { setupSocket } from "./Socket/Socket.js";
 dotenv.config();
 const app = express();
+const server = http.createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: 'http://localhost:5173', // Allow access from this origin
+    methods: ['GET', 'POST'] // Allow methods
+  }
+});
 // Connect to MongoDB
 Db_Connection();
 
 const corsOptions = {
   origin: 'http://localhost:5173',
-  methods: ["POST", "GET", "PUT","DELETE"],
+  methods: ["POST", "GET", "PUT", "DELETE"],
   credentials: true,
 };
 // MiddleWare 
@@ -33,8 +44,9 @@ app.use((err, req, res, next) => {
     next(err);
   }
 });
-
 // MiddleWare Ends
+
+setupSocket(io);
 
 const port = process.env.port;
 // var ;
@@ -65,7 +77,6 @@ const Pizza_Data = await Pizza_Data_Function()
   .catch((error) => {
     console.error("Error occurred:", error);
   });
-
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Server running on port : ${port}`);
 })

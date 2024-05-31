@@ -6,8 +6,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import StoreContextProvider from "./context/StoreContext.jsx";
 import AdminStoreContextProvider from "./context/AdminStoreContextProvider.jsx";
 import AdminRoutes from "./AdminRoutes.jsx";
-import Admin from "./AdminPages/AdminLogin.jsx";
-
 ReactDOM.createRoot(document.getElementById("root")).render(
   <StoreContextProvider>
     <AdminStoreContextProvider>

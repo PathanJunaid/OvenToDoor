@@ -8,7 +8,7 @@ import axios from 'axios'
 import { AdminOrder } from './AdminPages/AdminOrder'
 import Admin_Navbar from './AdminComponent/Navbar/Admin_Navbar'
 import ErrorPopup from './AdminComponent/ErrorPopup/ErrorPopup'
-
+import socket from './Socket/Socket'
 const AdminRoutes = () => {
     const { AdminAuthenticated, setAdminAuthenticated, setOrders, ShowloginModel,setShowloginModel,responsemsg } = useContext(AdminStoreContext);
     const fetchadminorders = async () => {
@@ -29,6 +29,10 @@ const AdminRoutes = () => {
         }
     }
     useEffect(() => {
+        socket.on('connecntion', (socket) => {
+            console.log(socket.id);
+        });
+        socket.emit('connection')
         fetchadminorders();
     }, [AdminAuthenticated])
     return (

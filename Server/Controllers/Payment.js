@@ -194,7 +194,7 @@ console.log(User.User_Name)
     }).catch((e)=>{
         console.log(e)
     });
-    // console.log(Nt)
+    
     // front end order page 
     res.redirect('http://localhost:5173/order');
     // redirect to order page 
