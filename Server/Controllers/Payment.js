@@ -2,6 +2,7 @@ import Razorpay from 'razorpay'
 import jwt from 'jsonwebtoken'
 import { Admin_Connect, Order_Details_Connect, User_Connect,Notification_Connect } from '../Mongodb/Schema.js';
 import nodemailer from 'nodemailer';
+import {io} from '../server.js'
 export const Payment = async (req, res) => {
     const {Amount,ChooseAddress} = req.body;
     // console.log(ChooseAddress)
@@ -162,8 +163,8 @@ export const PaymentStatus = async (req, res) => {
         };
         // Sending mail 
         try {
-            let info = await transporter.sendMail(mailOptionsAdmin);
-            let infoUser = await transporter.sendMail(mailOptionsUser);
+            let info = transporter.sendMail(mailOptionsAdmin);
+            let infoUser = transporter.sendMail(mailOptionsUser);
             console.log('Email sent successfully:');
         } catch (error) {
             console.log('Error occurred:', error);
@@ -184,7 +185,6 @@ export const PaymentStatus = async (req, res) => {
     .catch(err => {
         console.error('Error emptying the cart:', err);
     });
-console.log(User.User_Name)
     const Nt = await Notification_Connect.create({
         Order_id: update_order._id,
         User_Name:User.User_Name,
@@ -194,7 +194,13 @@ console.log(User.User_Name)
     }).catch((e)=>{
         console.log(e)
     });
-    
+    const notification = {
+        Name : User.User_Name,
+        Order_id : update_order._id,
+        Notification_id : Nt._id,
+        items : update_order.Items_id,
+    }
+    io.emit('Handle_Order',notification)
     // front end order page 
     res.redirect('http://localhost:5173/order');
     // redirect to order page 

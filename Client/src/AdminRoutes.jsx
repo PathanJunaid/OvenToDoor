@@ -8,9 +8,9 @@ import axios from 'axios'
 import { AdminOrder } from './AdminPages/AdminOrder'
 import Admin_Navbar from './AdminComponent/Navbar/Admin_Navbar'
 import ErrorPopup from './AdminComponent/ErrorPopup/ErrorPopup'
-import socket from './Socket/Socket'
+import { Adminsocket,socket } from './Socket/Socket'
 const AdminRoutes = () => {
-    const { AdminAuthenticated, setAdminAuthenticated, setOrders, ShowloginModel,setShowloginModel,responsemsg } = useContext(AdminStoreContext);
+    const { AdminAuthenticated, setAdminAuthenticated, setOrders, ShowloginModel, setShowloginModel, responsemsg,socketId,setsocketId } = useContext(AdminStoreContext);
     const fetchadminorders = async () => {
         try {
             const response = await axios.post("http://localhost:4000/Admin/orders", {}, { withCredentials: true }).then((res) => {
@@ -29,11 +29,17 @@ const AdminRoutes = () => {
         }
     }
     useEffect(() => {
-        socket.on('connecntion', (socket) => {
-            console.log(socket.id);
+        socket.on('connection',(socket)=>{
+            setsocketId(socket);
+        })
+        socket.on('connect', () => {
+            console.log('Received message:');
         });
-        socket.emit('connection')
         fetchadminorders();
+        // Cleanup on component unmount
+        return () => {
+            // Adminsocket.off('msg');
+        };
     }, [AdminAuthenticated])
     return (
         <>
@@ -41,7 +47,7 @@ const AdminRoutes = () => {
                 ShowloginModel ? <AdminLogin /> : ""
             }
             {
-                responsemsg !== "" ? <ErrorPopup Error = {responsemsg}/> : ""
+                responsemsg !== "" ? <ErrorPopup Error={responsemsg} /> : ""
             }
             <div className='app'>
                 <StrictMode>

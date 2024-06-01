@@ -1,29 +1,22 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './Admin_Navbar.css';
 import { assets } from '../../assets/assets';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { AdminStoreContext } from '../../context/AdminStoreContextProvider';
+import { socket } from '../../Socket/Socket';
 
 const Admin_Navbar = ({ }) => {
   const [menu, setMenu] = useState("menu");
-  const { AdminAuthenticated, setAdminAuthenticated, setShowloginModel } = useContext(AdminStoreContext);
+  const { AdminAuthenticated, setAdminAuthenticated, setShowloginModel,socketId,setnotification,notification } = useContext(AdminStoreContext);
   const [showNotification, setshowNotification] = useState(false)
-  //   const fetchcartitems = async () => {
-  //     const res = await axios.post('http://localhost:4000/cartitems', {}, { withCredentials: true }).then((res) => { return res }).catch((e) => { });
-  //     console.log(res);
-  //     if (!res.code || res.auth) {
-  //       const transformData = () => {
-  //         return res.data.data.reduce((acc, item) => {
-  //           // Convert Pizza_id to string to ensure it works as a key in Mongoose Map
-  //           acc[item.Pizza_id.toString()] = item.quantity;
-  //           return acc;
-  //         }, {});
-  //       };
-  //       setCartItems(transformData);
-  //     }
-  //   };
-
+  useEffect(()=>{
+    console.log(socketId);
+    socket.on('Handle_Order',(data)=>{
+      console.log(data);
+      setnotification([...notification,data])
+    })
+  },[])
   const HandleLogout = async () => {
     const data = window.confirm("Do you want to Logout?")
     if (data) {

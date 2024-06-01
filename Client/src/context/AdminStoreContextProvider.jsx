@@ -6,10 +6,17 @@ const AdminStoreContextProvider = (props) => {
     const [AdminAuthenticated, setAdminAuthenticated] = useState(false);
     const [Orders, setOrders] = useState([]);
     const [ShowloginModel, setShowloginModel] = useState(true);
-    const [responsemsg,setresponsemsg] = useState("")
+    const [responsemsg, setresponsemsg] = useState("");
+    const [socketId, setsocketId] = useState(null);
+    const [notification,setnotification] = useState([]);
 
     const Adminvalues = {
-        AdminAuthenticated, setAdminAuthenticated, Orders, setOrders, ShowloginModel, setShowloginModel,responsemsg,setresponsemsg
+        AdminAuthenticated, setAdminAuthenticated,
+        Orders, setOrders,
+        ShowloginModel, setShowloginModel,
+        responsemsg, setresponsemsg,
+        socketId, setsocketId,
+        notification,setnotification
     }
 
     return (
