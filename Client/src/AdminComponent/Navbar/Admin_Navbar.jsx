@@ -5,18 +5,20 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { AdminStoreContext } from '../../context/AdminStoreContextProvider';
 import { socket } from '../../Socket/Socket';
+import { DateTime } from '../../Functons/Function';
 
 const Admin_Navbar = ({ }) => {
   const [menu, setMenu] = useState("menu");
-  const { AdminAuthenticated, setAdminAuthenticated, setShowloginModel,socketId,setnotification,notification } = useContext(AdminStoreContext);
-  const [showNotification, setshowNotification] = useState(false)
-  useEffect(()=>{
+  const { AdminAuthenticated, setAdminAuthenticated, setShowloginModel, socketId, setnotification, notification } = useContext(AdminStoreContext);
+  const [showNotification, setshowNotification] = useState(false);
+  const [notificationlength, setnotificationlength] = useState(4);
+  useEffect(() => {
     console.log(socketId);
-    socket.on('Handle_Order',(data)=>{
+    socket.on('Handle_Order', (data) => {
       console.log(data);
-      setnotification([...notification,data])
+      setnotification([data, ...notification])
     })
-  },[])
+  }, [])
   const HandleLogout = async () => {
     const data = window.confirm("Do you want to Logout?")
     if (data) {
@@ -47,31 +49,49 @@ const Admin_Navbar = ({ }) => {
       <div className="navbar-right">
         <div>
           <div>
-            {/* <i class="fa-solid fa-bell fa-2xl"></i> */}
-            <div class="admin-dropdown">
+            {/* <i className="fa-solid fa-bell fa-2xl"></i> */}
+            <div className="admin-dropdown">
               {
                 AdminAuthenticated ?
-                  <p class="admin-dropdown-toggle" onClick={(e) => setshowNotification(!showNotification)}><i class="fa-solid fa-bell fa-2xl"></i>
-                  </p>
+                  <>
+                    <p className="admin-dropdown-toggle" onClick={(e) => setshowNotification(!showNotification)}><i className="fa-solid fa-bell fa-2xl"></i>
+                    </p>
+                  </>
                   : ""}
               {
                 showNotification ?
                   <>
-                    <span class="notification-count">3</span>
-                    <div class="admin-dropdown-menu">
-                      <div class="admin-notification">
-                        <p>New comment on your post</p>
-                        <span>5 minutes ago</span>
-                      </div>
-                      <div class="admin-notification">
-                        <p>New follower</p>
-                        <span>10 minutes ago</span>
-                      </div>
-                      <div class="admin-notification">
-                        <p>Update available</p>
-                        <span>30 minutes ago</span>
-                      </div>
+                    <span className="notification-count">3</span>
+                    <div className='dropdown-arrow'>
+                    <i id='fa-bounce' className="fa-solid fa-caret-down"></i>
                     </div>
+                    {notification.length != 0 ? <>
+                      <div className="admin-dropdown-menu">
+                        {
+                          notification.map((ele, index) => {
+                            if (index > 4) {
+                              // setnotificationlength(notification);
+                              return (
+                                ""
+                              );
+                            } else {
+                              const Date = DateTime(ele.createdAt);
+                              return (
+                                <>
+                                  <div className="admin-notification" key={ele.Notification_id}>
+                                    <p>New Order id {ele.Order_id} Request from {ele.User_Name}</p>
+                                    <span>Date : {Date.formattedDate} Time : {Date.formattedTime}</span>
+                                  </div>
+                                </>
+                              )
+
+                            }
+                          })
+                        }
+
+                      </div>
+                    </>
+                      : ""}
                   </>
                   :
                   ""

@@ -1,5 +1,4 @@
 import mongoose, { Schema } from "mongoose";
-import { type } from "os";
 
 const Add_to_cart_Schema = new mongoose.Schema({
     Pizza_id: {

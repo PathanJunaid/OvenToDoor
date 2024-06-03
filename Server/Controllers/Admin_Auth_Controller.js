@@ -1,7 +1,7 @@
-import { Admin_Connect, Order_Details_Connect } from "../Mongodb/Schema.js";
+import { Admin_Connect, Notification_Connect, Order_Details_Connect } from "../Mongodb/Schema.js";
 import brcypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import {io} from '../server.js'
+import { io } from '../server.js'
 export const AdminAuthenticated = async (req, res, next) => {
     let response = {
         error: false,
@@ -11,6 +11,7 @@ export const AdminAuthenticated = async (req, res, next) => {
     }
     try {
         const Cookie_Value = req.cookies[process.env.AdminCookie];
+        // console.log(Cookie_Value);
         const id = jwt.verify(Cookie_Value, process.env.jwtsecrettoken, (err, res) => {
             if (err) {
 
@@ -18,7 +19,7 @@ export const AdminAuthenticated = async (req, res, next) => {
                 return res.id;
             }
         });
-        const Admin_Details = await Admin_Connect.findById(id).then().catch((e) => {
+        const Admin_Details = await Admin_Connect.findById(id).then((res)=>{return res}).catch((e) => {
             response = {
                 error: true,
                 msg: "Admin not found",
@@ -26,11 +27,24 @@ export const AdminAuthenticated = async (req, res, next) => {
                 auth: false
             }
         });
+        // console.log(Admin_Details)
         if (!Admin_Details) {
             res.send(response);
             return;
         }
-        next();
+        else {
+            const Notify = await Notification_Connect.find().sort({ createdAt: -1 }).then((res) => {
+                // console.log(res);s
+                return res;
+            }).catch((e) => {
+                console.log(e);
+                return false;
+            })
+            // console.log(Notify)
+            io.emit('previous_Notification', Notify);
+            next();
+
+        }
 
     } catch (e) {
         res.send({
@@ -133,7 +147,7 @@ export const AdminPreviousOrder = async (req, res) => {
         res.send(response);
         return;
     });
-    console.log(Orders)
+    // console.log(Orders)
     response.data = Orders;
     res.send(response);
 }

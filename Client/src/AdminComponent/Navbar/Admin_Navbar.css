@@ -25,7 +25,27 @@
     margin-left: 5px;
     color: white;
 }
-
+.dropdown-arrow{
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-top: 15px;
+    transform: translate(-50%, -50%);
+}
+#fa-bounce{
+    animation: bounce 1s 2;
+}
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-8px);
+    }
+    60% {
+      transform: translateY(-10px);
+    }
+  }
 .admin-dropdown-menu {
     display: block;
     position: absolute;
@@ -35,7 +55,8 @@
     z-index: 1;
     border-radius: 4px;
     overflow: hidden;
-    margin-top: 5px;
+    margin-top: 30px;
+    left: -95px;
 }
 
 .admin-notification {
