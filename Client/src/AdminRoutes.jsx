@@ -1,16 +1,16 @@
-import React, { StrictMode, useContext, useEffect } from 'react'
+import { StrictMode, useContext, useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import AdminLogin from './AdminPages/AdminLogin'
-import Navbar from './components/Navbar/Navbar'
 import Admin from './AdminPages/Admin'
 import { AdminStoreContext } from './context/AdminStoreContextProvider'
 import axios from 'axios'
 import { AdminOrder } from './AdminPages/AdminOrder'
 import Admin_Navbar from './AdminComponent/Navbar/Admin_Navbar'
 import ErrorPopup from './AdminComponent/ErrorPopup/ErrorPopup'
-import { Adminsocket,socket } from './Socket/Socket'
+import { socket } from './Socket/Socket'
+import NotificationPage from './AdminPages/NotificationPage'
 const AdminRoutes = () => {
-    const { AdminAuthenticated, setAdminAuthenticated, setOrders, ShowloginModel, setShowloginModel, responsemsg,socketId,setsocketId,setnotification,notification } = useContext(AdminStoreContext);
+    const { AdminAuthenticated, setAdminAuthenticated, setOrders, ShowloginModel, setShowloginModel, responsemsg,setsocketId,setnotification,notification } = useContext(AdminStoreContext);
     const fetchadminorders = async () => {
         try {
             const response = await axios.post("http://localhost:4000/Admin/orders", {}, { withCredentials: true }).then((res) => {
@@ -25,7 +25,7 @@ const AdminRoutes = () => {
             }
 
         } catch (e) {
-
+            console.log("Error")
         }
     }
     useEffect(() => {
@@ -45,7 +45,7 @@ const AdminRoutes = () => {
         return () => {
             // Adminsocket.off('msg');
         };
-    }, [AdminAuthenticated])
+    }, [AdminAuthenticated, setnotification, setsocketId])
     return (
         <>
             {
@@ -60,7 +60,7 @@ const AdminRoutes = () => {
                     <Routes>
                         <Route path='/' element={<Admin />} />
                         <Route path='/order' element={<AdminOrder />} />
-
+                        <Route path='/notification' element={<NotificationPage/>}/>
                     </Routes>
 
                 </StrictMode>

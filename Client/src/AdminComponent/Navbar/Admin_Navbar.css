@@ -60,7 +60,7 @@
 }
 
 .admin-notification {
-    padding: 12px;
+    padding: 12px 10px 0px 10px;
     border-bottom: 1px solid #ddd;
 }
 
@@ -80,4 +80,21 @@
 
 .admin-dropdown-menu.show {
     display: block;
+}
+.btn-input{
+    padding: 6px 6px !important;
+    font-size: smaller !important;
+    margin: 0px 5px 0px 0px;
+}
+.Expand-text{
+    font-size: 12px;
+    text-align: right;
+    padding: 10px 5px 5px 0px;
+    cursor: pointer;
+    /* border-bottom: 2px solid black; */
+    text-decoration: underline;
+    text-underline-offset: 1px;
+}
+.Expand-text:hover{
+    color: tomato;
 }

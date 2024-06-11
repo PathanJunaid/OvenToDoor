@@ -197,7 +197,7 @@ export const PaymentStatus = async (req, res) => {
     const notification = {
         User_Name : User.User_Name,
         Order_id : update_order._id,
-        Notification_id : Nt._id,
+        _id : Nt._id,
         Status: Nt.Status,
         items : update_order.Items_id,
         createdAt:Nt.createdAt
