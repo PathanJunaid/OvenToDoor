@@ -103,7 +103,7 @@ export const AdminLogin = async (req, res) => {
         return;
     } else {
         const jwtToken = jwt.sign({ id: isAdmin._id }, process.env.jwtsecrettoken);
-        res.cookie(process.env.AdminCookie, jwtToken, { maxAge: 6000000, httpOnly: false });
+        res.cookie(process.env.AdminCookie, jwtToken, { maxAge: 600000000, httpOnly: false });
         response.error ? response.auth = false : response.auth = true;
         res.send(response);
 

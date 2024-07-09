@@ -1,7 +1,7 @@
 export const DateTime = (DateArg)=>{
-    console.log(DateArg)
+    // console.log(DateArg)
     const isoString = typeof DateArg === 'string' ? DateArg : DateArg.toString();
-    console.log(isoString)
+    // console.log(isoString)
     // Create a Date object from the ISO string
     const date = new Date(isoString);
     // console.log(date)

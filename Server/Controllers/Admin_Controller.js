@@ -5,41 +5,29 @@ import fs from 'fs'
 // Adding New Pizza to database 
 export const AddPizza = async (req, res) => {
     // values form request 
-    const { Pizza_Name, Veg, Price, Description, Is_Small, Is_Medium, Is_Large, Small_Price, Medium_Price, Large_Price } = req.body;
+    const {DishName, Category, Description, Ingredients, Price, Discounts, ServingSize, PreparationTime, Availability } = req.body;
     // New file name stored in local Storage 
-    const { path } = req.file;
+    const { location } = req.file;
+    console.log(Category)
     // Craeting new Pizza Id 
-    const Pizza_id = "MN" + Date.now();
+    const Dish_Id = "MN" + Date.now();
+    console.log(Dish_Id)
     // response 
     let Message;
-    // Size and crust Information as this is a schema 
-    const sizeandcrust = {
-        Small: {
-            Price: Small_Price,
-            Available: Is_Small
-        },
-        Medium: {
-            Price: Medium_Price,
-            Available: Is_Medium
-        },
-        Large: {
-            Price: Large_Price,
-            Available: Is_Large
-        },
-    }
     // Inserting Data 
     const Pizza = await Add_Pizza_Db.create({
-        Pizza_id, Pizza_Name, Veg, Price, Description, sizeandcrust, Image: path
-    }).then((res) => { return res }).catch((e) => { return false });
+        Dish_Id,DishName, Category, Description, Ingredients, Price, Discounts, ServingSize, PreparationTime, Availability,Image:location
+    }).then((res) => { return res }).catch((e) => { console.log(e);return false });
+    console.log(Pizza)
     // Sendind response 
     if (Pizza) {
         Message = {
             Status: true,
-            Msg: "Pizza Added to Menu",
+            msg: `${DishName} Added to Menu`,
         }
     } else {
         Message = {
-            msg: `${Pizza_Name} Already in menu.`,
+            msg: `${DishName} Already in menu.`,
             Status: false,
         }
     }
@@ -48,11 +36,12 @@ export const AddPizza = async (req, res) => {
 
 export const Edit_item = async (req, res) => {
     // Pizza id from params 
-    const { Pizza_id } = req.params;
+    const { _id } = req.params;
     // If Admin want to change file also then 
     if (req.file) {
         // Fetching Pizza details of Pizza_id 
-        const Pizza_detail = await Add_Pizza_Db.findOne({ Pizza_id }).then().catch((e) => { return false }) 
+        const Pizza_detail = await Add_Pizza_Db.findById( _id ).then().catch((e) => { return false }) 
+        console.log(Pizza_detail);
         const existingImagePath = Pizza_detail.Image; // Provide the actual path of existing image
         // Deleteing file form Storage 
         fs.unlink(existingImagePath, (err) => {
@@ -61,32 +50,19 @@ export const Edit_item = async (req, res) => {
             }
         });
         // updating new file location to database 
-        await Add_Pizza_Db.findOneAndUpdate({ Pizza_id }, {
-           Image:req.file.path}).then((res) => { return res }).catch((e) => { console.log(e); return false });
+        await Add_Pizza_Db.findByIdAndUpdate( _id , {
+           Image:req.file.location}).then((res) => { return res }).catch((e) => { console.log(e); return false });
 
     }
     // Updating text 
     let Message;
     // text values 
-    const { Pizza_Name, Veg, Price, Description, Is_Small, Is_Medium, Is_Large, Small_Price, Medium_Price, Large_Price } = req.body;
-    const sizeandcrust = {
-        Small: {
-            Price: Small_Price,
-            Available: Is_Small
-        },
-        Medium: {
-            Price: Medium_Price,
-            Available: Is_Medium
-        },
-        Large: {
-            Price: Large_Price,
-            Available: Is_Large
-        },
-    }
+    const { DishName, Category, Description, Ingredients, Price, Discounts, ServingSize, PreparationTime, Availability } = req.body;
     // Updating text to database 
-    const Pizza = await Add_Pizza_Db.findOneAndUpdate({ Pizza_id }, {
-        Pizza_Name, Veg, Price, Description, sizeandcrust, updated_at: Date.now()
+    const Pizza = await Add_Pizza_Db.findByIdAndUpdate( _id , {
+        DishName, Category, Description, Ingredients, Price, Discounts, ServingSize, PreparationTime, Availability, updated_at: Date.now()
     }).then((res) => { return res }).catch((e) => { console.log(e); return false });
+    // console.log(Pizza)
     // Sending response 
     if (Pizza) {
         Message = {
@@ -105,16 +81,18 @@ export const Edit_item = async (req, res) => {
 // Delete item Fucntion 
 export const Delete_Item = async (req, res) => {
     // Pizza id from Params 
-    const { Pizza_id } = req.params;
+    const { _id } = req.params;
     // response variable 
+    console.log(_id)
     let Message = "";
     // Finding and deleting Pizza 
-    const Pizza = await Add_Pizza_Db.findOneAndDelete({ Pizza_id }).then((response) => { return response }).catch((e) => { return false })
-    // Sending reposne 
+    const Pizza = await Add_Pizza_Db.findByIdAndDelete(_id).then((response) => { return response }).catch((e) => { return false })
+    // Sending reposne
+    console.log(Pizza) 
     if (Pizza) {
         Message = {
             status: true,
-            msg: `${Pizza.Pizza_Name} removed from menu`
+            msg: `${Pizza.DishName} removed from menu`
         }
     } else {
         Message = {
@@ -123,4 +101,19 @@ export const Delete_Item = async (req, res) => {
         }
     }
     res.send(Message);
+}
+
+export const AdminMenu = async(req,res)=>{
+    let status=false
+    const data = await Add_Pizza_Db.find({}).then((res)=>{
+        status=true;
+        return res
+    }).catch((e)=>{
+        console.log("Unable to Fetch Menu" + "\n" + e);
+    })
+    res.send({
+        auth:true,
+        status,
+        data
+    })
 }

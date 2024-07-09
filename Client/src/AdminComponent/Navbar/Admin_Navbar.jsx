@@ -9,7 +9,7 @@ import { socket } from "../../Socket/Socket";
 import { DateTime } from "../../Functons/Function";
 
 const Admin_Navbar = () => {
-  const [menu, setMenu] = useState("menu");
+  const [menu, setMenu] = useState("Menu");
   const {
     AdminAuthenticated,
     setAdminAuthenticated,
@@ -28,9 +28,11 @@ const Admin_Navbar = () => {
       setnotification([data, ...notification]);
     });
   }, []);
-  const HandleOrderNotification = (Notification_id, type) => {
+  const HandleOrderNotification = (Notification_id, type, Order_id) => {
     console.log(Notification_id + "\t" + type);
     if (type) {
+      socket.emit('Order-Confirm', { socketId, Notification_id, Order_id });
+
     } else {
     }
   };
@@ -62,19 +64,25 @@ const Admin_Navbar = () => {
       <ul className="navbar-menu">
         <Link
           to="/admin"
-          onClick={() => setMenu("home")}
-          className={menu === "home" ? "active" : ""}
+          onClick={() => setMenu("Menu")}
+          className={menu === "Menu" ? "active" : ""}
         >
-          home
+          Menu
         </Link>
         {AdminAuthenticated ? (
-          <Link
-            to="/admin/order"
-            onClick={() => setMenu("mobile-app")}
-            className={menu === "mobile-app" ? "active" : ""}
-          >
-            Order
-          </Link>
+          <>
+            <Link
+              to="/admin/order"
+              onClick={() => setMenu("Order")}
+              className={menu === "Order" ? "active" : ""}
+            >
+              Order
+            </Link>
+            <Link to='/admin/Menuform' onClick={() => setMenu("Add Dish")}
+              className={menu === "Add Dish" ? "active" : ""}>
+              Add Dish
+            </Link>
+          </>
         ) : (
           ""
         )}
@@ -135,7 +143,7 @@ const Admin_Navbar = () => {
                                     <button
                                       className="btn btn-input"
                                       onClick={() =>
-                                        HandleOrderNotification(ele._id, true)
+                                        HandleOrderNotification(ele._id, true, ele.Order_id)
                                       }
                                     >
                                       Accept
@@ -143,7 +151,7 @@ const Admin_Navbar = () => {
                                     <button
                                       className="btn btn-input"
                                       onClick={() =>
-                                        HandleOrderNotification(ele._id, true)
+                                        HandleOrderNotification(ele._id, true, ele.Order_id)
                                       }
                                     >
                                       Reject
@@ -168,7 +176,7 @@ const Admin_Navbar = () => {
                         >
                           <Link
                             className="Expand-text"
-                            to="/admin/notification"
+                            to="/admin/notifications"
                             onClick={() => {
                               setshowNotification(false);
                             }}

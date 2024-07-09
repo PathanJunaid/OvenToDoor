@@ -1,0 +1,8 @@
+.Notification-header{
+    display: grid;
+    grid-template-columns: 2fr 1fr 0.5fr 0.5fr 1fr 1fr;
+}
+.Notification-container{
+    display: grid;
+    row-gap: 10px;
+}

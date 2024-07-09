@@ -10,6 +10,7 @@ import Admin_Routes from './Routes/Admin_Routes.js'
 import multer from "multer";
 import { Server } from 'socket.io';
 import { setupSocket } from "./Socket/Socket.js";
+import logger from 'morgan'
 dotenv.config();
 const app = express();
 const server = http.createServer(app);
@@ -30,6 +31,7 @@ const corsOptions = {
   credentials: true,
 };
 // MiddleWare 
+app.use(logger('dev'));
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

@@ -1,9 +1,10 @@
 import React from 'react'
-import Admin_Navbar from '../AdminComponent/Navbar/Admin_Navbar'
+import AdminMenu from '../AdminComponent/AdminMenu/AdminMenu'
 const Admin = () => {
   return (
     <>
-      <div>Home page</div>
+      <div className='Menu-Heading fs-4 fw-bold'>Menu</div>
+      <AdminMenu/>
     </>
   )
 }
