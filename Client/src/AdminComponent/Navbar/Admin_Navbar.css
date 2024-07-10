@@ -2,7 +2,28 @@
     position: relative;
     display: inline-block;
 }
-
+.select_stage {
+    margin: 0px;
+    border: 2px solid tomato;
+    border-radius: 10px;
+    padding: 5px 10px; /* Adjust padding as needed */
+    background-color: white; /* Ensure dropdown background is consistent */
+    appearance: none; /* Removes default dropdown arrow */
+    width: 200px; /* Adjust width as needed */
+  }
+  
+  .select_stage:focus {
+    outline: none; /* Remove focus outline if undesired */
+  }
+  
+  .select_stage_items {
+    margin: 0px;
+  }
+  
+  .select_stage_items:hover {
+    background-color: lightgray; /* Highlight on hover */
+  }
+  
 .notification-count {
     position: absolute;
     top: 0;

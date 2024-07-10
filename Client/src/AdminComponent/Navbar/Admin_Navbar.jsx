@@ -7,9 +7,12 @@ import axios from "axios";
 import { AdminStoreContext } from "../../context/AdminStoreContextProvider";
 import { socket } from "../../Socket/Socket";
 import { DateTime } from "../../Functons/Function";
+import { StoreContext } from "../../context/StoreContext";
 
 const Admin_Navbar = () => {
   const [menu, setMenu] = useState("Menu");
+  const {fetchOrdersdetails,} = useContext(StoreContext)
+  const DropdownValue = ["Food is being prepared", "Out for delivery", "Delivered"]
   const {
     AdminAuthenticated,
     setAdminAuthenticated,
@@ -17,6 +20,7 @@ const Admin_Navbar = () => {
     socketId,
     setnotification,
     notification,
+    fetchadminorders,
   } = useContext(AdminStoreContext);
   const [showNotification, setshowNotification] = useState(false);
   // eslint-disable-next-line no-unused-vars
@@ -27,11 +31,15 @@ const Admin_Navbar = () => {
       console.log(data);
       setnotification([data, ...notification]);
     });
+    socket.on("Refresh_Data_Client",()=>{
+      fetchadminorders();
+      fetchOrdersdetails();
+    })
   }, []);
-  const HandleOrderNotification = (Notification_id, type, Order_id) => {
-    console.log(Notification_id + "\t" + type);
-    if (type) {
-      socket.emit('Order-Confirm', { socketId, Notification_id, Order_id });
+  const HandleOrderNotification = (Notification_id, Status, Order_id) => {
+    if (Status) {
+      socket.emit('Order-Status', { socketId, Notification_id, Order_id, Status });
+
 
     } else {
     }
@@ -122,12 +130,13 @@ const Admin_Navbar = () => {
                     <>
                       <div className="admin-dropdown-menu">
                         {notification.map((ele, index) => {
+                          // console.log(ele)
                           if (index > 2) {
                             // setnotificationlength(notification);
-                            return "";
+                            // continue
                           } else {
                             const Date = DateTime(ele.createdAt);
-                            console.log(ele);
+                            // console.log(ele);
                             return (
                               <>
                                 <div
@@ -140,22 +149,19 @@ const Admin_Navbar = () => {
                                     Time : {Date.formattedTime}
                                   </span>
                                   <div style={{ margin: "5px 0px 0px 0px" }}>
-                                    <button
-                                      className="btn btn-input"
-                                      onClick={() =>
-                                        HandleOrderNotification(ele._id, true, ele.Order_id)
-                                      }
-                                    >
-                                      Accept
-                                    </button>
-                                    <button
-                                      className="btn btn-input"
-                                      onClick={() =>
-                                        HandleOrderNotification(ele._id, true, ele.Order_id)
-                                      }
-                                    >
-                                      Reject
-                                    </button>
+                                    {
+                                      ele.Status === "Delivered" ? `${ele.Status}` :
+                                        <select class="select_stage" onChange={(e) => HandleOrderNotification(ele._id, e.target.value, ele.Order_id)}>
+                                          <option value={ele.Status} default>{ele.Status}</option>
+                                          {
+                                            DropdownValue.map((elem, index) => {
+                                              return (<option className="select_stage_items" value={`${elem}`} key={`${index}`}>{elem}</option>)
+                                              // <li><a class="dropdown-item" href="#">Action</a></li>
+                                            })
+                                          }
+                                        </select>
+
+                                    }
                                   </div>
                                   <p
                                     style={{

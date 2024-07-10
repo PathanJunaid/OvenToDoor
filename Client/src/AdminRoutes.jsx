@@ -28,13 +28,6 @@ const AdminRoutes = () => {
         })
         fetchadminorders();
         fetchadminMenu();
-
-
-
-        // Cleanup on component unmount
-        return () => {
-            // Adminsocket.off('msg');
-        };
     }, [AdminAuthenticated, setnotification, setsocketId])
     return (
         <>

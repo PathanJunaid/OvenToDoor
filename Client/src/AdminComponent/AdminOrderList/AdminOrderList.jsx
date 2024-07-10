@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { AdminStoreContext } from '../../context/AdminStoreContextProvider'
 const AdminOrderList = () => {
     const {Orders,serOrders} = useContext(AdminStoreContext);
-
+  console.log(Orders)
   return (
     <>
 

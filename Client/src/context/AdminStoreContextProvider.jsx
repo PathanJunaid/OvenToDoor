@@ -19,6 +19,7 @@ const AdminStoreContextProvider = (props) => {
                 // console.log("True")
             });
             if (response.auth) {
+                console.log(response)
                 setAdminAuthenticated(true);
                 setShowloginModel(false)
                 setOrders(response.data);

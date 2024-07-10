@@ -140,7 +140,7 @@ export const AdminPreviousOrder = async (req, res) => {
         data: [],
         auth: true
     }
-    const Orders = await Order_Details_Connect.find({ Status: "paid" }).then().catch((e) => {
+    const Orders = await Order_Details_Connect.find({ Status: { $ne: "Failed" } }).then().catch((e) => {
         response.error = true;
         response.msg = "Please login again";
         response.auth = false;
@@ -148,6 +148,7 @@ export const AdminPreviousOrder = async (req, res) => {
         return;
     });
     // console.log(Orders)
+    console.log(Orders)
     response.data = Orders;
     res.send(response);
 }

@@ -15,19 +15,21 @@ export const setupSocket = (io) => {
             socket.emit('Order_id_data',data);
             console.log(data);
         })
-        socket.on('Order-Confirm',async(data)=>{
+        socket.on('Order-Status',async(data)=>{
             console.log(data);
-            const Order = await Order_Details_Connect.findByIdAndUpdate(data.Order_id,{Status: "Order Confirm"}).then((res)=>{
+            const Order = await Order_Details_Connect.findByIdAndUpdate(data.Order_id,{Status: data.Status}).then((res)=>{
                 return res;
             }).catch((e)=>{
+                console.log(e)
                 // emit a socket of eror to admin and User 
             });
-            const Notification = await Notification_Connect.findByIdAndUpdate(data.Notification_id,{Status: "Order Confirm"}).then((res)=>{
+            const Notification = await Notification_Connect.findByIdAndUpdate(data.Notification_id,{Status: data.Status}).then((res)=>{
                 return res;
             }).catch((e)=>{
+                console.log(e)
                 // emit a socket of eror to admin and User 
             });
-            console.log(Notification);
+            socket.emit("Refresh_Data_Client",{})
         })
         socket.on('disconnect', () => {
             console.log('Client disconnected:', socket.id);
