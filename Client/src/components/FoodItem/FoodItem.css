@@ -31,6 +31,9 @@
     color: #676767;
     font-size: 12px;
 }
+.food-item-counter p{
+    margin: 0px;
+}
 .food-item-price{
     color: tomato;
     font-size: 22px;

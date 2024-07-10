@@ -19,7 +19,9 @@ a{
   width:80%;
   margin: auto;
 }
-
+p{
+  margin:0px !important;
+}
 @keyframes fadeIn {
   0%{
     opacity: 0;

@@ -12,6 +12,8 @@ export const Payment = async (req, res) => {
         URL:""
     }
     let total =Amount+"00";
+    const Order_id = `${Amount}${Date.now()}`;
+    console.log("Order_id" + "\t" + Order_id)
     // console.log(typeof(Amount))
     var instance = new Razorpay({ key_id: process.env.key, key_secret: process.env.secret })
     // finding if logged in or not 
@@ -56,7 +58,7 @@ export const Payment = async (req, res) => {
         notes: {
             policy_name: "food Order"
         },
-        callback_url: `http://localhost:4000/payment/status/${id}`,
+        callback_url: `http://localhost:4000/payment/status/${Order_id}`,
         callback_method: "get"
     }).then().catch((e) => { 
         console.log(e)
@@ -72,7 +74,8 @@ export const Payment = async (req, res) => {
     //Update to database 
     try{
         const Order = await Order_Details_Connect.create({
-            Order_id:data.id,
+            Payment_id:data.id,
+            Order_id:Order_id,
             User_id:user.Email,
             Items_id: Cart_data,
             Payment_of:Amount,
@@ -90,7 +93,7 @@ export const Payment = async (req, res) => {
         if (!data.error) {
             response = {
                 error:false,
-                msg: "Link Created",
+                msg: `Order placed Order id :${Order_id}`,
                 URL:data.short_url
             }
             res.send(response);
@@ -102,14 +105,14 @@ export const Payment = async (req, res) => {
     // res.send(data)
 }
 export const PaymentStatus = async (req, res) => {
-    const {id} = req.params
+    const {Order_id} = req.params;
     // console.log(id)
     let response = {
         error : false,
         msg: ""
     }
     // pending  Update to database 
-    const update_order = await Order_Details_Connect.findOneAndUpdate({Order_id:req.query.razorpay_payment_link_id},{Status:req.query.razorpay_payment_link_status,}).then().catch((e)=>{
+    const update_order = await Order_Details_Connect.findOneAndUpdate({Order_id:Order_id},{Status:req.query.razorpay_payment_link_status,}).then().catch((e)=>{
         // console.log(e)
         response = {
             error : true,
@@ -176,7 +179,7 @@ export const PaymentStatus = async (req, res) => {
 
 
     //pending Update admin regrading the order 
-    const User = await User_Connect.findOneAndUpdate({ _id: id }, { $set: { Cart: [] } })
+    const User = await User_Connect.findOneAndUpdate({ Email: update_order.User_id }, { $set: { Cart: [] } })
     .then((res) => {
         console.log('Cart has been emptied successfully.');
         // console.log(res)

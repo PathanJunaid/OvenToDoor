@@ -12,6 +12,8 @@ import axios from 'axios'
 import Specific_Order from './pages/SpecificOrder/Specific_Order'
 import Spinner from './components/Spinner/Spinner'
 import AddressPopup from './components/AddressPopup/AddressPopup'
+import { URLSearchParams } from 'url'
+import { AdminStoreContext } from './context/AdminStoreContextProvider'
 
 
 const App = () => {
@@ -19,7 +21,8 @@ const App = () => {
   const [showLogin, setShowLogin] = useState(false)
   const [forgetPassword, setforgetPassword] = useState(false)
   const [showAddressPopup, setShowAddressPopup] = useState(false);
-  const { setCartItems, setOrders_Details, Authenticated, setAuthenticated, Loading, setAddress } = useContext(StoreContext);
+  const { setresponsemsg } = useContext(AdminStoreContext);
+  const { setCartItems, setOrders_Details, Authenticated, setAuthenticated, Loading, setAddress, fetchFood_List } = useContext(StoreContext);
   const fetchcartitems = async () => {
     const res = await axios.post('http://localhost:4000/cartitems', {}, { withCredentials: true }).then((res) => { return res.data }).catch((e) => { });
     if ((!res.code || res.auth) && res.data.length !== undefined) {
@@ -50,7 +53,7 @@ const App = () => {
   const fetchAddressdetails = async () => {
     try {
       const response = await axios.post('http://localhost:4000/Address', {}, { withCredentials: true });
-      console.log(response.data.data)
+      // console.log(response.data.data)
       setAddress(response.data.data); // Assuming response.data is the array of orders
       // console.log(response.data)
     } catch (e) {
@@ -60,8 +63,26 @@ const App = () => {
     fetchcartitems();
     fetchOrdersdetails();
     fetchAddressdetails();
+    fetchFood_List();
+    try{
+      const urlParams = new URLSearchParams(window.location.search);
+      const msg = urlParams.get('msg');
+      // Decode the message if necessary
+      const decodedMsg = decodeURIComponent(msg);
+      console.log(decodedMsg); // This will log your message
+      // Use the decodedMsg as needed
+      setresponsemsg(msg);
+    }catch(e){
+      console.log("No msg")
+    }
   }, [Authenticated]);
-
+  if (Loading) {
+    return (
+      <>
+        <Spinner />
+      </>
+    )
+  }
   return (
     <>
       {Loading ? <Spinner /> : <></>}

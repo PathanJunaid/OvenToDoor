@@ -7,7 +7,7 @@ import axios from 'axios';
 import SavedAddress from '../SavedAddress/SavedAddress';
 
 const Navbar = ({ setShowLogin, setShowAddressPopup }) => { // Add setShowAddressPopup prop
-  const [menu, setMenu] = useState("menu");
+  const [menu, setMenu] = useState("Home");
   const { setCartItems, Authenticated, setAuthenticated, cartItems, Address } = useContext(StoreContext);
   const [ShowSavedAddresses, setShowSavedAddresses] = useState(false)
   console.log(Address)
@@ -47,12 +47,12 @@ const Navbar = ({ setShowLogin, setShowAddressPopup }) => { // Add setShowAddres
     <div className='navbar' id='Navbar'>
       <img className='logo' src={assets.logo} alt="" />
       <ul className='navbar-menu'>
-        <Link to='/' onClick={() => setMenu("home")} className={menu === 'home' ? 'active' : ''}>
-          home
+        <Link to='/' onClick={() => setMenu("Home")} className={menu === 'Home' ? 'active' : ''}>
+          Home
         </Link>
         {Authenticated ?
           <Link to='/order' onClick={() => setMenu("mobile-app")} className={menu === 'mobile-app' ? 'active' : ''}>Order</Link> : ""}
-        <a href='#footer' onClick={() => setMenu("contact-us")} className={menu === 'contact-us' ? 'active' : ''}> contact-us</a>
+        <a href='#footer' onClick={() => setMenu("contact-us")} className={menu === 'contact-us' ? 'active' : ''}> Contact-us</a>
       </ul>
       <div className="navbar-right">
         {/* <img src={assets.search_icon} alt="" /> */}

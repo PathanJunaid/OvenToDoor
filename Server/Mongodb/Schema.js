@@ -72,6 +72,11 @@ const Order_Schema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    Payment_id:{
+        type:String,
+        required:true,
+        unique:true
+    },
     User_id: {
         type: String,
         required: true,

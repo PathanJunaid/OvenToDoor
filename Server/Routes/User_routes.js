@@ -1,6 +1,6 @@
 import express from "express";
 import { ForgetPassword, Login_Cont, Logout_control, Sign_Cont, User_Authenticated, ValidateOTP } from "../Controllers/Auth_control.js";
-import { Add_Address, Address, Addtocart, Delete_Address, Edit_Address, ShowPizza, Specific_Order, User_PreviousOrder, cartitems, removeitem_cart } from "../Controllers/Control.js";
+import { Add_Address, Address, Addtocart, Delete_Address, Edit_Address, ShowMenu, Specific_Order, User_PreviousOrder, cartitems, removeitem_cart } from "../Controllers/Control.js";
 import { Payment, PaymentStatus } from "../Controllers/Payment.js";
 const User_routes = express.Router();
 // Login route 
@@ -37,8 +37,8 @@ User_routes.post('/Orders', User_Authenticated, User_PreviousOrder);
 User_routes.post('/Orders/:id',User_Authenticated,Specific_Order)
 // Completed 
 User_routes.post('/payment',User_Authenticated,Payment)
-User_routes.get('/payment/status/:id',PaymentStatus)
+User_routes.get('/payment/status/:Order_id',PaymentStatus)
 // Pending 
-User_routes.get('/ShowPizza', ShowPizza)
+User_routes.post('/ShowMenu', ShowMenu)
 
 export default User_routes;

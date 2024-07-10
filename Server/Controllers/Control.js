@@ -191,8 +191,6 @@ export const Delete_Address = async (req, res) => {
 
     });
 }
-
-
 export const Addtocart = async (req, res) => {
     // Getting unique Pizza  id 
     const { Pizza_id } = req.body;
@@ -241,10 +239,6 @@ export const Addtocart = async (req, res) => {
     }
     res.send("Added to cart");
 }
-
-
-
-
 export const removeitem_cart = async (req, res) => {
     const { Pizza_id } = req.body;
     // console.log(typeof(pizza_id));
@@ -293,9 +287,6 @@ export const removeitem_cart = async (req, res) => {
     }
     res.send("Updated")
 }
-
-
-
 export const User_PreviousOrder = async (req, res) => {
     let error = false;
     const jwt_Token = req.cookies[process.env.cookiename];
@@ -318,13 +309,11 @@ export const User_PreviousOrder = async (req, res) => {
     res.send(response);
 
 }
-
-
-
-
-export const ShowPizza = async (req, res) => {
-    const data = await Add_Pizza_Db.find({}).then((res) => { return res }).catch((e) => { return "data not found" });
-    res.status(200).json(data);
+export const ShowMenu = async (req, res) => {
+    let status = true;
+    let msg = "Menu Fetched"
+    const data = await Add_Pizza_Db.find({}).then((res) => { return res }).catch((e) => { status=false; msg=  "error while loading Menu"});
+    res.status(200).json({status,msg,data});
 }
 
 
