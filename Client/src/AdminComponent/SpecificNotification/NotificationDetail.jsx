@@ -4,7 +4,7 @@ import { AdminStoreContext } from '../../context/AdminStoreContextProvider';
 import { socket } from '../../Socket/Socket';
 
 const NotificationDetail = () => {
-    const { notification, setnotification } = useContext(AdminStoreContext);
+    const { notification } = useContext(AdminStoreContext);
     const {id} = useParams();
     useEffect(()=>{
         socket.emit('Order_id',id);
@@ -12,11 +12,10 @@ const NotificationDetail = () => {
             console.log(data);
         })
     },[])
-    const data = notification.find((ele)=>{
+    notification.find((ele)=>{
         return ele._id ===id;
     })
     
-    // console.log(data)
   return (
     <div>NotificationDetail</div>
   )

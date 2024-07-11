@@ -3,10 +3,9 @@ import { StoreContext } from '../../context/StoreContext';
 import './CartItem.css'
 import { assets } from '../../assets/assets';
 import axios from 'axios';
-import { AdminStoreContext } from '../../context/AdminStoreContextProvider';
 
-const CartItem = ({ Items }) => {
-    const { cartItems, food_list,Food_List, addToCart, removeFromCart, Address,setLoading } = useContext(StoreContext);
+const CartItem = ({ }) => {
+    const { cartItems,Food_List, addToCart, removeFromCart, Address,setLoading } = useContext(StoreContext);
     const [ChooseAddress, setChoosedAddress] = useState(null);
     let count = 0;
     let totalamount = 0;
@@ -42,7 +41,7 @@ const CartItem = ({ Items }) => {
     }
     const ProceedtoCheckout = async () => {
         setLoading(true);
-        const res = await axios.post('http://localhost:4000/payment', { Amount, ChooseAddress }, { withCredentials: true }).then((res) => {
+        await axios.post('http://localhost:4000/payment', { Amount, ChooseAddress }, { withCredentials: true }).then((res) => {
             console.log(res)
             if (!res.data.error) {
                 // window.location.href = res.URL;
@@ -82,8 +81,7 @@ const CartItem = ({ Items }) => {
                                             <>
                                                 <h3>Choose from saved Addreses</h3>
                                                 <ul className='cart-address'>
-                                                    {Address.map((address, index) => {
-                                                        // console.log(address)
+                                                    {Address.map((address) => {
                                                         return (
                                                             <li key={address._id}>
                                                                 <>

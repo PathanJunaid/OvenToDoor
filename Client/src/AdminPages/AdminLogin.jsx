@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { assets } from '../assets/assets';
 import { AdminStoreContext } from '../context/AdminStoreContextProvider';
 import axios from 'axios';
 
 const AdminLogin = () => {
-  const { AdminAuthenticated, setAdminAuthenticated, setShowloginModel,setresponsemsg } = useContext(AdminStoreContext)
+  const { setAdminAuthenticated, setShowloginModel,setresponsemsg } = useContext(AdminStoreContext)
   const [currState, setCurrState] = useState("AdminLogin");
   const [error, seterror] = useState("");
   const [formdata, setformdata] = useState({
@@ -31,7 +31,7 @@ const AdminLogin = () => {
     if (res.error) {
       seterror(res.msg)
       setresponsemsg(res.msg)
-      const timeot = setTimeout(() => {
+      setTimeout(() => {
         seterror("")
         setresponsemsg("")
       }, 3000);
@@ -41,7 +41,7 @@ const AdminLogin = () => {
         Password: ""
       });
       setresponsemsg(res.msg)
-      const timeot = setTimeout(() => {
+      setTimeout(() => {
         seterror("")
         setresponsemsg("")
       }, 2000);

@@ -1,12 +1,12 @@
 // import React from 'react';
 
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { AdminStoreContext } from "../../context/AdminStoreContextProvider";
 import './Notification.css'
 import { DateTime } from "../../Functons/Function";
 import { Link } from "react-router-dom";
 const Notification = () => {
-  const { notification, setnotification } = useContext(AdminStoreContext);
+  const { notification } = useContext(AdminStoreContext);
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState('All');
   const itemsPerPage = 10;

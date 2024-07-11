@@ -1,7 +1,6 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import { food_list } from "../assets/assets";
 import axios from "axios";
-import { AdminStoreContext } from "./AdminStoreContextProvider";
 
 export const StoreContext = createContext(null)
 
@@ -37,7 +36,7 @@ const StoreContextProvider = (props) => {
 
     const removeFromCart = async (Dish_Id) => {
         try {
-            const res = await axios.put('http://localhost:4000/removeitem', { Dish_Id }, { withCredentials: true });
+            await axios.put('http://localhost:4000/removeitem', { Dish_Id }, { withCredentials: true });
             // console.log(res);
 
             setCartItems((prev) => {
@@ -54,7 +53,7 @@ const StoreContextProvider = (props) => {
         }
     }
     const fetchFood_List = async () => {
-        const res = await axios.post('http://localhost:4000/ShowMenu').then((res) => {
+        await axios.post('http://localhost:4000/ShowMenu').then((res) => {
             if (res.data.status) {
                 setFood_List(res.data.data);
 

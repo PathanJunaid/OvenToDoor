@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import './ForgetPassPopup.css'
 import { assets } from '../../assets/assets'
 import axios from 'axios'
 import { StoreContext } from '../../context/StoreContext'
-const ForgetPassPopup = ({ setShowLogin, setforgetPassword, forgetPassword }) => {
-  const { setAuthenticated ,setLoading} = useContext(StoreContext);
+const ForgetPassPopup = ({ setforgetPassword }) => {
+  const {  setLoading} = useContext(StoreContext);
   const [error, seterror] = useState("");
   const [verifyOTP, setverifyOTP] = useState(false)
   const [formdata, setformdata] = useState({

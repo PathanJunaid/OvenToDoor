@@ -1,14 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { StoreContext } from '../../context/StoreContext'
 import './Specific_Order.css'
 import FooditemsOrder from '../../components/FooditemsOrder/FooditemsOrder';
 
 const Specific_Order = () => {
-  const { } = useContext(StoreContext);
-  
-  useEffect(() => {
-
-  }, []);
   return (
     <>
       <div className='food-display-list-order'>

@@ -1,4 +1,4 @@
-import { StrictMode, useContext, useEffect } from 'react'
+import React, { StrictMode, useContext, useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import AdminLogin from './AdminPages/AdminLogin'
 import Admin from './AdminPages/Admin'
