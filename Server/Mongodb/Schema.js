@@ -1,8 +1,8 @@
 import mongoose, { Schema } from "mongoose";
 
 const Add_to_cart_Schema = new mongoose.Schema({
-    Pizza_id: {
-        type: Number,
+    Dish_Id: {
+        type: String,
     },
     quantity: { type: Number, default: 1 },
     Delivered: { type: Boolean, default: false },

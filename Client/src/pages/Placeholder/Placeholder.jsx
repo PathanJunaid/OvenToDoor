@@ -6,11 +6,11 @@ import Orders from '../../components/Orders/Orders'
 import { Navigate } from 'react-router-dom'
 const Placeholder = () => {
   const { Orders_Details,Authenticated } = useContext(StoreContext);
-  if (!Authenticated) {
-    return (
-      <Navigate to="/" />
-    )
-  }
+  // if (!Authenticated) {
+  //   return (
+  //     <Navigate to="/" />
+  //   )
+  // }
   return (
     <div>
       <Header />

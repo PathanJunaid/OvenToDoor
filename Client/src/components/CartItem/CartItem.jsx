@@ -6,19 +6,19 @@ import axios from 'axios';
 import { AdminStoreContext } from '../../context/AdminStoreContextProvider';
 
 const CartItem = ({ Items }) => {
-    const { cartItems, food_list, addToCart, removeFromCart, Address,setLoading } = useContext(StoreContext);
+    const { cartItems, food_list,Food_List, addToCart, removeFromCart, Address,setLoading } = useContext(StoreContext);
     const [ChooseAddress, setChoosedAddress] = useState(null);
     let count = 0;
     let totalamount = 0;
     let Delivery = 30;
     const cartItemsArray = Object.entries(cartItems).map(([key, value]) => {
-        totalamount += food_list[key - 1].Price * value;
-        { console.log(key) }
+        const item = Food_List.find((ele)=>{return ele.Dish_Id ==key})
+        totalamount += item.Price * value;
         return (
             <div key={key} className="each_item">
                 <div className="items">{count += 1}</div>
-                <div className="items">{food_list[key - 1].Pizza_Name}</div>
-                <div className="items">&#x20B9; {food_list[key - 1].Price}</div>
+                <div className="items">{item.DishName}</div>
+                <div className="items">&#x20B9; {item.Price}</div>
                 <div className='food-item-counter_cart'>
                     <img onClick={() => removeFromCart(key)} src={assets.remove_icon_red} alt="" />
                     <p>{cartItems[key]}</p>
@@ -26,7 +26,7 @@ const CartItem = ({ Items }) => {
 
                 </div>
                 <div className="items">
-                    &#x20B9; {food_list[key - 1].Price * value}.00
+                    &#x20B9; {item.Price * value}.00
                 </div> {/* Accessing Price property from value object */}
             </div>
         )

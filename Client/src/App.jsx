@@ -23,12 +23,15 @@ const App = () => {
   const [showAddressPopup, setShowAddressPopup] = useState(false);
   const { setresponsemsg } = useContext(AdminStoreContext);
   const {  Authenticated,  Loading,  fetchFood_List,fetchAddressdetails,fetchOrdersdetails,fetchcartitems } = useContext(StoreContext);
-  
   useEffect(() => {
-    fetchcartitems();
-    fetchOrdersdetails();
-    fetchAddressdetails();
-    fetchFood_List();
+    const fetchData = async () => {
+      await fetchcartitems();
+      await fetchOrdersdetails();
+      await fetchAddressdetails();
+      await fetchFood_List();
+    };
+
+    fetchData();
     try{
       const urlParams = new URLSearchParams(window.location.search);
       const msg = urlParams.get('msg');
@@ -40,7 +43,7 @@ const App = () => {
     }catch(e){
       console.log("No msg")
     }
-  }, [Authenticated]);
+  }, [Authenticated])
   if (Loading) {
     return (
       <>
@@ -48,25 +51,28 @@ const App = () => {
       </>
     )
   }
-  return (
-    <>
-      {Loading ? <Spinner /> : <></>}
-      {showLogin ? <LoginPopup setShowLogin={setShowLogin} setforgetPassword={setforgetPassword} /> : <></>}
-      {forgetPassword ? <ForgetPassPopup setShowLogin={setShowLogin} setforgetPassword={setforgetPassword} forgetPassword={forgetPassword} /> : <></>}
-      {showAddressPopup ? <AddressPopup setShowAddressPopup={setShowAddressPopup} /> : null}
+  else{
+    return (
+      <>
+        {Loading ? <Spinner /> : <></>}
+        {showLogin ? <LoginPopup setShowLogin={setShowLogin} setforgetPassword={setforgetPassword} /> : <></>}
+        {forgetPassword ? <ForgetPassPopup setShowLogin={setShowLogin} setforgetPassword={setforgetPassword} forgetPassword={forgetPassword} /> : <></>}
+        {showAddressPopup ? <AddressPopup setShowAddressPopup={setShowAddressPopup} /> : null}
+  
+        <div className='app'>
+          <Navbar setShowLogin={setShowLogin} setShowAddressPopup={setShowAddressPopup} />
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/cart' element={<Cart />} />
+            <Route path='/order' element={<Placeholder />} />
+            <Route path='/order/:id' element={<Specific_Order />} />
+          </Routes>
+        </div>
+        <Footer />
+      </>
+    )
 
-      <div className='app'>
-        <Navbar setShowLogin={setShowLogin} setShowAddressPopup={setShowAddressPopup} />
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/cart' element={<Cart />} />
-          <Route path='/order' element={<Placeholder />} />
-          <Route path='/order/:id' element={<Specific_Order />} />
-        </Routes>
-      </div>
-      <Footer />
-    </>
-  )
+  }
 }
 
 export default App

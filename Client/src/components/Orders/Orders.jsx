@@ -23,8 +23,6 @@ const Orders = ({ Orders_Det }) => {
 
           // Format the custom date and time according to the options
           const ISTDateTime = customDate.toLocaleString('en-IN', options);
-
-          console.log(ISTDateTime); // Output the formatted date and time
           return (
             <div className="Order_Container" key={ele.Order_id}>
               <div className="Order_id">{ele.Order_id}</div>

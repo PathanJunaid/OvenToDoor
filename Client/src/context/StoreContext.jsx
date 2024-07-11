@@ -12,15 +12,15 @@ const StoreContextProvider = (props) => {
     const [Authenticated, setAuthenticated] = useState(false)
     const [Loading, setLoading] = useState(true);
     const [Food_List, setFood_List] = useState([]);
-    const addToCart = async (Pizza_id) => {
+    const addToCart = async (Dish_Id) => {
         try {
-            const res = await axios.put('http://localhost:4000/addtocart', { Pizza_id }, { withCredentials: true }).then((res) => {
+            const res = await axios.put('http://localhost:4000/addtocart', { Dish_Id }, { withCredentials: true }).then((res) => {
                 setCartItems((prev) => {
                     const updatedItems = { ...prev };
-                    if (!updatedItems[Pizza_id]) {
-                        updatedItems[Pizza_id] = 1;
+                    if (!updatedItems[Dish_Id]) {
+                        updatedItems[Dish_Id] = 1;
                     } else {
-                        updatedItems[Pizza_id] += 1;
+                        updatedItems[Dish_Id] += 1;
                     }
                     return updatedItems;
                 });
@@ -35,17 +35,17 @@ const StoreContextProvider = (props) => {
 
     }
 
-    const removeFromCart = async (Pizza_id) => {
+    const removeFromCart = async (Dish_Id) => {
         try {
-            const res = await axios.put('http://localhost:4000/removeitem', { Pizza_id }, { withCredentials: true });
+            const res = await axios.put('http://localhost:4000/removeitem', { Dish_Id }, { withCredentials: true });
             // console.log(res);
 
             setCartItems((prev) => {
                 const updatedCart = { ...prev };
-                if (updatedCart[Pizza_id] > 1) {
-                    updatedCart[Pizza_id] -= 1;
+                if (updatedCart[Dish_Id] > 1) {
+                    updatedCart[Dish_Id] -= 1;
                 } else {
-                    delete updatedCart[Pizza_id];
+                    delete updatedCart[Dish_Id];
                 }
                 return updatedCart;
             });
@@ -66,15 +66,15 @@ const StoreContextProvider = (props) => {
             console.log(e);
         })
         setLoading(false)
-        console.log(res.data);
     }
     const fetchcartitems = async () => {
         const res = await axios.post('http://localhost:4000/cartitems', {}, { withCredentials: true }).then((res) => { return res.data }).catch((e) => { });
         if ((!res.code || res.auth) && res.data.length !== undefined) {
+            // console.log(res.data)
             const transformData = () => {
                 return res.data.reduce((acc, item) => {
                     // Convert Pizza_id to string to ensure it works as a key in Mongoose Map
-                    acc[item.Pizza_id.toString()] = item.quantity;
+                    acc[item.Dish_Id] = item.quantity;
                     return acc;
                 }, {});
             };

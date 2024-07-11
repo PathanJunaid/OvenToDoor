@@ -1,17 +1,20 @@
 import React, { useContext, useState } from 'react';
 import './Navbar.css';
 import { assets } from '../../assets/assets';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useParams  } from 'react-router-dom';
 import { StoreContext } from '../../context/StoreContext';
 import axios from 'axios';
 import SavedAddress from '../SavedAddress/SavedAddress';
 
 const Navbar = ({ setShowLogin, setShowAddressPopup }) => { // Add setShowAddressPopup prop
-  const [menu, setMenu] = useState("Home");
+  const {pathname} = useLocation();
+  let path = pathname;
+  if(pathname.indexOf('/',1)!=-1){
+    path = pathname.slice(0,pathname.indexOf('/',1));
+  }
+  const [menu, setMenu] = useState(path);
   const { setCartItems, Authenticated, setAuthenticated, cartItems, Address } = useContext(StoreContext);
   const [ShowSavedAddresses, setShowSavedAddresses] = useState(false)
-  console.log(Address)
-
   const fetchcartitems = async () => {
     const res = await axios.post('http://localhost:4000/cartitems', {}, { withCredentials: true }).then((res) => { return res }).catch((e) => { });
     console.log(res);
@@ -47,11 +50,11 @@ const Navbar = ({ setShowLogin, setShowAddressPopup }) => { // Add setShowAddres
     <div className='navbar' id='Navbar'>
       <img className='logo' src={assets.logo} alt="" />
       <ul className='navbar-menu'>
-        <Link to='/' onClick={() => setMenu("Home")} className={menu === 'Home' ? 'active' : ''}>
+        <Link to='/' onClick={() => setMenu("/")} className={menu === '/' ? 'active' : ''}>
           Home
         </Link>
         {Authenticated ?
-          <Link to='/order' onClick={() => setMenu("mobile-app")} className={menu === 'mobile-app' ? 'active' : ''}>Order</Link> : ""}
+          <Link to='/order' onClick={() => setMenu("/order")} className={menu === '/order' ? 'active' : ''}>Order</Link> : ""}
         <a href='#footer' onClick={() => setMenu("contact-us")} className={menu === 'contact-us' ? 'active' : ''}> Contact-us</a>
       </ul>
       <div className="navbar-right">
@@ -67,7 +70,7 @@ const Navbar = ({ setShowLogin, setShowAddressPopup }) => { // Add setShowAddres
                     }
                   </div>
                 </div>
-                <Link to="/cart">
+                <Link to="/cart" onClick={() => setMenu("/cart")} className={menu === '/cart' ? 'active' : ''}>
                   <img src={assets.basket_icon} alt="" />
                   {/* <div className="dot"></div> */}
                 </Link>
