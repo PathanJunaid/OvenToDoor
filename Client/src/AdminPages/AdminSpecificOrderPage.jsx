@@ -1,8 +1,8 @@
 import React from 'react'
-import './Specific_Order.css'
-import FooditemsOrder from '../../components/FooditemsOrder/FooditemsOrder';
+import '../pages/SpecificOrder/Specific_Order.css'
+import AdminFooditemsOrderSpecific from '../AdminComponent/AdminFooditemsOrderSpecific/AdminFooditemsOrderSpecific'
 
-const Specific_Order = () => {
+const AdminSpecificOrderPage = () => {
   return (
     <>
       <div className='food-display-list-order'>
@@ -23,10 +23,10 @@ const Specific_Order = () => {
         </div>
 
 
-        <FooditemsOrder/>
+        <AdminFooditemsOrderSpecific/>
       </div>
     </>
   )
 }
 
-export default Specific_Order
+export default AdminSpecificOrderPage

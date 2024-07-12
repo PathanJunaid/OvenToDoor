@@ -29,7 +29,7 @@ export const setupSocket = (io) => {
                 console.log(e)
                 // emit a socket of eror to admin and User 
             });
-            socket.emit("Refresh_Data_Client",{})
+            io.emit("Refresh_Data_Client",{})
         })
         socket.on('disconnect', () => {
             console.log('Client disconnected:', socket.id);

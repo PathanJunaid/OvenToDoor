@@ -1,4 +1,4 @@
-import React, { StrictMode, useContext, useEffect } from 'react'
+import React, { StrictMode, useContext, useEffect, useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import AdminLogin from './AdminPages/AdminLogin'
 import Admin from './AdminPages/Admin'
@@ -11,9 +11,20 @@ import NotificationPage from './AdminPages/NotificationPage'
 import NotificationDetail from './AdminComponent/SpecificNotification/NotificationDetail';
 import AdminMenuForm from './AdminPages/AdminMenuForm';
 import AdminDishEdit from './AdminPages/AdminDishEdit'
+import AdminSpecificOrderPage from './AdminPages/AdminSpecificOrderPage'
+import Spinner from './components/Spinner/Spinner'
 const AdminRoutes = () => {
     const { AdminAuthenticated, fetchadminorders, fetchadminMenu, ShowloginModel, responsemsg, setsocketId, setnotification } = useContext(AdminStoreContext);
-
+    const [LoadData, setLoadData] = useState(true)
+    useEffect(() => {
+        const data = async () => {
+            setLoadData(true)
+            await fetchadminorders();
+            await fetchadminMenu();
+            setLoadData(false)
+        }
+        data();
+    }, [])
     useEffect(() => {
         socket.on('connection', (socket) => {
             setsocketId(socket);
@@ -26,10 +37,10 @@ const AdminRoutes = () => {
             setnotification([...Nt]);
 
         })
-        fetchadminorders();
-        fetchadminMenu();
+
     }, [AdminAuthenticated, setnotification, setsocketId])
     return (
+
         <>
             {
                 ShowloginModel ? <AdminLogin /> : ""
@@ -37,20 +48,24 @@ const AdminRoutes = () => {
             {
                 responsemsg !== "" ? <ErrorPopup /> : ""
             }
-            <div className='app'>
-                <StrictMode>
-                    <Admin_Navbar />
-                    <Routes>
-                        <Route path='/' element={<Admin />} />
-                        <Route path='/order' element={<AdminOrder />} />
-                        <Route path='/notifications' element={<NotificationPage />} />
-                        <Route path="/notification/:id" element={<NotificationDetail />} />
-                        <Route path='/Menuform' element={<AdminMenuForm />} />
-                        <Route path='/Menuform/Edit/:_id' element={<AdminDishEdit />} />
-                    </Routes>
+            {
+                LoadData ? <Spinner /> :
+                    <div className='app'>
+                        <StrictMode>
+                            <Admin_Navbar />
+                            <Routes>
+                                <Route path='/' element={<Admin />} />
+                                <Route path='/order' element={<AdminOrder />} />
+                                <Route path='/order/:_id' element={<AdminSpecificOrderPage />} />
+                                <Route path='/notifications' element={<NotificationPage />} />
+                                <Route path="/notification/:id" element={<NotificationDetail />} />
+                                <Route path='/Menuform' element={<AdminMenuForm />} />
+                                <Route path='/Menuform/Edit/:_id' element={<AdminDishEdit />} />
+                            </Routes>
 
-                </StrictMode>
-            </div>
+                        </StrictMode>
+                    </div>
+            }
         </>
     )
 }

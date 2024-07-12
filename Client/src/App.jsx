@@ -13,6 +13,7 @@ import Spinner from './components/Spinner/Spinner'
 import AddressPopup from './components/AddressPopup/AddressPopup'
 import { URLSearchParams } from 'url'
 import { AdminStoreContext } from './context/AdminStoreContextProvider'
+import { socket } from './Socket/Socket'
 
 
 const App = () => {
@@ -23,6 +24,9 @@ const App = () => {
   const { setresponsemsg } = useContext(AdminStoreContext);
   const {  Authenticated,  Loading,setLoading,  fetchFood_List,fetchAddressdetails,fetchOrdersdetails,fetchcartitems } = useContext(StoreContext);
   useEffect(() => {
+    socket.on("Refresh_Data_Client",async()=>{
+      await fetchOrdersdetails();
+    })
     const fetchData = async () => {
       await fetchFood_List();
       await fetchcartitems();

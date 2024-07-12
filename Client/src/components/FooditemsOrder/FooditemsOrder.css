@@ -33,6 +33,10 @@
     border-bottom: 2px solid grey;
     padding: 1rem 0px;
 }
+.Order-Address-Status{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
 .Order-address{
     list-style: none;
 }
@@ -71,7 +75,4 @@
 
 .food-item-counter-order img {
     width: 30px;
-}
-.item-Quantity{
-
 }

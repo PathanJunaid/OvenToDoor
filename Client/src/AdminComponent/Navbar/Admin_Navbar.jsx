@@ -2,16 +2,20 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./Admin_Navbar.css";
 import { assets } from "../../assets/assets";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import { AdminStoreContext } from "../../context/AdminStoreContextProvider";
 import { socket } from "../../Socket/Socket";
 import { DateTime } from "../../Functons/Function";
-import { StoreContext } from "../../context/StoreContext";
 
 const Admin_Navbar = () => {
-  const [menu, setMenu] = useState("Menu");
-  const {fetchOrdersdetails,} = useContext(StoreContext)
+  const {pathname} = useLocation();
+  function getMiddleText(url) {
+    const parts = url.split('/').filter(part => part !== '');
+    return parts.length > 1 ? parts[1] : null;
+  }
+  let path = getMiddleText(pathname);
+  const [menu, setMenu] = useState(path);
   const DropdownValue = ["Food is being prepared", "Out for delivery", "Delivered"]
   const {
     AdminAuthenticated,
@@ -23,17 +27,13 @@ const Admin_Navbar = () => {
     fetchadminorders,
   } = useContext(AdminStoreContext);
   const [showNotification, setshowNotification] = useState(false);
-  // eslint-disable-next-line no-unused-vars
-  const [notificationlength, setnotificationlength] = useState(4);
   useEffect(() => {
-    console.log(socketId);
     socket.on("Handle_Order", (data) => {
       console.log(data);
       setnotification([data, ...notification]);
     });
     socket.on("Refresh_Data_Client",()=>{
       fetchadminorders();
-      fetchOrdersdetails();
     })
   }, []);
   const HandleOrderNotification = (Notification_id, Status, Order_id) => {
@@ -72,8 +72,8 @@ const Admin_Navbar = () => {
       <ul className="navbar-menu">
         <Link
           to="/admin"
-          onClick={() => setMenu("Menu")}
-          className={menu === "Menu" ? "active" : ""}
+          onClick={() => setMenu(null)}
+          className={menu === null? "active" : ""}
         >
           Menu
         </Link>
@@ -81,13 +81,13 @@ const Admin_Navbar = () => {
           <>
             <Link
               to="/admin/order"
-              onClick={() => setMenu("Order")}
-              className={menu === "Order" ? "active" : ""}
+              onClick={() => setMenu("order")}
+              className={menu === "order" ? "active" : ""}
             >
               Order
             </Link>
-            <Link to='/admin/Menuform' onClick={() => setMenu("Add Dish")}
-              className={menu === "Add Dish" ? "active" : ""}>
+            <Link to='/admin/Menuform' onClick={() => setMenu("Menuform")}
+              className={menu === "Menuform" ? "active" : ""}>
               Add Dish
             </Link>
           </>

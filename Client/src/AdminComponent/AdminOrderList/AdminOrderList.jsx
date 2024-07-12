@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom'
 // import './Order.css'
 import { AdminStoreContext } from '../../context/AdminStoreContextProvider'
 const AdminOrderList = () => {
-    const {Orders,serOrders} = useContext(AdminStoreContext);
-  console.log(Orders)
+    const {Orders} = useContext(AdminStoreContext);
   return (
     <>
 
@@ -25,19 +24,17 @@ const AdminOrderList = () => {
 
           // Format the custom date and time according to the options
           const ISTDateTime = customDate.toLocaleString('en-IN', options);
-
-          console.log(ISTDateTime); // Output the formatted date and time
           return (
             <div className="Order_Container" key={ele.Order_id}>
+              <div className="Amount">{ele.Address.Name}</div>
               <div className="Order_id">{ele.Order_id}</div>
+              <div className="Status">{ele.Status}</div>
               <div className="Order_Date">
                 {ISTDateTime}
                 {/* {date} <br /> {time} */}
               </div>
-              <div className="Amount">{ele.Payment_of}</div>
-              <div className="Status">{ele.Status}</div>
               <div className="">
-                <Link to={`/order/${ele.Order_id}`} className='View_detail' >View Detail</Link>
+                <Link to={`/admin/order/${ele.Order_id}`} className='View_detail' >View Detail</Link>
               </div>
             </div>
 

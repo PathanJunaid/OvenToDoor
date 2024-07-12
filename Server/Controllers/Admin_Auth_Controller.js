@@ -147,8 +147,6 @@ export const AdminPreviousOrder = async (req, res) => {
         res.send(response);
         return;
     });
-    // console.log(Orders)
-    console.log(Orders)
     response.data = Orders;
     res.send(response);
 }

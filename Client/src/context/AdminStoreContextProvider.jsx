@@ -22,7 +22,7 @@ const AdminStoreContextProvider = (props) => {
                 console.log(response)
                 setAdminAuthenticated(true);
                 setShowloginModel(false)
-                setOrders(response.data);
+                setOrders(response.data.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt)));
                 // console.log("True")
             }
 

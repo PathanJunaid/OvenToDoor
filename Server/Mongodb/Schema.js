@@ -90,7 +90,7 @@ const Order_Schema = new mongoose.Schema({
         required: true,
     },
     Address:{
-        type: [Address],
+        type: Address,
     },
     Status: {
         type: String,

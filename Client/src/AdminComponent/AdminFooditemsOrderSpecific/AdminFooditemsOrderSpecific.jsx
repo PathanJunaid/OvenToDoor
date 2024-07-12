@@ -1,28 +1,28 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { StoreContext } from '../../context/StoreContext';
 import { useParams } from 'react-router-dom';
-import './FooditemsOrder.css'
-const FooditemsOrder = () => {
-    const { Food_List, fetchOrdersdetails, Orders_Details } = useContext(StoreContext);
+import '../../components/FooditemsOrder/FooditemsOrder.css'
+import { AdminStoreContext } from '../../context/AdminStoreContextProvider';
+import Spinner from '../../components/Spinner/Spinner'
+const AdminFooditemsOrderSpecific = () => {
+    const { Menu, fetchadminorders, Orders } = useContext(AdminStoreContext);
     const [Address, setAddress] = useState(null);
     const [items, setitems] = useState([]);
-    const [id, setid] = useState(useParams().id);
+    const [id, setid] = useState(useParams()._id);
     const [Load, setLoad] = useState(true)
-    const [status,setstatus]=useState(null)
-    // const []
+    const [status, setstatus] = useState(null)
     let total_amount = 0;
     useEffect(() => {
         const fetchData = async () => {
             setLoad(true);
-            await fetchOrdersdetails();
+            await fetchadminorders();
             setLoad(false);
         };
         fetchData();
     }, []);
     useEffect(() => {
-        if (Orders_Details) {
+        if (Orders) {
             try {
-                const order = Orders_Details.find((ele) => ele.Order_id === id);
+                const order = Orders.find((ele) => ele.Order_id === id);
                 if (order) {
                     setitems(order.Items_id);
                     setAddress(order.Address);
@@ -32,16 +32,16 @@ const FooditemsOrder = () => {
                 console.log(e);
             }
         }
-    }, [Orders_Details, id]);
+    }, [Orders, id]);
     return (
         <>
-            {Load ? <p>Loading...</p> :
+            {Load ? <Spinner /> :
 
                 <>
-
                     {
                         items !== undefined ? items.map((ele) => {
-                            const item = Food_List.find((Dish) => {
+
+                            const item = Menu.find((Dish) => {
                                 return Dish.Dish_Id === ele.Dish_Id;
                             })
                             total_amount += ele.quantity * item.Price;
@@ -75,7 +75,7 @@ const FooditemsOrder = () => {
                         })
 
 
-                            : ""
+                            : "Unable to Load data"
                     }
                     <div className='Order-Address-container'>
                         {
@@ -142,4 +142,4 @@ const FooditemsOrder = () => {
     )
 }
 
-export default FooditemsOrder
+export default AdminFooditemsOrderSpecific

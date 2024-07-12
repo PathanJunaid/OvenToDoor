@@ -3,15 +3,14 @@ import { AdminStoreContext } from '../context/AdminStoreContextProvider';
 import AdminOrderList from '../AdminComponent/AdminOrderList/AdminOrderList';
 
 export const AdminOrder = () => {
-    const {Orders,setOrders} = useContext(AdminStoreContext);
-    console.log(Orders)
+    const {Orders} = useContext(AdminStoreContext);
   return (
     <div>
       <div className="Order_Container">
+        <div className="Amount">User Name</div>
         <div className="Order_id">Order_ID</div>
-        <div className="Order_Date">Order date</div>
-        <div className="Amount">Amount Paid</div>
         <div className="Status">Delivery Status</div>
+        <div className="Order_Date">Order date</div>
         <div className="Total_items">View Details</div>
       </div>
       <AdminOrderList/>

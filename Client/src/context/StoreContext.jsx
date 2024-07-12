@@ -1,12 +1,12 @@
 import React, { createContext, useEffect, useState } from "react";
-import { food_list } from "../assets/assets";
+// import { food_list } from "../assets/assets";
 import axios from "axios";
 
 export const StoreContext = createContext(null)
 
 const StoreContextProvider = (props) => {
     const [cartItems, setCartItems] = useState({});
-    const [Orders_Details, setOrders_Details] = useState(null);
+    const [Orders_Details, setOrders_Details] = useState([]);
     const [Address, setAddress] = useState(null);
     const [Authenticated, setAuthenticated] = useState(false)
     const [Loading, setLoading] = useState(true);
@@ -83,7 +83,7 @@ const StoreContextProvider = (props) => {
     const fetchOrdersdetails = async () => {
         try {
             const response = await axios.post('http://localhost:4000/Orders', {}, { withCredentials: true });
-            setOrders_Details(response.data.data); // Assuming response.data is the array of orders
+            setOrders_Details(response.data.data.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt))); // Assuming response.data is the array of orders
             // console.log(response.data)
             if (response.data.auth) {
                 setAuthenticated(true);
@@ -115,7 +115,6 @@ const StoreContextProvider = (props) => {
         setAddress,
         Loading,
         setLoading,
-        food_list,
         cartItems,
         setCartItems,
         addToCart,

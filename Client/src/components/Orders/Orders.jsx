@@ -1,12 +1,19 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import './Order.css'
+import { StoreContext } from '../../context/StoreContext'
+import { socket } from '../../Socket/Socket'
 const Orders = ({ Orders_Det }) => {
-
+  const { Orders_Details,fetchOrdersdetails,setOrders_Details } = useContext(StoreContext);
+  useEffect(() => {
+    socket.on("Refresh_Data_Client", async () => {
+      await fetchOrdersdetails();
+    });
+  })
   return (
     <>
 
-      {Orders_Det.length < 1 ?
+      {Orders_Details.length < 1 ?
         <h4>
           No previous orders
         </h4>
