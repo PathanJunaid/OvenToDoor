@@ -39,11 +39,16 @@ a {
   /* width:80%; */
   margin: auto;
 }
+.admin-app{
+  margin: 2rem auto;
+}
 
 p {
   margin: 0px !important;
 }
-
+.navbar-boxshadow{
+  box-shadow: 0px 0px 6px 4px tomato;
+}
 @keyframes fadeIn {
   0% {
     opacity: 0;

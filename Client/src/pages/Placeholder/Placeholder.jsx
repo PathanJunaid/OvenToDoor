@@ -10,7 +10,7 @@ const Placeholder = () => {
       <Header />
       <div className='Order_Details_Container'>
         <table className='table-container'>
-          <tr className="Order_Rows">
+          <tr className="Order_Rows fw-bold">
             <td className="table-cell">Order_ID</td>
             <td className="table-cell">Order date</td>
             <td className="table-cell">Amount Paid</td>

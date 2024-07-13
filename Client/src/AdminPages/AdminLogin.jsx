@@ -4,7 +4,7 @@ import { AdminStoreContext } from '../context/AdminStoreContextProvider';
 import axios from 'axios';
 
 const AdminLogin = () => {
-  const { setAdminAuthenticated, setShowloginModel,setresponsemsg } = useContext(AdminStoreContext)
+  const { setAdminAuthenticated, setShowloginModel,setresponsemsg,fetchadminMenu, fetchadminorders, setAdminforgetPass,AdminforgetPass} = useContext(AdminStoreContext)
   const [currState, setCurrState] = useState("AdminLogin");
   const [error, seterror] = useState("");
   const [formdata, setformdata] = useState({
@@ -47,7 +47,9 @@ const AdminLogin = () => {
       }, 2000);
       // ShowloginModel(false);
       setAdminAuthenticated(true);
-      setShowloginModel(false)
+      setShowloginModel(false);
+      fetchadminMenu();
+      fetchadminorders();
     }
   }
   return (
@@ -67,7 +69,7 @@ const AdminLogin = () => {
 
           <input type="password" name='Password' placeholder='Password' value={formdata.Password} onChange={(e) => { HandleInput(e) }} required />
           {currState === "AdminLogin" ?
-            <h6 className='Forget-Password' onClick={() => { setforgetPassword(true); ShowloginModel(false) }}>Forget Password?</h6>
+            <h6 className='Forget-Password' onClick={() => { setAdminforgetPass(true); setShowloginModel(false) }}>Forget Password?</h6>
             : ""}
         </div>
         {error !== "" ?

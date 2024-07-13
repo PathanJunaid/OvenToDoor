@@ -12,9 +12,11 @@ import NotificationDetail from './AdminComponent/SpecificNotification/Notificati
 import AdminMenuForm from './AdminPages/AdminMenuForm';
 import AdminDishEdit from './AdminPages/AdminDishEdit'
 import AdminSpecificOrderPage from './AdminPages/AdminSpecificOrderPage'
-import Spinner from './components/Spinner/Spinner'
+import Spinner from './components/Spinner/Spinner';
+import Footer from "./components/Footer/Footer"
+import ForgetPassPopup from './components/ForgetPassPopup/ForgetPassPopup'
 const AdminRoutes = () => {
-    const { AdminAuthenticated, fetchadminorders, fetchadminMenu, ShowloginModel, responsemsg, setsocketId, setnotification } = useContext(AdminStoreContext);
+    const { AdminAuthenticated, fetchadminorders, fetchadminMenu, ShowloginModel, responsemsg, setsocketId, setnotification,setAdminforgetPass,AdminforgetPass } = useContext(AdminStoreContext);
     const [LoadData, setLoadData] = useState(true)
     useEffect(() => {
         const data = async () => {
@@ -33,9 +35,7 @@ const AdminRoutes = () => {
             console.log('Received message:');
         });
         socket.on('previous_Notification', (Nt) => {
-            // console.log(Nt);
             setnotification([...Nt]);
-
         })
 
     }, [AdminAuthenticated, setnotification, setsocketId])
@@ -48,11 +48,13 @@ const AdminRoutes = () => {
             {
                 responsemsg !== "" ? <ErrorPopup /> : ""
             }
+            { AdminforgetPass ? <ForgetPassPopup setforgetPassword={setAdminforgetPass} forgetPassword={AdminforgetPass} /> : <></>}
+
+            <Admin_Navbar />
             {
                 LoadData ? <Spinner /> :
-                    <div className='app container'>
+                    <div className='admin-app container'>
                         <StrictMode>
-                            <Admin_Navbar />
                             <Routes>
                                 <Route path='/' element={<Admin />} />
                                 <Route path='/order' element={<AdminOrder />} />
@@ -66,6 +68,7 @@ const AdminRoutes = () => {
                         </StrictMode>
                     </div>
             }
+            <Footer />
         </>
     )
 }

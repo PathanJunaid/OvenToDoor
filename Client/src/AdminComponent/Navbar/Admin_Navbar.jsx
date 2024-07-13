@@ -73,7 +73,9 @@ const Admin_Navbar = () => {
   }
 
   return (
-    <div className="navbar navbar-expand-lg" id="Navbar">
+    <div className="navbar navbar-expand-lg navbar-boxshadow" id="Navbar">
+
+    <div className="container">
       <img className="logo" src={assets.logo} alt="" />
       <div className='toggle-cart-navbar d-lg-none'>
         <div className="admin-dropdown">
@@ -137,9 +139,9 @@ const Admin_Navbar = () => {
                                   "text-align": "right",
                                 }}
                               >
-                                <span className="Expand-text">
+                                <Link to={`/admin/order/${ele.Order_id}`} className="Expand-text">
                                   View Order
-                                </span>
+                                </Link>
                               </p>
                             </div>
                           </>
@@ -272,9 +274,9 @@ const Admin_Navbar = () => {
                                       "text-align": "right",
                                     }}
                                   >
-                                    <span className="Expand-text">
+                                    <Link to={`/admin/order/${ele.Order_id}`} className="Expand-text">
                                       View Order
-                                    </span>
+                                    </Link>
                                   </p>
                                 </div>
                               </>
@@ -329,7 +331,7 @@ const Admin_Navbar = () => {
       </div>
 
       {/* {for display width max width 980px navbar } */}
-      <div className="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+      <div className="offcanvas offcanvas-start d-lg-none" tabIndex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
         <div className="offcanvas-header">
           {/* <h5 className="offcanvas-title" id="offcanvasExampleLabel"></h5> */}
           <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -370,6 +372,8 @@ const Admin_Navbar = () => {
         </div>
       </div>
     </div>
+    </div>
+
   );
 };
 

@@ -5,12 +5,12 @@ export const AdminStoreContext = createContext(null);
 const AdminStoreContextProvider = (props) => {
   const [AdminAuthenticated, setAdminAuthenticated] = useState(false);
   const [Orders, setOrders] = useState([]);
-  const [ShowloginModel, setShowloginModel] = useState(false);
+  const [ShowloginModel, setShowloginModel] = useState(true);
   const [responsemsg, setresponsemsg] = useState("");
   const [socketId, setsocketId] = useState(null);
   const [notification, setnotification] = useState([]);
   const [Menu, setMenu] = useState([]);
-  const [FilterValue, setFilterValue] = useState("");
+  const [AdminforgetPass, setAdminforgetPass] = useState(false);
   const [MenuCategory, setMenuCategory] = useState("Salad")
   const fetchadminorders = async () => {
     try {
@@ -21,7 +21,6 @@ const AdminStoreContextProvider = (props) => {
         // console.log("True")
       });
       if (response.auth) {
-        console.log(response)
         setAdminAuthenticated(true);
         setShowloginModel(false)
         setOrders(response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
@@ -56,7 +55,7 @@ const AdminStoreContextProvider = (props) => {
     notification, setnotification,
     Menu, setMenu,
     fetchadminMenu, fetchadminorders,
-    FilterValue, setFilterValue,
+    AdminforgetPass, setAdminforgetPass,
     MenuCategory, setMenuCategory
   }
 
