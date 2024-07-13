@@ -120,8 +120,7 @@ export const OTP_Connect = mongoose.model('OTP', OTP_Schema);
 
 const Notification_Schema = new mongoose.Schema({
     Order_id:{
-        type :Schema.Types.ObjectId,
-        ref:'Order_Details',
+        type :String,
         required:true,
         unique:true,
     },

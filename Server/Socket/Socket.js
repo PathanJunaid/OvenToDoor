@@ -17,7 +17,7 @@ export const setupSocket = (io) => {
         })
         socket.on('Order-Status',async(data)=>{
             console.log(data);
-            const Order = await Order_Details_Connect.findByIdAndUpdate(data.Order_id,{Status: data.Status}).then((res)=>{
+            const Order = await Order_Details_Connect.findOneAndUpdate({Order_id:data.Order_id},{Status: data.Status}).then((res)=>{
                 return res;
             }).catch((e)=>{
                 console.log(e)

@@ -189,7 +189,7 @@ export const PaymentStatus = async (req, res) => {
         console.error('Error emptying the cart:', err);
     });
     const Nt = await Notification_Connect.create({
-        Order_id: update_order._id,
+        Order_id: update_order.Order_id,
         User_Name:User.User_Name,
         User_id:User._id,
     }).then((res)=>{
@@ -199,7 +199,7 @@ export const PaymentStatus = async (req, res) => {
     });
     const notification = {
         User_Name : User.User_Name,
-        Order_id : update_order._id,
+        Order_id : update_order.Order_id,
         _id : Nt._id,
         Status: Nt.Status,
         items : update_order.Items_id,

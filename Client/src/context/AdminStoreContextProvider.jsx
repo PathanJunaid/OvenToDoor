@@ -3,7 +3,7 @@ import axios from 'axios'
 export const AdminStoreContext = createContext(null);
 
 const AdminStoreContextProvider = (props) => {
-  const [AdminAuthenticated, setAdminAuthenticated] = useState(true);
+  const [AdminAuthenticated, setAdminAuthenticated] = useState(false);
   const [Orders, setOrders] = useState([]);
   const [ShowloginModel, setShowloginModel] = useState(false);
   const [responsemsg, setresponsemsg] = useState("");
