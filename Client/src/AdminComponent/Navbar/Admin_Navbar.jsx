@@ -9,7 +9,7 @@ import { socket } from "../../Socket/Socket";
 import { DateTime } from "../../Functons/Function";
 
 const Admin_Navbar = () => {
-  const {pathname} = useLocation();
+  const { pathname } = useLocation();
   function getMiddleText(url) {
     const parts = url.split('/').filter(part => part !== '');
     return parts.length > 1 ? parts[1] : null;
@@ -32,7 +32,7 @@ const Admin_Navbar = () => {
       console.log(data);
       setnotification([data, ...notification]);
     });
-    socket.on("Refresh_Data_Client",()=>{
+    socket.on("Refresh_Data_Client", () => {
       fetchadminorders();
     })
   }, []);
@@ -65,46 +65,150 @@ const Admin_Navbar = () => {
       }
     }
   };
+  const HandleOffcanvas = () => {
+    const offcanvasElement = document.querySelector('[data-bs-dismiss="offcanvas"]');
+    if (offcanvasElement) {
+      offcanvasElement.click();
+    }
+  }
 
   return (
-    <div className="navbar" id="Navbar">
+    <div className="navbar navbar-expand-lg" id="Navbar">
       <img className="logo" src={assets.logo} alt="" />
-      <ul className="navbar-menu">
-        <Link
-          to="/admin"
-          onClick={() => setMenu(null)}
-          className={menu === null? "active" : ""}
-        >
-          Menu
-        </Link>
-        {AdminAuthenticated ? (
-          <>
-            <Link
-              to="/admin/order"
-              onClick={() => setMenu("order")}
-              className={menu === "order" ? "active" : ""}
-            >
-              Order
-            </Link>
-            <Link to='/admin/Menuform' onClick={() => setMenu("Menuform")}
-              className={menu === "Menuform" ? "active" : ""}>
-              Add Dish
-            </Link>
-          </>
-        ) : (
-          ""
-        )}
-        <a
-          href="#footer"
-          onClick={() => setMenu("contact-us")}
-          className={menu === "contact-us" ? "active" : ""}
-        >
-          {" "}
-          contact-us
-        </a>
-      </ul>
-      <div className="navbar-right">
-        <div>
+      <div className='toggle-cart-navbar d-lg-none'>
+        <div className="admin-dropdown">
+          {AdminAuthenticated ? (
+            <>
+              <p
+                className="admin-dropdown-toggle"
+                onClick={() => setshowNotification(!showNotification)}
+              >
+                <i className="fa-solid fa-bell fa-2xl"></i>
+              </p>
+              <span className="notification-count">3</span>
+            </>
+          ) : (
+            ""
+          )}
+          {showNotification ? (
+            <>
+              <div className="dropdown-arrow">
+                <i id="fa-bounce" className="fa-solid fa-caret-down"></i>
+              </div>
+              {notification.length != 0 ? (
+                <>
+                  <div className="admin-dropdown-menu">
+                    {notification.map((ele, index) => {
+                      // console.log(ele)
+                      if (index > 2) {
+                        // setnotificationlength(notification);
+                        // continue
+                      } else {
+                        const Date = DateTime(ele.createdAt);
+                        // console.log(ele);
+                        return (
+                          <>
+                            <div
+                              className="admin-notification"
+                              key={ele._id}
+                            >
+                              <p>New Order Request from {ele.User_Name}</p>
+                              <span>
+                                Date : {Date.formattedDate} <br />
+                                Time : {Date.formattedTime}
+                              </span>
+                              <div style={{ margin: "5px 0px 0px 0px" }}>
+                                {
+                                  ele.Status === "Delivered" ? `${ele.Status}` :
+                                    <select class="select_stage" onChange={(e) => HandleOrderNotification(ele._id, e.target.value, ele.Order_id)}>
+                                      <option value={ele.Status} default>{ele.Status}</option>
+                                      {
+                                        DropdownValue.map((elem, index) => {
+                                          return (<option className="select_stage_items" value={`${elem}`} key={`${index}`}>{elem}</option>)
+                                          // <li><a class="dropdown-item" href="#">Action</a></li>
+                                        })
+                                      }
+                                    </select>
+
+                                }
+                              </div>
+                              <p
+                                style={{
+                                  "text-align": "right",
+                                }}
+                              >
+                                <span className="Expand-text">
+                                  View Order
+                                </span>
+                              </p>
+                            </div>
+                          </>
+                        );
+                      }
+                    })}
+                    <p
+                      style={{ "text-align": "right", padding: "10px 0px" }}
+                    >
+                      <Link
+                        className="Expand-text"
+                        to="/admin/notifications"
+                        onClick={() => {
+                          setshowNotification(false);
+                        }}
+                      >
+                        Expand
+                      </Link>
+                    </p>
+                  </div>
+                </>
+              ) : (
+                ""
+              )}
+            </>
+          ) : (
+            ""
+          )}
+        </div>
+        <button className="btn btn-primary d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+          <span className="navbar-toggler-icon"></span>
+        </button>
+      </div>
+      <div className="collapse navbar-collapse justify-content-around" id="navbarSupportedContent">
+        <ul className="navbar-menu">
+          <Link
+            to="/admin"
+            onClick={() => setMenu(null)}
+            className={menu === null ? "active" : ""}
+          >
+            Menu
+          </Link>
+          {AdminAuthenticated ? (
+            <>
+              <Link
+                to="/admin/order"
+                onClick={() => setMenu("order")}
+                className={menu === "order" ? "active" : ""}
+              >
+                Order
+              </Link>
+              <Link to='/admin/Menuform' onClick={() => setMenu("Menuform")}
+                className={menu === "Menuform" ? "active" : ""}>
+                Add Dish
+              </Link>
+            </>
+          ) : (
+            ""
+          )}
+          <a
+            href="#footer"
+            onClick={() => setMenu("contact-us")}
+            className={menu === "contact-us" ? "active" : ""}
+          >
+            {" "}
+            contact-us
+          </a>
+        </ul>
+        <div className="navbar-right">
           <div>
             {/* <i className="fa-solid fa-bell fa-2xl"></i> */}
             <div className="admin-dropdown">
@@ -201,25 +305,68 @@ const Admin_Navbar = () => {
               )}
             </div>
           </div>
+          <div>
+            {AdminAuthenticated ? (
+              <button
+                onClick={() => {
+                  HandleLogout();
+                }}
+              >
+                Logout
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  setShowloginModel(true);
+                }}
+              >
+                Login
+              </button>
+            )}
+          </div>
         </div>
-        <div>
-          {AdminAuthenticated ? (
-            <button
-              onClick={() => {
-                HandleLogout();
-              }}
+
+      </div>
+
+      {/* {for display width max width 980px navbar } */}
+      <div className="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+        <div className="offcanvas-header">
+          {/* <h5 className="offcanvas-title" id="offcanvasExampleLabel"></h5> */}
+          <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div className="offcanvas-body">
+          <ul className='navbar-menu'>
+            <Link
+              to="/admin"
+              onClick={() => { setMenu(null); HandleOffcanvas() }}
+              className={menu === null ? "active" : ""}
             >
-              Logout
-            </button>
-          ) : (
-            <button
-              onClick={() => {
-                setShowloginModel(true);
-              }}
-            >
-              Login
-            </button>
-          )}
+              Menu
+            </Link>
+            {AdminAuthenticated ?
+              <>
+                <Link
+                  to="/admin/order"
+                  onClick={() => { setMenu("order"); HandleOffcanvas() }}
+                  className={menu === "order" ? "active" : ""}
+                >
+                  Order
+                </Link>
+                <Link to='/admin/Menuform' onClick={() => { setMenu("Menuform"); HandleOffcanvas() }}
+                  className={menu === "Menuform" ? "active" : ""}>
+                  Add Dish
+                </Link>
+              </>
+              : ""}
+            <a href='#footer' onClick={() => { setMenu("contact-us"); HandleOffcanvas() }} className={menu === 'contact-us' ? 'active' : ''}>Contact-us</a>
+          </ul>
+          <ul className="navbar-right ms-auto"> {/* Added ms-auto for right alignment */}
+            <div>
+              {AdminAuthenticated ?
+                <button onClick={() => { HandleLogout(); HandleOffcanvas() }}>Logout</button> :
+                <button onClick={() => { setShowloginModel(true); HandleOffcanvas() }}>Sign In</button>}
+            </div>
+          </ul>
         </div>
       </div>
     </div>

@@ -50,7 +50,7 @@ const AdminRoutes = () => {
             }
             {
                 LoadData ? <Spinner /> :
-                    <div className='app'>
+                    <div className='app container'>
                         <StrictMode>
                             <Admin_Navbar />
                             <Routes>

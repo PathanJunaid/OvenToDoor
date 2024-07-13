@@ -1,6 +1,7 @@
 .admin-dropdown {
     position: relative;
     display: inline-block;
+    width: fit-content;
 }
 .select_stage {
     margin: 0px;

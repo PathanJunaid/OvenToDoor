@@ -13,11 +13,10 @@ const AdminDishEdit = () => {
     })
   return (
     <>
-    <div>AdminDishEdit</div>
+    <div className='fs-4'>Edit {SingleItem.DishName}</div>
     {
         SingleItem?
         <>
-        {setLoading(false)}
         <MenuForm Data={SingleItem} Req_Type={false}/>
         </>
         :

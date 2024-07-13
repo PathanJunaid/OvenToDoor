@@ -288,7 +288,7 @@ const MenuForm = ({ Data, Req_Type }) => {
             </div>
           </div>
         </div>
-        <button type="submit" className="btn btn-primary">{Req_Type ? "Submit" : "Edit"}</button>
+        <button type="submit" className="btn btn-all">{Req_Type ? "Submit" : "Edit"}</button>
       </form>
     </div>
   );

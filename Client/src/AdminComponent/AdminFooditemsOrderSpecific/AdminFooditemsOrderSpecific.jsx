@@ -56,7 +56,7 @@ const AdminFooditemsOrderSpecific = () => {
                                             <p>{item.DishName}</p>
                                             {/* <img src={assets.rating_starts} alt="" /> */}
                                         </div>
-                                        <p className="food-item-desc-order">
+                                        <p className="food-item-desc-order d-none d-lg-block">
                                             {item.Description}
                                         </p>
                                         <p className="food-item-price-order">
@@ -97,43 +97,19 @@ const AdminFooditemsOrderSpecific = () => {
 
 
                     </div>
-                    <div className='food-item-order'>
-                        <div className='Total_amount'>
-                            <h3>Delivery Charges</h3>
-                        </div>
-                        <div className='food-item-info-order'>
+                    <div className='Total-Del-box d-flex justify-content-between'>
+                        <h4>Delivery Charge</h4>
+                        <h4>
 
-                        </div>
-                        <div>
-
-                        </div>
-
-                        <div>
-                            <h3>
-
-                                Rs.30/-
-                            </h3>
-
-                        </div>
+                            Rs.30/-
+                        </h4>
                     </div>
-                    <div className='food-item-order'>
-                        <div className='Total_amount'>
-                            <h3>Total Amount</h3>
-                        </div>
-                        <div className='food-item-info-order'>
+                    <div className='Total-Del-box'>
+                        <h4>Total Amount</h4>
+                        <h4>
 
-                        </div>
-                        <div>
-
-                        </div>
-
-                        <div>
-                            <h3>
-
-                                Rs.{total_amount + 30}/-
-                            </h3>
-
-                        </div>
+                            Rs.{total_amount + 30}/-
+                        </h4>
                     </div>
                 </>
             }

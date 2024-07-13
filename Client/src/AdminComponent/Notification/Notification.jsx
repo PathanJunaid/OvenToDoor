@@ -55,33 +55,36 @@ const Notification = () => {
         </select>
       </div>
       <div className="Notification-container">
-        <div className="Notification-header">
-          <div>Order_ID</div>
-          <div>User_Name</div>
-          <div>Date</div>
-          <div>Time</div>
-          <div>Status</div>
-          <div>View more</div>
-        </div>
-        {
-          currentItems.map((ele) => {
-            const Date = DateTime(ele.createdAt);
-            return (
-              <div className="Notification-header" key={ele._id}>
-                <div>{ele.Order_id}</div>
-                <div>{ele.User_Name}</div>
-                <div>{Date.formattedDate}</div>
-                <div>{Date.formattedTime}</div>
-                <div>{ele.Status}</div>
-                <div>
-                  <Link to={`/admin/notification/${ele.Order_id}`}>
-                    View More
-                  </Link>
-                </div>
-              </div>
-            )
-          })
-        }
+        <table className="Notification-Table">
+          <tr className="Notification-Rows fw-bold">
+            <td className="Notification-cell">Order_ID</td>
+            <td className="Notification-cell">User_Name</td>
+            <td className="Notification-cell">Date</td>
+            <td className="Notification-cell">Time</td>
+            <td className="Notification-cell">Status</td>
+            <td className="Notification-cell">View more</td>
+          </tr>
+          {
+            notification.map((ele) => {
+              const Date = DateTime(ele.createdAt);
+              return (
+                <tr className="Notification-Rows" key={ele._id}>
+                  <td className="Notification-cell">{ele.Order_id}</td>
+                  <td className="Notification-cell">{ele.User_Name}</td>
+                  <td className="Notification-cell">{Date.formattedDate}</td>
+                  <td className="Notification-cell">{Date.formattedTime}</td>
+                  <td className="Notification-cell">{ele.Status}</td>
+                  <td className="Notification-cell">
+                    <Link to={`/admin/order/${ele.Order_id}`} className="View_detail">
+                      View More
+                    </Link>
+                  </td>
+                </tr>
+              )
+            })
+          }
+        </table>
+
       </div>
       <div className="d-flex align-items-center justify-content-center">
         {Array.from({ length: totalPages }, (_, index) => (
