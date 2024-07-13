@@ -9,8 +9,9 @@ const AdminMenu = () => {
         <>
             <div className='Menu_Container'>
                 {
-                    Menu.map((ele) =>
-                        <AdminMenuCards SingleItem={ele} key={ele._Dish_Id} />
+                    Menu.map((ele) => {
+                        return <AdminMenuCards SingleItem={ele} key={ele._Dish_Id} />
+                    }
                     )
                 }
             </div>

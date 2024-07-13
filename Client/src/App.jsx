@@ -55,27 +55,27 @@ const App = () => {
     )
   }
   else{
+    return (
+      <>
+        {Loading ? <Spinner /> : <></>}
+        {showLogin ? <LoginPopup setShowLogin={setShowLogin} setforgetPassword={setforgetPassword} /> : <></>}
+        {forgetPassword ? <ForgetPassPopup setShowLogin={setShowLogin} setforgetPassword={setforgetPassword} forgetPassword={forgetPassword} /> : <></>}
+        {showAddressPopup ? <AddressPopup setShowAddressPopup={setShowAddressPopup} /> : null}
+  
+        <div className='app container'>
+          <Navbar setShowLogin={setShowLogin} setShowAddressPopup={setShowAddressPopup} />
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/cart' element={<Cart />} />
+            <Route path='/order' element={<Placeholder />} />
+            <Route path='/order/:id' element={<Specific_Order />} />
+          </Routes>
+        </div>
+        <Footer />
+      </>
+    )
     
   }
-  return (
-    <>
-      {Loading ? <Spinner /> : <></>}
-      {showLogin ? <LoginPopup setShowLogin={setShowLogin} setforgetPassword={setforgetPassword} /> : <></>}
-      {forgetPassword ? <ForgetPassPopup setShowLogin={setShowLogin} setforgetPassword={setforgetPassword} forgetPassword={forgetPassword} /> : <></>}
-      {showAddressPopup ? <AddressPopup setShowAddressPopup={setShowAddressPopup} /> : null}
-
-      <div className='app'>
-        <Navbar setShowLogin={setShowLogin} setShowAddressPopup={setShowAddressPopup} />
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/cart' element={<Cart />} />
-          <Route path='/order' element={<Placeholder />} />
-          <Route path='/order/:id' element={<Specific_Order />} />
-        </Routes>
-      </div>
-      <Footer />
-    </>
-  )
 }
 
 export default App

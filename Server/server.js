@@ -11,6 +11,9 @@ import multer from "multer";
 import { Server } from 'socket.io';
 import { setupSocket } from "./Socket/Socket.js";
 import logger from 'morgan'
+import path from "path";
+
+import { fileURLToPath } from 'url';
 dotenv.config();
 const app = express();
 const server = http.createServer(app);
@@ -19,7 +22,7 @@ const io = new Server(server, {
   cors: {
     origin: 'http://localhost:5173', // Allow access from this origin
     methods: ['GET', 'POST'], // Allow methods
-    credentials:true
+    credentials: true
   }
 });
 // Connect to MongoDB
@@ -80,7 +83,14 @@ const Pizza_Data = await Pizza_Data_Function()
   .catch((error) => {
     console.error("Error occurred:", error);
   });
+// Get the current directory name
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use(express.static(path.join(__dirname, '../Client')));
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public', 'index.html'));
+});
 server.listen(port, () => {
   console.log(`Server running on port : ${port}`);
 })
-export {io};
+export { io };

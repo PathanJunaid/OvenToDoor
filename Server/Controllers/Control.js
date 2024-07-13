@@ -314,7 +314,7 @@ export const User_PreviousOrder = async (req, res) => {
 export const ShowMenu = async (req, res) => {
     let status = true;
     let msg = "Menu Fetched"
-    const data = await Add_Pizza_Db.find({}).then((res) => { return res }).catch((e) => { status=false; msg=  "error while loading Menu"});
+    const data = await Add_Pizza_Db.find({Availability: {$ne: "Unavailable"}}).then((res) => { return res }).catch((e) => { status=false; msg=  "error while loading Menu"});
     res.status(200).json({status,msg,data});
 }
 

@@ -19,7 +19,11 @@ const FoodItem = ({ SingleItem }) => {
     created_at,
     updated_at,
   } = SingleItem;
-  const handleMenuItemDelete = async(_id)=>{
+  const handleMenuItemDelete = async(_id,name)=>{
+    const value = window.confirm(`${name} will be unavailable for customers`)
+    if(!value){
+      return ""
+    }
     const deleted = await axios.delete(`http://localhost:4000/Admin/Delete_Item/${_id}`).then((res)=>{
         if(res.data.status){
             setresponsemsg(res.data.msg);
@@ -38,7 +42,7 @@ const FoodItem = ({ SingleItem }) => {
         <img className='food-detail-image' src={Image} alt={DishName} />
         <div className='food-detail-actions'>
           <Link to={`/Admin/Menuform/Edit/${SingleItem._id}`} className='food-detail-edit-btn'><i className="fa-regular fa-pen-to-square"></i></Link>
-          <button className='food-detail-delete-btn' onClick={() => handleMenuItemDelete(SingleItem._id)}><i className="fa-solid fa-trash"></i></button>
+          <button className='food-detail-delete-btn' onClick={() => handleMenuItemDelete(SingleItem._id,DishName)}><i className="fa-solid fa-trash"></i></button>
         </div>
       </div>
       <div className="food-detail-info">

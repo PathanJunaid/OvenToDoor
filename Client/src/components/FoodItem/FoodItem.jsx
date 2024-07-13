@@ -3,10 +3,11 @@ import './FoodItem.css'
 import { assets } from '../../assets/assets'
 import { StoreContext } from '../../context/StoreContext'
 
-const FoodItem = ({ Food_Item}) => {
+const FoodItem = ({ Food_Item,index}) => {
   const { cartItems, addToCart, removeFromCart } = useContext(StoreContext);
   return (
-    <div className='food-item'>
+    <div className='food-item' key={index}>
+      <>
       <div className="food-item-img-container">
         <img className='food-item-image' src={Food_Item.Image} alt='' />
         {!cartItems[Food_Item.Dish_Id]
@@ -31,6 +32,7 @@ const FoodItem = ({ Food_Item}) => {
           Rs.{Food_Item.Price}/-
         </p>
       </div>
+      </>
     </div>
   )
 }

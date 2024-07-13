@@ -67,7 +67,7 @@ export const Edit_item = async (req, res) => {
     if (Pizza) {
         Message = {
             Status: true,
-            Msg: "Value Updated",
+            Msg: `${Pizza.DishName} Dish is Updated`,
         }
     } else {
         Message = {
@@ -86,13 +86,12 @@ export const Delete_Item = async (req, res) => {
     console.log(_id)
     let Message = "";
     // Finding and deleting Pizza 
-    const Pizza = await Add_Pizza_Db.findByIdAndDelete(_id).then((response) => { return response }).catch((e) => { return false })
+    const Pizza = await Add_Pizza_Db.findByIdAndUpdate(_id,{Availability:"Unavailable"}).then((response) => { return response }).catch((e) => { return false })
     // Sending reposne
-    console.log(Pizza) 
     if (Pizza) {
         Message = {
             status: true,
-            msg: `${Pizza.DishName} removed from menu`
+            msg: `${Pizza.DishName} is Unavailable`
         }
     } else {
         Message = {

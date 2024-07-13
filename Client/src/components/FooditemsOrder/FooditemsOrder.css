@@ -9,9 +9,11 @@
     grid-template-columns: 1fr 1fr 1fr 1fr;
     align-items: center;
 }
-.Total_amount{
+
+.Total_amount {
     padding: 15px;
 }
+
 .food-item-image-order {
     width: 100%;
     border-radius: 15px 15px 0px 0px;
@@ -19,7 +21,6 @@
 
 .food-item-info-order {
     padding: 20px;
-    margin: auto;
 }
 
 .food-item-name-rating-order {
@@ -28,16 +29,19 @@
     align-items: center;
     margin-bottom: 10px;
 }
-.Order-Address-container{
+
+.Order-Address-container {
     border-top: 2px solid grey;
     border-bottom: 2px solid grey;
     padding: 1rem 0px;
 }
-.Order-Address-Status{
+
+.Order-Address-Status {
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
-.Order-address{
+
+.Order-address {
     list-style: none;
 }
 

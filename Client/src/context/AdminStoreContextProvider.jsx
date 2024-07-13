@@ -10,6 +10,7 @@ const AdminStoreContextProvider = (props) => {
     const [socketId, setsocketId] = useState(null);
     const [notification, setnotification] = useState([]);
     const [Menu, setMenu] = useState([]);
+    const [FilterValue,setFilterValue] = useState("")
     const fetchadminorders = async () => {
         try {
             const response = await axios.post("http://localhost:4000/Admin/orders", {}, { withCredentials: true }).then((res) => {
@@ -53,7 +54,8 @@ const AdminStoreContextProvider = (props) => {
         socketId, setsocketId,
         notification, setnotification,
         Menu, setMenu,
-        fetchadminMenu,fetchadminorders
+        fetchadminMenu,fetchadminorders,
+        FilterValue,setFilterValue
     }
 
     return (
