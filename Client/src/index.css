@@ -56,11 +56,6 @@ p {
   .navbar .logo{
     width: 100px;
   }
-  .navbar-right{
-    /* display: grid;
-    grid-template-columns:0.4fr; */
-  }
-  
 }
 @media  (max-width:750px) {
   .navbar-menu {
