@@ -1,14 +1,37 @@
-.Order_Container{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+.Order_Details_Container {
+    display: block;
+    overflow: auto;
+}
+
+.Order_Rows {
+    /* display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr; */
     color: grey;
     font-weight: 700;
     align-items: center;
-    margin: 3rem 0rem;
 }
-.Inavlid-request{
+
+.Inavlid-request {
     color: red;
     margin: 50px 0px;
     font-size: 20px;
     text-align: center;
+}
+
+.table-container {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+    overflow-x: auto;
+    /* Enable horizontal scrolling */
+}
+
+.table-cell {
+    padding: 10px;
+    white-space: nowrap;
+    /* Prevent text wrapping */
+    /* display: flex;
+    align-items: center; */
+    /* overflow: scroll; Hide overflow content */
+    /* text-overflow: ellipsis; Add ellipsis for overflowed content */
 }

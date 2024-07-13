@@ -1,6 +1,6 @@
 .each_item{
     display: grid;
-    grid-template-columns: 0.5fr 2fr 1fr 1fr 1fr;
+    grid-template-columns:0.5fr 1fr 1fr 1fr 1fr;
     border-bottom: 2px solid grey;
     /* margin-top: 5px; */
     align-items: center;

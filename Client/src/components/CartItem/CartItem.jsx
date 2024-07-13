@@ -53,7 +53,7 @@ const CartItem = ({ }) => {
     return (
         <>
             <div className='Cart_items_container'>
-                <div className="each_item_header each_item">
+                <div className="each_item">
                     <div className="items">Item</div>
                     <div className="items">Title</div>
                     <div className="items">Price</div>

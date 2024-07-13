@@ -27,22 +27,21 @@ const Orders = ({ Orders_Det }) => {
             timeZone: 'Asia/Kolkata', // Set timezone to Indian Standard Time
             hour12: false, // Use 24-hour format
           };
-
           // Format the custom date and time according to the options
           const ISTDateTime = customDate.toLocaleString('en-IN', options);
           return (
-            <div className="Order_Container" key={ele.Order_id}>
-              <div className="Order_id">{ele.Order_id}</div>
-              <div className="Order_Date">
+            <tr className="Order_Rows" key={ele.Order_id}>
+              <td className="table-cell">{ele.Order_id}</td>
+              <td className="table-cell">
                 {ISTDateTime}
                 {/* {date} <br /> {time} */}
-              </div>
-              <div className="Amount">{ele.Payment_of}</div>
-              <div className="Status">{ele.Status}</div>
-              <div className="">
+              </td>
+              <td className="table-cell">{ele.Payment_of}</td>
+              <td className="table-cell">{ele.Status}</td>
+              <td className="table-cell">
                 <Link to={`/order/${ele.Order_id}`} className='View_detail' >View Detail</Link>
-              </div>
-            </div>
+              </td>
+            </tr>
 
           )
         })}

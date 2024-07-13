@@ -8,14 +8,20 @@ const Placeholder = () => {
   return (
     <div>
       <Header />
-      <div className="Order_Container">
-        <div className="Order_id">Order_ID</div>
-        <div className="Order_Date">Order date</div>
-        <div className="Amount">Amount Paid</div>
-        <div className="Status">Delivery Status</div>
-        <div className="Total_items">View Details</div>
+      <div className='Order_Details_Container'>
+        <table className='table-container'>
+          <tr className="Order_Rows">
+            <td className="table-cell">Order_ID</td>
+            <td className="table-cell">Order date</td>
+            <td className="table-cell">Amount Paid</td>
+            <td className="table-cell">Delivery Status</td>
+            <td className="table-cell">View Details</td>
+          </tr>
+
+          <Orders Orders_Det={Orders_Details} />
+        </table>
+
       </div>
-      <Orders Orders_Det = {Orders_Details}/>
     </div>
   )
 }

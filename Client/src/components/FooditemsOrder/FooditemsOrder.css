@@ -9,7 +9,16 @@
     grid-template-columns: 1fr 1fr 1fr 1fr;
     align-items: center;
 }
+.Total-Del-box{
+    display: flex;
+    justify-content: space-between;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px #00000015;
+    transition: 0.3s;
+    animation: fadeIn 1s;
+    padding: 10px 10px;
 
+}
 .Total_amount {
     padding: 15px;
 }
@@ -55,7 +64,6 @@
     color: tomato;
     font-size: 22px;
     font-weight: 500;
-    margin: 10px 0px;
 }
 
 .food-item-img-container-order {

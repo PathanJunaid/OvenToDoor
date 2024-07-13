@@ -84,6 +84,18 @@ p {
       padding: 7px 20px;
       font-size: 15px;
   }
+  .food-item-info-order{
+    padding: 5px 10px !important;
+  }
+  .food-item-name-rating-order{
+    margin-bottom: 0px !important;
+  }
+  .each_item{
+    grid-template-columns: auto auto auto auto auto;
+  }
+  .header{
+    height: 60vw !important;
+  }
   
 }
 @media (min-width:901px) and (max-width:1025px) {
@@ -103,6 +115,9 @@ p {
   }
   .navbar-right button{
       padding: 8px 25px;
+  }
+  .header{
+    height: 35vw !important;
   }
   
 }

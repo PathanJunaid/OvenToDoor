@@ -11,7 +11,7 @@ const Cart = () => {
     )
   }
   return (
-    <div style={{margin:"3rem 0rem"}}>
+    <div style={{margin:"2rem 0rem"}}>
       {/* <Header/> */}
       <CartItem Items={cartItems}/>
     </div>
