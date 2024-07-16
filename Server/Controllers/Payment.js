@@ -207,6 +207,6 @@ export const PaymentStatus = async (req, res) => {
     }
     io.emit('Handle_Order',notification)
     // front end order page 
-    res.redirect('http://localhost:5173/order');
+    res.redirect(`${process.env.Client}/order`);
     // redirect to order page 
 }

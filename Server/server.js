@@ -20,7 +20,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:5173', // Allow access from this origin
+    origin: process.env.Client, // Allow access from this origin
     methods: ['GET', 'POST'], // Allow methods
     credentials: true
   }
@@ -29,7 +29,7 @@ const io = new Server(server, {
 Db_Connection();
 
 const corsOptions = {
-  origin: 'http://localhost:5173',
+  origin: process.env.Client,
   methods: ["POST", "GET", "PUT", "DELETE"],
   credentials: true,
 };
