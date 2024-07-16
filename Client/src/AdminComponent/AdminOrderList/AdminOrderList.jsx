@@ -5,13 +5,9 @@ import { AdminStoreContext } from '../../context/AdminStoreContextProvider'
 const AdminOrderList = () => {
     const {Orders} = useContext(AdminStoreContext);
   return (
-    <>
+    <tbody>
 
-      {Orders.length < 1 ?
-        <h4>
-          No previous orders
-        </h4>
-        :
+      {
         Orders.map((ele) => {
           // Create a Date object with the desired date and time
           const customDate = new Date(ele.createdAt);
@@ -40,7 +36,7 @@ const AdminOrderList = () => {
 
           )
         })}
-    </>
+    </tbody>
   )
 }
 

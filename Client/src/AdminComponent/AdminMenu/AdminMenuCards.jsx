@@ -3,8 +3,9 @@ import './AdminMenuCards.css'
 import { Link } from 'react-router-dom';
 import { AdminStoreContext } from '../../context/AdminStoreContextProvider';
 import axios from 'axios';
-const FoodItem = ({ SingleItem }) => {
-    const {setresponsemsg,fetchadminorders,fetchadminMenu} = useContext(AdminStoreContext);
+import PropTypes from 'prop-types'
+const FoodItem = ({ SingleItem })=> {
+  const { setresponsemsg, fetchadminorders, fetchadminMenu } = useContext(AdminStoreContext);
   const {
     Availability,
     Category,
@@ -19,20 +20,20 @@ const FoodItem = ({ SingleItem }) => {
     created_at,
     updated_at,
   } = SingleItem;
-  const handleMenuItemDelete = async(_id,name)=>{
+  const handleMenuItemDelete = async (_id, name) => {
     const value = window.confirm(`${name} will be unavailable for customers`)
-    if(!value){
+    if (!value) {
       return ""
     }
-    const deleted = await axios.delete(`http://localhost:4000/Admin/Delete_Item/${_id}`).then((res)=>{
-        if(res.data.status){
-            setresponsemsg(res.data.msg);
-            setTimeout(() => {
-                setresponsemsg("")
-            }, 3000);
-            fetchadminMenu();
-            fetchadminorders();
-        }
+    await axios.delete(`http://localhost:4000/Admin/Delete_Item/${_id}`).then((res) => {
+      if (res.data.status) {
+        setresponsemsg(res.data.msg);
+        setTimeout(() => {
+          setresponsemsg("")
+        }, 3000);
+        fetchadminMenu();
+        fetchadminorders();
+      }
     })
   }
 
@@ -42,7 +43,7 @@ const FoodItem = ({ SingleItem }) => {
         <img className='food-detail-image' src={Image} alt={DishName} />
         <div className='food-detail-actions'>
           <Link to={`/Admin/Menuform/Edit/${SingleItem._id}`} className='food-detail-edit-btn'><i className="fa-regular fa-pen-to-square"></i></Link>
-          <button className='food-detail-delete-btn' onClick={() => handleMenuItemDelete(SingleItem._id,DishName)}><i className="fa-solid fa-trash"></i></button>
+          <button className='food-detail-delete-btn' onClick={() => handleMenuItemDelete(SingleItem._id, DishName)}><i className="fa-solid fa-trash"></i></button>
         </div>
       </div>
       <div className="food-detail-info">
@@ -67,5 +68,21 @@ const FoodItem = ({ SingleItem }) => {
     </div>
   );
 };
-
+FoodItem.propTypes = {
+  SingleItem: PropTypes.shape({
+    Availability: PropTypes.string.isRequired,
+    Category: PropTypes.string.isRequired,
+    Description: PropTypes.string.isRequired,
+    Discounts: PropTypes.string,
+    DishName: PropTypes.string.isRequired,
+    Image: PropTypes.string.isRequired,
+    Ingredients: PropTypes.string,
+    PreparationTime: PropTypes.string.isRequired,
+    Price: PropTypes.number.isRequired,
+    ServingSize: PropTypes.number.isRequired,
+    created_at: PropTypes.string.isRequired,
+    updated_at: PropTypes.string.isRequired,
+    _id: PropTypes.string.isRequired
+  }).isRequired
+};
 export default FoodItem;

@@ -3,7 +3,7 @@ import './SavedAddress.css'; // Import the CSS file for styling
 import { assets } from '../../assets/assets'; // Import the assets, including cross_icon
 import { StoreContext } from '../../context/StoreContext';
 import axios from 'axios';
-
+import PropTypes from 'prop-types'
 const SavedAddress = ({ onClose }) => {
   const {Address,setAddress} = useContext(StoreContext);
   const [editingIndex, setEditingIndex] = useState(null);
@@ -16,7 +16,6 @@ const SavedAddress = ({ onClose }) => {
     PIN: '',
     Mobile_No:''
   });
-  console.log(editFormData)
   const handleEditChange = (e) => {
     const { name, value } = e.target;
     console.log(name + "\t" + value)
@@ -24,7 +23,6 @@ const SavedAddress = ({ onClose }) => {
   };
 
   const handleEdit = (index) => {
-    console.log(Address)
     const data = Address.find((ele)=>{
       return ele._id===index
     })
@@ -33,7 +31,7 @@ const SavedAddress = ({ onClose }) => {
   };
 
   const handleSave = async(index) => {
-    const response = await axios.post(`http://localhost:4000/Address/edit`,{...editFormData,index},{withCredentials:true}).then((res)=>{
+    await axios.post(`http://localhost:4000/Address/edit`,{...editFormData,index},{withCredentials:true}).then((res)=>{
       console.log(res);
       setAddress(res.data.data)
       setmsg(res.data.msg);
@@ -44,14 +42,11 @@ const SavedAddress = ({ onClose }) => {
     }).catch((e)=>{
       console.log(e)
     })
-    if(response.data.error){
-
-    }
     setEditingIndex(null);
   };
 
   const handleDelete = async(index) => {
-    const response = await axios.post(`http://localhost:4000/Address/delete`,{index},{withCredentials:true}).then((res)=>{
+    await axios.post(`http://localhost:4000/Address/delete`,{index},{withCredentials:true}).then((res)=>{
       console.log(res);
       setAddress(res.data.data)
       setmsg(res.data.msg);
@@ -62,9 +57,6 @@ const SavedAddress = ({ onClose }) => {
     }).catch((e)=>{
       console.log(e)
     })
-    if(response.data.error){
-
-    }
     setEditingIndex(null);
     
   };
@@ -79,7 +71,7 @@ const SavedAddress = ({ onClose }) => {
         </button>
         {Address.length===0? <div>No address</div> : ""}
         <ul>
-          {Address.map((address, index) => {
+          {Address.map((address) => {
           // console.log(address)
           return(
             <li key={address._id}>
@@ -157,5 +149,7 @@ const SavedAddress = ({ onClose }) => {
     </div>
   );
 };
-
+SavedAddress.propTypes = {
+  onClose: PropTypes.func
+}
 export default SavedAddress;

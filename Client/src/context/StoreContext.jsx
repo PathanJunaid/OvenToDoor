@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
-// import { food_list } from "../assets/assets";
+import PropTypes from 'prop-types'
 import axios from "axios";
 
 export const StoreContext = createContext(null)
@@ -67,7 +67,7 @@ const StoreContextProvider = (props) => {
         setLoading(false)
     }
     const fetchcartitems = async () => {
-        const res = await axios.post('http://localhost:4000/cartitems', {}, { withCredentials: true }).then((res) => { return res.data }).catch((e) => { });
+        const res = await axios.post('http://localhost:4000/cartitems', {}, { withCredentials: true }).then((res) => { return res.data }).catch(() => { });
         if ((!res.code || res.auth) && res.data.length !== undefined) {
             // console.log(res.data)
             const transformData = () => {
@@ -92,6 +92,7 @@ const StoreContextProvider = (props) => {
                 return
             }
         } catch (e) {
+            console.log(e);
         }
     }
     const fetchAddressdetails = async () => {
@@ -101,6 +102,7 @@ const StoreContextProvider = (props) => {
             setAddress(response.data.data); // Assuming response.data is the array of orders
             // console.log(response.data)
         } catch (e) {
+            console.log(e)
         }
     }
     useEffect(() => {
@@ -133,5 +135,7 @@ const StoreContextProvider = (props) => {
         </StoreContext.Provider>
     )
 }
-
+StoreContextProvider.propTypes = {
+    children: PropTypes.node.isRequired,
+}
 export default StoreContextProvider;

@@ -18,7 +18,7 @@ const AdminMenu = () => {
                     Menu.map((ele) => {
                         if (MenuCategory === 'All' || MenuCategory === ele.Category) {
                             return (
-                                <AdminMenuCards SingleItem={ele} key={ele._Dish_Id} />
+                                <AdminMenuCards SingleItem={ele} key={ele.Dish_Id} />
 
                             )
                         }

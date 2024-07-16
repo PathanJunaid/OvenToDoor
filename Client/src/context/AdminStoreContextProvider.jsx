@@ -1,5 +1,6 @@
 import React, { createContext, useState } from 'react'
 import axios from 'axios'
+import PropTypes from 'prop-types'
 export const AdminStoreContext = createContext(null);
 
 const AdminStoreContextProvider = (props) => {
@@ -10,6 +11,7 @@ const AdminStoreContextProvider = (props) => {
   const [socketId, setsocketId] = useState(null);
   const [notification, setnotification] = useState([]);
   const [Menu, setMenu] = useState([]);
+  const [newnoti, setnewnoti] = useState(false);
   const [AdminforgetPass, setAdminforgetPass] = useState(false);
   const [MenuCategory, setMenuCategory] = useState("Salad")
   const fetchadminorders = async () => {
@@ -28,7 +30,7 @@ const AdminStoreContextProvider = (props) => {
       }
 
     } catch (e) {
-      console.log("Error")
+      console.log(e)
     }
   }
   const fetchadminMenu = async () => {
@@ -43,7 +45,7 @@ const AdminStoreContextProvider = (props) => {
       }
 
     } catch (e) {
-      console.log("Error in Fetching Menu")
+      console.log("Error in Fetching Menu",e)
     }
   }
   const Adminvalues = {
@@ -56,7 +58,8 @@ const AdminStoreContextProvider = (props) => {
     Menu, setMenu,
     fetchadminMenu, fetchadminorders,
     AdminforgetPass, setAdminforgetPass,
-    MenuCategory, setMenuCategory
+    MenuCategory, setMenuCategory,
+    newnoti, setnewnoti
   }
 
   return (
@@ -65,5 +68,7 @@ const AdminStoreContextProvider = (props) => {
     </AdminStoreContext.Provider>
   )
 }
-
+AdminStoreContextProvider.propTypes = {
+  children: PropTypes.node.isRequired
+}
 export default AdminStoreContextProvider

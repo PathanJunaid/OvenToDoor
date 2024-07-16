@@ -9,17 +9,28 @@ const Placeholder = () => {
     <div>
       <Header />
       <div className='Order_Details_Container'>
-        <table className='table-container'>
-          <tr className="Order_Rows fw-bold">
-            <td className="table-cell">Order_ID</td>
-            <td className="table-cell">Order date</td>
-            <td className="table-cell">Amount Paid</td>
-            <td className="table-cell">Delivery Status</td>
-            <td className="table-cell">View Details</td>
-          </tr>
+        {
+          Orders_Details.length < 1 ?
+            <h4>
+              No previous orders
+            </h4>
+            :
+            <table className='table-container'>
+              <thead>
+                <tr className="Order_Rows fw-bold">
+                  <td className="table-cell">Order_ID</td>
+                  <td className="table-cell">Order date</td>
+                  <td className="table-cell">Amount Paid</td>
+                  <td className="table-cell">Delivery Status</td>
+                  <td className="table-cell">View Details</td>
+                </tr>
+              </thead>
 
-          <Orders Orders_Det={Orders_Details} />
-        </table>
+              <tbody>
+                <Orders/>
+              </tbody>
+            </table>
+        }
 
       </div>
     </div>

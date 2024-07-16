@@ -6,7 +6,7 @@ const FooditemsOrder = () => {
     const { Food_List, fetchOrdersdetails, Orders_Details } = useContext(StoreContext);
     const [Address, setAddress] = useState(null);
     const [items, setitems] = useState([]);
-    const [id, setid] = useState(useParams().id);
+    const id = useParams().id;
     const [date, setdate] = useState(null)
     const [Load, setLoad] = useState(true)
     const [status, setstatus] = useState(null)
@@ -36,7 +36,6 @@ const FooditemsOrder = () => {
                     // Format the custom date and time according to the options
                     const ISTDateTime = customDate.toLocaleString('en-IN', options);
                     setdate(ISTDateTime.split(', '));
-                    console.log(date)
                 }
             } catch (e) {
                 console.log(e);

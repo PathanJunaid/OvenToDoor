@@ -3,7 +3,7 @@ import './MenuForm.css'; // Import your custom CSS
 import axios from 'axios';
 import { AdminStoreContext } from '../../context/AdminStoreContextProvider';
 import { useNavigate, useParams } from 'react-router-dom';
-
+import PropTypes from 'prop-types'
 const MenuForm = ({ Data, Req_Type }) => {
   const { _id } = useParams();
   const [formData, setFormData] = useState(Data);
@@ -60,7 +60,7 @@ const MenuForm = ({ Data, Req_Type }) => {
         formDataToSend.append(key, formData[key]);
       }
       if (Req_Type) {
-        const res = await axios.post('http://localhost:4000/Admin/NewPizza', formDataToSend, {
+        await axios.post('http://localhost:4000/Admin/NewPizza', formDataToSend, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
@@ -83,11 +83,11 @@ const MenuForm = ({ Data, Req_Type }) => {
           setresponsemsg(res.data.msg)
           fetchadminMenu();
           navigate('/admin')
-        }).catch((e) => {
-          console.log('Unable to add Dish')
+        }).catch(() => {
+          setresponsemsg('Unable to add Dish')
         });
       } else {
-        const res = await axios.post(`http://localhost:4000/Admin/Edit_Item/${_id}`, formDataToSend, {
+        await axios.post(`http://localhost:4000/Admin/Edit_Item/${_id}`, formDataToSend, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
@@ -97,8 +97,8 @@ const MenuForm = ({ Data, Req_Type }) => {
           setresponsemsg(res.data.Msg)
           fetchadminMenu();
           navigate('/admin');
-        }).catch((e) => {
-          console.log('Unable to add Dish')
+        }).catch(() => {
+          setresponsemsg('Unable to Edit Dish')
         });
         // return <Redirect to='/Admin'></Redirect>
       }
@@ -205,7 +205,7 @@ const MenuForm = ({ Data, Req_Type }) => {
           <div className="mb-3">
             <label htmlFor="ServingSize" className="form-label">Serving Size:</label>
             <input
-              type="text"
+              type="number"
               className="form-control"
               id="ServingSize"
               name="ServingSize"
@@ -293,5 +293,20 @@ const MenuForm = ({ Data, Req_Type }) => {
     </div>
   );
 };
-
+MenuForm.propTypes = {
+  Data: PropTypes.shape({
+    DishName: PropTypes.string,
+    Category: PropTypes.string,
+    Description: PropTypes.string,
+    Ingredients: PropTypes.string,
+    Price: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.oneOf([null])]),
+    Discounts: PropTypes.string,
+    ServingSize: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.oneOf([null])]),
+    PreparationTime: PropTypes.string,
+    Image: PropTypes.string, // If null or a string URL, it's safer to use PropTypes.string
+    Availability: PropTypes.string,
+  }
+  ),
+  Req_Type: PropTypes.bool
+};
 export default MenuForm;

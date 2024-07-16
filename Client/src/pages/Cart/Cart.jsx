@@ -3,8 +3,8 @@ import './Cart.css'
 import CartItem from '../../components/CartItem/CartItem'
 import { StoreContext } from '../../context/StoreContext';
 
-const Cart = () => {
-  const {cartItems, Authenticated} = useContext(StoreContext);
+const Cart = ({setShowAddressPopup}) => {
+  const { Authenticated} = useContext(StoreContext);
   if (!Authenticated) {
     return (
       <h5 className='Inavlid-request'>Invalid request</h5>
@@ -13,7 +13,7 @@ const Cart = () => {
   return (
     <div style={{margin:"2rem 0rem"}}>
       {/* <Header/> */}
-      <CartItem Items={cartItems}/>
+      <CartItem setShowAddressPopup={setShowAddressPopup}/>
     </div>
   )
 }

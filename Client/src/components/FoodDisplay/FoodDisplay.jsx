@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import './FoodDisplay.css'
 import { StoreContext } from '../../context/StoreContext'
 import FoodItem from '../FoodItem/FoodItem'
-
+import PropTypes from 'prop-types'
 const FoodDisplay = ({ category }) => {
 
   const { Food_List } = useContext(StoreContext)
@@ -13,7 +13,7 @@ const FoodDisplay = ({ category }) => {
         {Food_List.length > 0 ? Food_List.map((item, index) => {
           if (category === 'All' || category === item.Category) {
             return (
-                <FoodItem Food_Item={item} index={index} />
+                <FoodItem Food_Item={item} key={index} />
 
             )
           }
@@ -25,5 +25,7 @@ const FoodDisplay = ({ category }) => {
     </div>
   )
 }
-
+FoodDisplay.propTypes = {
+  category:PropTypes.string.isRequired
+}
 export default FoodDisplay

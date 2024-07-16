@@ -2,16 +2,16 @@ import React from 'react'
 import MenuForm from '../AdminComponent/AdminMenuform/MenuForm'
 const AdminMenuForm = () => {
   const Formdata = {
-    dishName: '',
-    category: '',
-    description: '',
-    ingredients: '',
-    price: '',
-    discounts: 'Not Available',
-    servingSize: '',
-    preparationTime: '',
-    image: null,
-    availability: '',
+    DishName: '',
+    Category: '',
+    Description: '',
+    Ingredients: '',
+    Price: '',
+    Discounts: 'Not Available',
+    ServingSize: '',
+    PreparationTime: '',
+    Image: null,
+    Availability: '',
   }
   return (
     <div>

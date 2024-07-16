@@ -4,9 +4,10 @@ import './CartItem.css'
 import { assets } from '../../assets/assets';
 import axios from 'axios';
 
-const CartItem = ({ }) => {
+const CartItem = ({setShowAddressPopup}) => {
     const { cartItems,Food_List, addToCart, removeFromCart, Address,setLoading } = useContext(StoreContext);
     const [ChooseAddress, setChoosedAddress] = useState(null);
+    const [errormsg,seterrormsg] = useState("")
     let count = 0;
     let totalamount = 0;
     let Delivery = 30;
@@ -39,7 +40,15 @@ const CartItem = ({ }) => {
         Delivery = 0
 
     }
-    const ProceedtoCheckout = async () => {
+    const ProceedtoCheckout = async (e) => {
+        e.preventDefault();
+        if(ChooseAddress===null){
+            seterrormsg("Choose Address before Proceeding with the order.")
+            setTimeout(() => {
+                seterrormsg("")
+            }, 2000);
+            return;
+        }
         setLoading(true);
         await axios.post('http://localhost:4000/payment', { Amount, ChooseAddress }, { withCredentials: true }).then((res) => {
             console.log(res)
@@ -77,7 +86,9 @@ const CartItem = ({ }) => {
                             {
                                 ChooseAddress === null ?
                                     <div className='Address-container'>
-                                        {Address.length === 0 ? <div>No address</div> :
+                                        {Address.length === 0 ? <div>
+                                            <button className='btn-all' onClick={()=>setShowAddressPopup(true)}> Add Address</button>
+                                        </div> :
                                             <>
                                                 <h3>Choose from saved Addreses</h3>
                                                 <ul className='cart-address'>
@@ -101,7 +112,7 @@ const CartItem = ({ }) => {
                                             </>
                                         }
                                     </div> :
-                                    <div>
+                                    <div className='Address-container'>
                                         {Address.length === 0 ? <div>No address</div> :
                                             <>
                                                 <h3>Selected Addreses</h3>
@@ -150,7 +161,8 @@ const CartItem = ({ }) => {
                             <span>{Delivery + totalamount}</span>
                         </div>
                         <div className=''>
-                            <button className='PaymentButton' onClick={(e) => { ProceedtoCheckout() }}>Proceed to Checkout</button>
+                            <p className='fw-bold fs-6 text-danger my-2'>{errormsg}</p>
+                            <button className='PaymentButton' onClick={(e) => { ProceedtoCheckout(e) }}>Proceed to Checkout</button>
                         </div>
                     </div>
                     :

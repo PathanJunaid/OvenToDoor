@@ -1,23 +1,24 @@
 import React, { useContext, useState } from 'react';
 import './Navbar.css';
 import { assets } from '../../assets/assets';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { StoreContext } from '../../context/StoreContext';
 import axios from 'axios';
 import SavedAddress from '../SavedAddress/SavedAddress';
 import "../../index.css"
-
+import PropTypes from 'prop-types'
 const Navbar = ({ setShowLogin, setShowAddressPopup }) => { // Add setShowAddressPopup prop
   const { pathname } = useLocation();
   let path = pathname;
   if (pathname.indexOf('/', 1) != -1) {
     path = pathname.slice(0, pathname.indexOf('/', 1));
   }
+  const navigate = useNavigate();
   const [menu, setMenu] = useState(path);
-  const { setCartItems, Authenticated, setAuthenticated, cartItems, Address } = useContext(StoreContext);
+  const { setCartItems, Authenticated, setAuthenticated, cartItems } = useContext(StoreContext);
   const [ShowSavedAddresses, setShowSavedAddresses] = useState(false)
   const fetchcartitems = async () => {
-    const res = await axios.post('http://localhost:4000/cartitems', {}, { withCredentials: true }).then((res) => { return res }).catch((e) => { });
+    const res = await axios.post('http://localhost:4000/cartitems', {}, { withCredentials: true }).then((res) => { return res }).catch(() => { });
     console.log(res);
     if (!res.code || res.auth) {
       const transformData = () => {
@@ -36,6 +37,7 @@ const Navbar = ({ setShowLogin, setShowAddressPopup }) => { // Add setShowAddres
     if (data) {
       const res = await axios.post('http://localhost:4000/logout', {}, { withCredentials: true }).then((res) => {
         console.log(res);
+        navigate('/');
         return res.data;
       }).catch((e) => {
         console.log(e);
@@ -178,5 +180,8 @@ const Navbar = ({ setShowLogin, setShowAddressPopup }) => { // Add setShowAddres
 
   );
 };
-
+Navbar.propTypes = {
+  setShowLogin:PropTypes.func,
+  setShowAddressPopup: PropTypes.func
+}
 export default Navbar;

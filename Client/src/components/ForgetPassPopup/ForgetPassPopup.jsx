@@ -4,7 +4,8 @@ import { assets } from '../../assets/assets'
 import axios from 'axios'
 import { StoreContext } from '../../context/StoreContext'
 import { AdminStoreContext } from '../../context/AdminStoreContextProvider'
-import Spinner from '../Spinner/Spinner'
+import Spinner from '../Spinner/Spinner';
+import PropTypes from 'prop-types'
 const ForgetPassPopup = ({ setforgetPassword }) => {
   const {  setLoading,Loading} = useContext(StoreContext);
   const {AdminforgetPass} =useContext(AdminStoreContext);
@@ -43,11 +44,9 @@ const ForgetPassPopup = ({ setforgetPassword }) => {
     if(res.error){
       seterror(res.msg);
       setverifyOTP(false)
-      const timeout = setTimeout(() => {
+      setTimeout(() => {
         seterror("")
       }, 2000);
-    }else{
-      
     }
     
   }
@@ -55,9 +54,9 @@ const ForgetPassPopup = ({ setforgetPassword }) => {
     setLoading(true)
     e.preventDefault();
     const urlvalidate  = AdminforgetPass? 'Admin/ValidateOTP' : 'ValidateOTP';
-    const res = await axios.post(`http://localhost:4000/${urlvalidate}`, { ...formdata }).then((res) => {
+    await axios.post(`http://localhost:4000/${urlvalidate}`, { ...formdata }).then((res) => {
       seterror(res.data.msg)
-      const timeout = setTimeout(() => {
+      setTimeout(() => {
         setforgetPassword(false);
         seterror("")
       }, 1500);
@@ -111,5 +110,7 @@ const ForgetPassPopup = ({ setforgetPassword }) => {
     </>
   )
 }
-
+ForgetPassPopup.propTypes = {
+  setforgetPassword: PropTypes.func.isRequired
+}
 export default ForgetPassPopup

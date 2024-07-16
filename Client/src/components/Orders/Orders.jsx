@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 import './Order.css'
 import { StoreContext } from '../../context/StoreContext'
 import { socket } from '../../Socket/Socket'
-const Orders = ({ Orders_Det }) => {
-  const { Orders_Details,fetchOrdersdetails,setOrders_Details } = useContext(StoreContext);
+const Orders = () => {
+  const { Orders_Details, fetchOrdersdetails } = useContext(StoreContext);
   useEffect(() => {
     socket.on("Refresh_Data_Client", async () => {
       await fetchOrdersdetails();
@@ -13,12 +13,8 @@ const Orders = ({ Orders_Det }) => {
   return (
     <>
 
-      {Orders_Details.length < 1 ?
-        <h4>
-          No previous orders
-        </h4>
-        :
-        Orders_Det.map((ele) => {
+      {
+        Orders_Details.map((ele) => {
           // Create a Date object with the desired date and time
           const customDate = new Date(ele.createdAt);
 

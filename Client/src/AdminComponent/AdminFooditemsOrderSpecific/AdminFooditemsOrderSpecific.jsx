@@ -36,7 +36,6 @@ const AdminFooditemsOrderSpecific = () => {
                     // Format the custom date and time according to the options
                     const ISTDateTime = customDate.toLocaleString('en-IN', options);
                     setdate(ISTDateTime.split(', '));
-                    console.log(date)
                 }
             } catch (e) {
                 console.log(e);

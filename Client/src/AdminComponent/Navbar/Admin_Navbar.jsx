@@ -2,7 +2,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./Admin_Navbar.css";
 import { assets } from "../../assets/assets";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation ,useNavigate} from "react-router-dom";
 import axios from "axios";
 import { AdminStoreContext } from "../../context/AdminStoreContextProvider";
 import { socket } from "../../Socket/Socket";
@@ -18,6 +18,8 @@ const Admin_Navbar = () => {
   const [menu, setMenu] = useState(path);
   const DropdownValue = ["Food is being prepared", "Out for delivery", "Delivered"]
   const {
+    setnewnoti,
+    newnoti,
     AdminAuthenticated,
     setAdminAuthenticated,
     setShowloginModel,
@@ -27,9 +29,10 @@ const Admin_Navbar = () => {
     fetchadminorders,
   } = useContext(AdminStoreContext);
   const [showNotification, setshowNotification] = useState(false);
+  const navigate = useNavigate();
   useEffect(() => {
     socket.on("Handle_Order", (data) => {
-      console.log(data);
+      setnewnoti(true);
       setnotification([data, ...notification]);
     });
     socket.on("Refresh_Data_Client", () => {
@@ -54,7 +57,7 @@ const Admin_Navbar = () => {
           { withCredentials: true }
         )
         .then((res) => {
-          console.log(res);
+          navigate('/admin')
           return res.data;
         })
         .catch((e) => {
@@ -83,7 +86,7 @@ const Admin_Navbar = () => {
             <>
               <p
                 className="admin-dropdown-toggle"
-                onClick={() => setshowNotification(!showNotification)}
+                onClick={() => {setshowNotification(!showNotification);setnewnoti(false)}}
               >
                 <i className="fa-solid fa-bell fa-2xl"></i>
               </p>
@@ -109,7 +112,6 @@ const Admin_Navbar = () => {
                         const Date = DateTime(ele.createdAt);
                         // console.log(ele);
                         return (
-                          <>
                             <div
                               className="admin-notification"
                               key={ele._id}
@@ -122,12 +124,12 @@ const Admin_Navbar = () => {
                               <div style={{ margin: "5px 0px 0px 0px" }}>
                                 {
                                   ele.Status === "Delivered" ? `${ele.Status}` :
-                                    <select class="select_stage" onChange={(e) => HandleOrderNotification(ele._id, e.target.value, ele.Order_id)}>
+                                    <select className="select_stage" onChange={(e) => HandleOrderNotification(ele._id, e.target.value, ele.Order_id)}>
                                       <option value={ele.Status} default>{ele.Status}</option>
                                       {
                                         DropdownValue.map((elem, index) => {
                                           return (<option className="select_stage_items" value={`${elem}`} key={`${index}`}>{elem}</option>)
-                                          // <li><a class="dropdown-item" href="#">Action</a></li>
+                                          // <li><a className="dropdown-item" href="#">Action</a></li>
                                         })
                                       }
                                     </select>
@@ -136,7 +138,7 @@ const Admin_Navbar = () => {
                               </div>
                               <p
                                 style={{
-                                  "text-align": "right",
+                                  "textAlign": "right",
                                 }}
                               >
                                 <Link to={`/admin/order/${ele.Order_id}`} className="Expand-text">
@@ -144,12 +146,11 @@ const Admin_Navbar = () => {
                                 </Link>
                               </p>
                             </div>
-                          </>
                         );
                       }
                     })}
                     <p
-                      style={{ "text-align": "right", padding: "10px 0px" }}
+                      style={{ "textAlign": "right", padding: "10px 0px" }}
                     >
                       <Link
                         className="Expand-text"
@@ -218,11 +219,11 @@ const Admin_Navbar = () => {
                 <>
                   <p
                     className="admin-dropdown-toggle"
-                    onClick={() => setshowNotification(!showNotification)}
+                    onClick={() => {setshowNotification(!showNotification);setnewnoti(false)}}
                   >
                     <i className="fa-solid fa-bell fa-2xl"></i>
                   </p>
-                  <span className="notification-count">3</span>
+                  <span className="notification-count">{newnoti?<i className="fa-solid fa-circle"></i>:""}</span>
                 </>
               ) : (
                 ""
@@ -244,7 +245,6 @@ const Admin_Navbar = () => {
                             const Date = DateTime(ele.createdAt);
                             // console.log(ele);
                             return (
-                              <>
                                 <div
                                   className="admin-notification"
                                   key={ele._id}
@@ -257,12 +257,12 @@ const Admin_Navbar = () => {
                                   <div style={{ margin: "5px 0px 0px 0px" }}>
                                     {
                                       ele.Status === "Delivered" ? `${ele.Status}` :
-                                        <select class="select_stage" onChange={(e) => HandleOrderNotification(ele._id, e.target.value, ele.Order_id)}>
+                                        <select className="select_stage" onChange={(e) => HandleOrderNotification(ele._id, e.target.value, ele.Order_id)}>
                                           <option value={ele.Status} default>{ele.Status}</option>
                                           {
                                             DropdownValue.map((elem, index) => {
                                               return (<option className="select_stage_items" value={`${elem}`} key={`${index}`}>{elem}</option>)
-                                              // <li><a class="dropdown-item" href="#">Action</a></li>
+                                              // <li><a className="dropdown-item" href="#">Action</a></li>
                                             })
                                           }
                                         </select>
@@ -271,7 +271,7 @@ const Admin_Navbar = () => {
                                   </div>
                                   <p
                                     style={{
-                                      "text-align": "right",
+                                      "textAlign": "right",
                                     }}
                                   >
                                     <Link to={`/admin/order/${ele.Order_id}`} className="Expand-text">
@@ -279,12 +279,11 @@ const Admin_Navbar = () => {
                                     </Link>
                                   </p>
                                 </div>
-                              </>
                             );
                           }
                         })}
                         <p
-                          style={{ "text-align": "right", padding: "10px 0px" }}
+                          style={{ "textAlign": "right", padding: "10px 0px" }}
                         >
                           <Link
                             className="Expand-text"

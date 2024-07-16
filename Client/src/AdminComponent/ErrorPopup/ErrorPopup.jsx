@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import './ErrorPopup.css'
 import { AdminStoreContext } from '../../context/AdminStoreContextProvider'
-const ErrorPopup = ({Error}) => {
+const ErrorPopup = () => {
   const {responsemsg,setresponsemsg} = useContext(AdminStoreContext);
   useEffect(()=>{
     setTimeout(() => {

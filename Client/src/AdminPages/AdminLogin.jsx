@@ -4,7 +4,7 @@ import { AdminStoreContext } from '../context/AdminStoreContextProvider';
 import axios from 'axios';
 
 const AdminLogin = () => {
-  const { setAdminAuthenticated, setShowloginModel,setresponsemsg,fetchadminMenu, fetchadminorders, setAdminforgetPass,AdminforgetPass} = useContext(AdminStoreContext)
+  const { setAdminAuthenticated, setShowloginModel,setresponsemsg,fetchadminMenu, fetchadminorders, setAdminforgetPass} = useContext(AdminStoreContext)
   const [currState, setCurrState] = useState("AdminLogin");
   const [error, seterror] = useState("");
   const [formdata, setformdata] = useState({
@@ -51,6 +51,11 @@ const AdminLogin = () => {
       fetchadminMenu();
       fetchadminorders();
     }
+  }
+  const HandleformSubmitSign=(e)=>{
+    e.preventDefault();
+    // Needs To be done
+    setresponsemsg("Admin Already Registered")
   }
   return (
     <div className='login-popup'>

@@ -56,33 +56,39 @@ const Notification = () => {
       </div>
       <div className="Notification-container">
         <table className="Notification-Table">
-          <tr className="Notification-Rows fw-bold">
-            <td className="Notification-cell">Order_ID</td>
-            <td className="Notification-cell">User_Name</td>
-            <td className="Notification-cell">Date</td>
-            <td className="Notification-cell">Time</td>
-            <td className="Notification-cell">Status</td>
-            <td className="Notification-cell">View more</td>
-          </tr>
-          {
-            notification.map((ele) => {
-              const Date = DateTime(ele.createdAt);
-              return (
-                <tr className="Notification-Rows" key={ele._id}>
-                  <td className="Notification-cell">{ele.Order_id}</td>
-                  <td className="Notification-cell">{ele.User_Name}</td>
-                  <td className="Notification-cell">{Date.formattedDate}</td>
-                  <td className="Notification-cell">{Date.formattedTime}</td>
-                  <td className="Notification-cell">{ele.Status}</td>
-                  <td className="Notification-cell">
-                    <Link to={`/admin/order/${ele.Order_id}`} className="View_detail">
-                      View More
-                    </Link>
-                  </td>
-                </tr>
-              )
-            })
-          }
+          <thead>
+            <tr className="Notification-Rows fw-bold">
+              <td className="Notification-cell">Order_ID</td>
+              <td className="Notification-cell">User_Name</td>
+              <td className="Notification-cell">Date</td>
+              <td className="Notification-cell">Time</td>
+              <td className="Notification-cell">Status</td>
+              <td className="Notification-cell">View more</td>
+            </tr>
+
+          </thead>
+          <tbody>
+
+            {
+              currentItems.map((ele) => {
+                const Date = DateTime(ele.createdAt);
+                return (
+                  <tr className="Notification-Rows" key={ele._id}>
+                    <td className="Notification-cell">{ele.Order_id}</td>
+                    <td className="Notification-cell">{ele.User_Name}</td>
+                    <td className="Notification-cell">{Date.formattedDate}</td>
+                    <td className="Notification-cell">{Date.formattedTime}</td>
+                    <td className="Notification-cell">{ele.Status}</td>
+                    <td className="Notification-cell">
+                      <Link to={`/admin/order/${ele.Order_id}`} className="View_detail">
+                        View More
+                      </Link>
+                    </td>
+                  </tr>
+                )
+              })
+            }
+          </tbody>
         </table>
 
       </div>
