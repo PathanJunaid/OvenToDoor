@@ -7,7 +7,8 @@ const AdminFooditemsOrderSpecific = () => {
     const { Menu, fetchadminorders, Orders } = useContext(AdminStoreContext);
     const [Address, setAddress] = useState(null);
     const [items, setitems] = useState([]);
-    const [id, setid] = useState(useParams()._id);
+    const id= useParams()._id;
+    const [date,setdate] = useState(null)
     const [Load, setLoad] = useState(true)
     const [status, setstatus] = useState(null)
     let total_amount = 0;
@@ -26,7 +27,16 @@ const AdminFooditemsOrderSpecific = () => {
                 if (order) {
                     setitems(order.Items_id);
                     setAddress(order.Address);
-                    setstatus(order.Status)
+                    setstatus(order.Status);
+                    const customDate = new Date(order.createdAt);
+                    const options = {
+                        timeZone: 'Asia/Kolkata', // Set timezone to Indian Standard Time
+                        hour12: false, // Use 24-hour format
+                    };
+                    // Format the custom date and time according to the options
+                    const ISTDateTime = customDate.toLocaleString('en-IN', options);
+                    setdate(ISTDateTime.split(', '));
+                    console.log(date)
                 }
             } catch (e) {
                 console.log(e);
@@ -37,7 +47,34 @@ const AdminFooditemsOrderSpecific = () => {
         <>
             {Load ? <Spinner /> :
 
-                <>
+                <div className='food-display-list-order'>
+
+                    <div>
+                        <div className="Order-id-time">Order id : {id}</div>
+                        <div className="Order-id-time">
+                            {
+                                date !== null ?
+                                    <>
+                                        <p className="date">Date: {date[0]}</p>
+                                        <p className="time">Time:{date[1]}</p>
+                                    </>
+                                    : ""
+                            }
+                        </div>
+                    </div>
+                    <div className='food-item-order-head'>
+                        <div className="food-item-info-order">
+                            <h3>Item</h3>
+                        </div>
+                        <div className='item-Quantity-order'>
+                            <h3 className='d-sm-none'>Qty</h3>
+                            <h3 className='d-none d-sm-block'>Quantity</h3>
+                        </div>
+                        <div>
+                            <h3>Price</h3>
+
+                        </div>
+                    </div>
                     {
                         items !== undefined ? items.map((ele) => {
 
@@ -111,7 +148,7 @@ const AdminFooditemsOrderSpecific = () => {
                             Rs.{total_amount + 30}/-
                         </h4>
                     </div>
-                </>
+                </div>
             }
         </>
 
