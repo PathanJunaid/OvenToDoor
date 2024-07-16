@@ -3,8 +3,12 @@ import './ForgetPassPopup.css'
 import { assets } from '../../assets/assets'
 import axios from 'axios'
 import { StoreContext } from '../../context/StoreContext'
-const ForgetPassPopup = ({ setShowLogin, setforgetPassword, forgetPassword }) => {
-  const { setAuthenticated ,setLoading} = useContext(StoreContext);
+import { AdminStoreContext } from '../../context/AdminStoreContextProvider'
+import Spinner from '../Spinner/Spinner';
+import PropTypes from 'prop-types'
+const ForgetPassPopup = ({ setforgetPassword }) => {
+  const {  setLoading,Loading} = useContext(StoreContext);
+  const {AdminforgetPass} =useContext(AdminStoreContext);
   const [error, seterror] = useState("");
   const [verifyOTP, setverifyOTP] = useState(false)
   const [formdata, setformdata] = useState({
@@ -12,6 +16,10 @@ const ForgetPassPopup = ({ setShowLogin, setforgetPassword, forgetPassword }) =>
     Password: "",
     OTP: ""
   })
+  useEffect(()=>{
+    setLoading(false);
+
+  },[])
   const HandleInput = (e) => {
     const { name, value } = e.target;
     setformdata((prevState) => ({
@@ -22,7 +30,8 @@ const ForgetPassPopup = ({ setShowLogin, setforgetPassword, forgetPassword }) =>
   const HandleformGetOTP = async (e) => {
     setLoading(true)
     e.preventDefault();
-    const res = await axios.post('http://localhost:4000/forgetpassword', { ...formdata }).then((res) => {
+    const urlforgetpass  = AdminforgetPass? 'Admin/forgetpassword' : 'forgetpassword';
+    const res = await axios.post(`http://localhost:4000/${urlforgetpass}`, { ...formdata }).then((res) => {
       setverifyOTP(true);
       console.log(res)
       return res.data
@@ -35,20 +44,19 @@ const ForgetPassPopup = ({ setShowLogin, setforgetPassword, forgetPassword }) =>
     if(res.error){
       seterror(res.msg);
       setverifyOTP(false)
-      const timeout = setTimeout(() => {
+      setTimeout(() => {
         seterror("")
       }, 2000);
-    }else{
-
     }
     
   }
   const HandleformVerifyOTP = async (e) => {
     setLoading(true)
     e.preventDefault();
-    const res = await axios.post('http://localhost:4000/ValidateOTP', { ...formdata }).then((res) => {
+    const urlvalidate  = AdminforgetPass? 'Admin/ValidateOTP' : 'ValidateOTP';
+    await axios.post(`http://localhost:4000/${urlvalidate}`, { ...formdata }).then((res) => {
       seterror(res.data.msg)
-      const timeout = setTimeout(() => {
+      setTimeout(() => {
         setforgetPassword(false);
         seterror("")
       }, 1500);
@@ -62,6 +70,8 @@ const ForgetPassPopup = ({ setShowLogin, setforgetPassword, forgetPassword }) =>
     
   }
   return (
+    <>
+    {Loading? <Spinner/> : ""}
     <div className='login-popup'>
       <form className="login-popup-container" onSubmit={(e) => {
         verifyOTP ?HandleformVerifyOTP(e): HandleformGetOTP(e)  
@@ -97,7 +107,10 @@ const ForgetPassPopup = ({ setShowLogin, setforgetPassword, forgetPassword }) =>
         }
       </form>
     </div>
+    </>
   )
 }
-
+ForgetPassPopup.propTypes = {
+  setforgetPassword: PropTypes.func.isRequired
+}
 export default ForgetPassPopup

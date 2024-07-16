@@ -1,12 +1,15 @@
 // AddressForm.jsx
 
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import './AddressForm.css'; // Import the CSS file for styling
 import {assets} from '../../assets/assets';
 import axios from "axios"
+import PropTypes from 'prop-types'
+import { StoreContext } from '../../context/StoreContext';
 // assets/cross_icon'; // Import the close icon image
 
 const AddressForm = ({ setShowAddressPopup }) => {
+  const {fetchAddressdetails} =useContext(StoreContext)
   const [formData, setFormData] = useState({
     Name: '',
     House_No: '',
@@ -24,7 +27,7 @@ const AddressForm = ({ setShowAddressPopup }) => {
   const handleSubmit = async(e) => {
     e.preventDefault();
     // Add logic here to handle form submission, such as sending data to backend
-    const res = await axios.post('http://localhost:4000/Add/Address',{...formData},{withCredentials:true}).then((res)=>{
+    await axios.post('http://localhost:4000/Add/Address',{...formData},{withCredentials:true}).then(async(res)=>{
       setFormData({
         Name: '',
         House_No: '',
@@ -32,7 +35,8 @@ const AddressForm = ({ setShowAddressPopup }) => {
         City: '',
         PIN: '',
         Mobile_No:""
-      })
+      });
+      await fetchAddressdetails();
       return res;
     }).catch((e)=>{
       console.log(e)
@@ -112,5 +116,6 @@ const AddressForm = ({ setShowAddressPopup }) => {
     </div>
   );
 };
+AddressForm.propTypes = {setShowAddressPopup:PropTypes.func}
 
 export default AddressForm;

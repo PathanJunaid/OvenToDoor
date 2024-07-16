@@ -2,125 +2,151 @@ import React, { useContext, useEffect, useState } from 'react'
 import { StoreContext } from '../../context/StoreContext';
 import { useParams } from 'react-router-dom';
 import './FooditemsOrder.css'
-const FooditemsOrder = ({ Orders_Details }) => {
-    const { food_list } = useContext(StoreContext);
+const FooditemsOrder = () => {
+    const { Food_List, fetchOrdersdetails, Orders_Details } = useContext(StoreContext);
     const [Address, setAddress] = useState(null);
     const [items, setitems] = useState([]);
-    const [id, setid] = useState(useParams().id)
+    const id = useParams().id;
+    const [date, setdate] = useState(null)
+    const [Load, setLoad] = useState(true)
+    const [status, setstatus] = useState(null)
     // const []
     let total_amount = 0;
     useEffect(() => {
-        try {
-            const order = Orders_Details.find((ele) => ele.Order_id === id);
-            if (order) {
-                setitems(order.Items_id);
-                setAddress(...order.Address)
+        const fetchData = async () => {
+            setLoad(true);
+            await fetchOrdersdetails();
+            setLoad(false);
+        };
+        fetchData();
+    }, []);
+    useEffect(() => {
+        if (Orders_Details) {
+            try {
+                const order = Orders_Details.find((ele) => ele.Order_id === id);
+                if (order) {
+                    setitems(order.Items_id);
+                    setAddress(order.Address);
+                    setstatus(order.Status);
+                    const customDate = new Date(order.createdAt);
+                    const options = {
+                        timeZone: 'Asia/Kolkata', // Set timezone to Indian Standard Time
+                        hour12: false, // Use 24-hour format
+                    };
+                    // Format the custom date and time according to the options
+                    const ISTDateTime = customDate.toLocaleString('en-IN', options);
+                    setdate(ISTDateTime.split(', '));
+                }
+            } catch (e) {
+                console.log(e);
             }
-            console.log(order)
-
-        } catch (e) {
-
         }
     }, [Orders_Details, id]);
-    console.log(Address);
     return (
         <>
+            {Load ? <p>Loading...</p> :
 
-            {
-                items !== undefined ? items.map((ele) => {
-                    total_amount += ele.quantity * food_list[ele.Pizza_id - 1].Price;
-                    return (
-
-                        <div className='food-item-order' key={ele.Pizza_id}>
-                            <div className="food-item-img-container-order">
-                                <img className='food-item-image-order' src={food_list[ele.Pizza_id - 1].Image} alt='' />
-                            </div>
-                            <div className="food-item-info-order">
-                                <div className="food-item-name-rating-order">
-                                    <p>{food_list[ele.Pizza_id - 1].Pizza_Name}</p>
-                                    {/* <img src={assets.rating_starts} alt="" /> */}
-                                </div>
-                                <p className="food-item-desc-order">
-                                    {food_list[ele.Pizza_id - 1].Description}
-                                </p>
-                                <p className="food-item-price-order">
-                                    Rs.{food_list[ele.Pizza_id - 1].Price}/-
-                                </p>
-                            </div>
-                            <div className='item-Quantity-order'>
-                                <p>{ele.quantity}</p>
-                            </div>
-                            <div>
-                                <p>Rs.{ele.quantity * food_list[ele.Pizza_id - 1].Price}/-</p>
-
-                            </div>
+                <div className='food-display-list-order'>
+                    <div>
+                        <div className="Order-id-time">Order id : {id}</div>
+                        <div className="Order-id-time">
+                            {
+                                date !== null ?
+                                    <>
+                                        <p className="date">Date: {date[0]}</p>
+                                        <p className="time">Time:{date[1]}</p>
+                                    </> 
+                                    : ""
+                            }
                         </div>
-                    )
-                })
+                    </div>
+                    <div className='food-item-order-head'>
+                        <div className="food-item-info-order">
+                            <h3>Item</h3>
+                        </div>
+                        <div className='item-Quantity-order'>
+                            <h3 className='d-sm-none'>Qty</h3>
+                            <h3 className='d-none d-sm-block'>Quantity</h3>
+                        </div>
+                        <div>
+                            <h3>Price</h3>
 
+                        </div>
+                    </div>
 
-                    : ""
-            }
-            <div className='Order-Address-container'>
-                <h3>Delivered Address</h3>
-                <ul className='Order-address'>
                     {
-                        Address !==null?
-                        <li key={Address._id}>
-                            <>
-                                <div>
-                                    <p>{Address.Name}</p>
-                                    <p>{Address.Mobile_No}</p>
-                                    <p>{Address.House_No}, {Address.Area}, {Address.City}, {Address.PIN}</p>
+                        items !== undefined ? items.map((ele) => {
+                            const item = Food_List.find((Dish) => {
+                                return Dish.Dish_Id === ele.Dish_Id;
+                            })
+                            total_amount += ele.quantity * item.Price;
+                            return (
+                                <div className='food-item-order' key={ele.Dish_Id}>
+                                    <div className="food-item-img-container-order">
+                                        <img className='food-item-image-order' src={item.Image} alt='' />
+                                    </div>
+                                    <div className="food-item-info-order">
+                                        <div className="food-item-name-rating-order">
+                                            <p>{item.DishName}</p>
+                                            {/* <img src={assets.rating_starts} alt="" /> */}
+                                        </div>
+                                        <p className="food-item-desc-order d-lg-block d-none">
+                                            {item.Description}
+                                        </p>
+                                        <p className="food-item-price-order">
+                                            Rs.{item.Price}/-
+                                        </p>
+                                    </div>
+                                    <div className='item-Quantity-order'>
+                                        <p>{ele.quantity}</p>
+                                    </div>
+                                    <div>
+                                        <p>Rs.{ele.quantity * item.Price}/-</p>
 
+                                    </div>
                                 </div>
-                            </>
-
-                        </li>
-                        : ""
+                            )
+                        })
+                            : ""
                     }
-                </ul>
+                    <div className='Order-Address-container'>
+                        {
+                            Address !== null ?
+                                <div className='Order-Address-Status'>
+                                    <div className='Order-address'>
+                                        <h4>Delivered Address</h4>
+                                        <p>{Address.Name}</p>
+                                        <p>{Address.Mobile_No}</p>
+                                        <p>{Address.House_No}, {Address.Area}, {Address.City}, {Address.PIN}</p>
+                                    </div>
+                                    <div>
+                                        <h4>Status</h4>
+                                        <p>{status}</p>
+                                    </div>
+                                </div>
+                                : ""
+                        }
 
-            </div>
-            <div className='food-item-order'>
-                <div className='Total_amount'>
-                    <h3>Delivery Charges</h3>
+
+                    </div>
+                    <div className='Total-Del-box d-flex justify-content-between'>
+                        <h4>Delivery Charge</h4>
+                        <h4>
+
+                            Rs.30/-
+                        </h4>
+                    </div>
+                    <div className='Total-Del-box'>
+                        <h4>Total Amount</h4>
+                        <h4>
+
+                            Rs.{total_amount + 30}/-
+                        </h4>
+                    </div>
                 </div>
-                <div className='food-item-info-order'>
-
-                </div>
-                <div>
-
-                </div>
-
-                <div>
-                    <h3>
-
-                        Rs.30/-
-                    </h3>
-
-                </div>
-            </div>
-            <div className='food-item-order'>
-                <div className='Total_amount'>
-                    <h3>Total Amount</h3>
-                </div>
-                <div className='food-item-info-order'>
-
-                </div>
-                <div>
-
-                </div>
-
-                <div>
-                    <h3>
-
-                        Rs.{total_amount + 30}/-
-                    </h3>
-
-                </div>
-            </div>
+            }
         </>
+
     )
 }
 

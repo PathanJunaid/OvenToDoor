@@ -4,20 +4,21 @@ import './CartItem.css'
 import { assets } from '../../assets/assets';
 import axios from 'axios';
 
-const CartItem = (Items) => {
-    const { cartItems, food_list, addToCart, removeFromCart, Address } = useContext(StoreContext);
+const CartItem = ({setShowAddressPopup}) => {
+    const { cartItems,Food_List, addToCart, removeFromCart, Address,setLoading } = useContext(StoreContext);
     const [ChooseAddress, setChoosedAddress] = useState(null);
+    const [errormsg,seterrormsg] = useState("")
     let count = 0;
     let totalamount = 0;
     let Delivery = 30;
     const cartItemsArray = Object.entries(cartItems).map(([key, value]) => {
-        totalamount += food_list[key - 1].Price * value;
+        const item = Food_List.find((ele)=>{return ele.Dish_Id ==key})
+        totalamount += item.Price * value;
         return (
-            // {console.log(key)}
             <div key={key} className="each_item">
                 <div className="items">{count += 1}</div>
-                <div className="items">{food_list[key - 1].Pizza_Name}</div>
-                <div className="items">&#x20B9; {food_list[key - 1].Price}</div>
+                <div className="items">{item.DishName}</div>
+                <div className="items">&#x20B9; {item.Price}</div>
                 <div className='food-item-counter_cart'>
                     <img onClick={() => removeFromCart(key)} src={assets.remove_icon_red} alt="" />
                     <p>{cartItems[key]}</p>
@@ -25,7 +26,7 @@ const CartItem = (Items) => {
 
                 </div>
                 <div className="items">
-                    &#x20B9; {food_list[key - 1].Price * value}.00
+                    &#x20B9; {item.Price * value}.00
                 </div> {/* Accessing Price property from value object */}
             </div>
         )
@@ -39,19 +40,29 @@ const CartItem = (Items) => {
         Delivery = 0
 
     }
-    const ProceedtoCheckout = async () => {
-        const res = await axios.post('http://localhost:4000/payment', { Amount, ChooseAddress }, { withCredentials: true }).then((res) => {
+    const ProceedtoCheckout = async (e) => {
+        e.preventDefault();
+        if(ChooseAddress===null){
+            seterrormsg("Choose Address before Proceeding with the order.")
+            setTimeout(() => {
+                seterrormsg("")
+            }, 2000);
+            return;
+        }
+        setLoading(true);
+        await axios.post('http://localhost:4000/payment', { Amount, ChooseAddress }, { withCredentials: true }).then((res) => {
             console.log(res)
             if (!res.data.error) {
                 // window.location.href = res.URL;
-                window.location.replace(res.data.URL);
+                // setresponsemsg(res.data.msg);
+                window.location.replace(`${res.data.URL}?msg=${encodeURIComponent(res.data.msg)}`);
             }
         }).catch((e) => { console.log(e) })
     }
     return (
         <>
             <div className='Cart_items_container'>
-                <div className="each_item_header each_item">
+                <div className="each_item">
                     <div className="items">Item</div>
                     <div className="items">Title</div>
                     <div className="items">Price</div>
@@ -59,67 +70,77 @@ const CartItem = (Items) => {
                     <div className="items">Total</div>
                 </div>
                 {
-                    cartItemsArray.length === 0 ? <h4 className='empty-cart'>
-                        No item in cart
-                    </h4>
-                        : ""
+                    cartItemsArray.length === 0 ? <>
+                        <h4 className='empty-cart'>
+                            No item in cart
+                        </h4>
+
+                    </>
+                        :
+                        <>
+                            {cartItemsArray.map((ele) => {
+                                return (
+                                    ele
+                                )
+                            })}
+                            {
+                                ChooseAddress === null ?
+                                    <div className='Address-container'>
+                                        {Address.length === 0 ? <div>
+                                            <button className='btn-all' onClick={()=>setShowAddressPopup(true)}> Add Address</button>
+                                        </div> :
+                                            <>
+                                                <h3>Choose from saved Addreses</h3>
+                                                <ul className='cart-address'>
+                                                    {Address.map((address) => {
+                                                        return (
+                                                            <li key={address._id}>
+                                                                <>
+                                                                    <div>
+                                                                        <p>{address.Name}</p>
+                                                                        <p>{address.Mobile_No}</p>
+                                                                        <p>{address.House_No}, {address.Area}, {address.City}, {address.PIN}</p>
+
+                                                                    </div>
+                                                                    <button onClick={() => setChoosedAddress(address)}>Choose Address</button>
+                                                                </>
+
+                                                            </li>
+                                                        )
+                                                    })}
+                                                </ul>
+                                            </>
+                                        }
+                                    </div> :
+                                    <div className='Address-container'>
+                                        {Address.length === 0 ? <div>No address</div> :
+                                            <>
+                                                <h3>Selected Addreses</h3>
+                                                <ul className='cart-address'>
+                                                    {
+                                                        <li key={ChooseAddress._id}>
+                                                            <>
+                                                                <div>
+                                                                    <p>{ChooseAddress.Name}</p>
+                                                                    <p>{ChooseAddress.Mobile_No}</p>
+                                                                    <p>{ChooseAddress.House_No}, {ChooseAddress.Area}, {ChooseAddress.City}, {ChooseAddress.PIN}</p>
+
+                                                                </div>
+                                                                <button onClick={() => setChoosedAddress(null)}>Change Address</button>
+                                                            </>
+
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </>
+                                        }
+                                    </div>
+                            }
+                        </>
                 }
 
-                {cartItemsArray}
 
             </div>
-            {
-                ChooseAddress === null ?
-                    <div>
-                        {Address.length === 0 ? <div>No address</div> :
-                            <>
-                                <h3>Choose from saved Addreses</h3>
-                                <ul className='cart-address'>
-                                    {Address.map((address, index) => {
-                                        // console.log(address)
-                                        return (
-                                            <li key={address._id}>
-                                                <>
-                                                    <div>
-                                                        <p>{address.Name}</p>
-                                                        <p>{address.Mobile_No}</p>
-                                                        <p>{address.House_No}, {address.Area}, {address.City}, {address.PIN}</p>
-
-                                                    </div>
-                                                    <button onClick={() => setChoosedAddress(address)}>Choose Address</button>
-                                                </>
-
-                                            </li>
-                                        )
-                                    })}
-                                </ul>
-                            </>
-                        }
-                    </div> :
-                    <div>
-                        {Address.length === 0 ? <div>No address</div> :
-                            <>
-                                <h3>Selected Addreses</h3>
-                                <ul className='cart-address'>
-                                    {
-                                        <li key={ChooseAddress._id}>
-                                            <>
-                                                <div>
-                                                    <p>{ChooseAddress.Name}</p>
-                                                    <p>{ChooseAddress.Mobile_No}</p>
-                                                    <p>{ChooseAddress.House_No}, {ChooseAddress.Area}, {ChooseAddress.City}, {ChooseAddress.PIN}</p>
-
-                                                </div>
-                                                <button onClick={() => setChoosedAddress(null)}>Change Address</button>
-                                            </>
-
-                                        </li>
-                                    }
-                                </ul>
-                            </>
-                        }
-                    </div>
-            }
             {
                 Amount > 0 ?
 
@@ -140,7 +161,8 @@ const CartItem = (Items) => {
                             <span>{Delivery + totalamount}</span>
                         </div>
                         <div className=''>
-                            <button className='PaymentButton' onClick={(e) => { ProceedtoCheckout() }}>Proceed to Checkout</button>
+                            <p className='fw-bold fs-6 text-danger my-2'>{errormsg}</p>
+                            <button className='PaymentButton' onClick={(e) => { ProceedtoCheckout(e) }}>Proceed to Checkout</button>
                         </div>
                     </div>
                     :

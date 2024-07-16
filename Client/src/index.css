@@ -1,31 +1,167 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
-*{
-  padding:0;
-  margin:0;
-  box-sizing:border-box;
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
   font-family: Outfit;
   scroll-behavior: smooth;
 
 }
-body{
+
+.btn-all {
+  background: transparent;
+  font-size: 16px;
+  color: #49557e;
+  border: 1px solid tomato;
+  padding: 10px 30px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-all:hover {
+  background-color: tomato;
+  transition-duration: 0.3s;
+}
+
+body {
   min-height: 100vh;
 
 }
-a{
+
+a {
   text-decoration: none;
-  color:inherit;
-}
-.app{
-  width:80%;
-  margin: auto;
+  color: inherit;
 }
 
+.app {
+  /* width:80%; */
+  margin: auto;
+}
+.admin-app{
+  margin: 2rem auto;
+}
+
+p {
+  margin: 0px !important;
+}
+.navbar-boxshadow{
+  box-shadow: 0px 0px 6px 4px tomato;
+}
+.Order-id-time{
+  font-weight: 500;
+}
 @keyframes fadeIn {
-  0%{
+  0% {
     opacity: 0;
   }
-  100%{
+
+  100% {
     opacity: 1;
   }
-  
+
+}
+
+@media (max-width:576px) {
+  .food-display-list {
+    grid-template-columns: 0.8fr !important;
+    justify-content: center;
+    /* margin: ; */
+  }
+
+  .food-display h4 {
+    margin-left: 40px;
+  }
+
+  .navbar-menu {
+    display: grid;
+    grid-template-columns: 0.4fr;
+    margin-bottom: 2px;
+  }
+
+  .navbar .logo {
+    width: 100px;
+  }
+}
+
+@media (max-width:750px) {
+  .navbar-menu {
+    display: block;
+  }
+
+  .navbar .logo {
+    width: 120px;
+  }
+
+}
+
+@media (max-width:900px) {
+  .navbar .logo {
+    width: 150px;
+  }
+
+  .navbar-menu {
+    gap: 15px;
+    font-size: 16px;
+  }
+
+  .navbar-right {
+    gap: 20px;
+  }
+
+  .navbar-right img {
+    width: 20px;
+  }
+
+  .navbar-right button {
+    padding: 7px 20px;
+    font-size: 15px;
+  }
+
+  .food-item-info-order {
+    padding: 5px 10px !important;
+  }
+
+  .food-item-name-rating-order {
+    margin-bottom: 0px !important;
+  }
+
+  .each_item {
+    grid-template-columns: auto auto auto auto auto;
+  }
+
+  .header {
+    height: 60vw !important;
+  }
+
+}
+
+@media (min-width:901px) and (max-width:1025px) {
+  .navbar .logo {
+    width: 150px;
+  }
+
+  .navbar-menu {
+    gap: 20px;
+    font-size: 17px;
+  }
+
+  .navbar-right {
+    gap: 30px;
+    margin: 0px;
+  }
+
+  .navbar-right img {
+    width: 22px;
+  }
+
+  .navbar-right button {
+    padding: 8px 25px;
+  }
+
+  .header {
+    height: 35vw !important;
+  }
+
 }

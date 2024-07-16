@@ -1,14 +1,27 @@
-.Order_Container{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    color: grey;
-    font-weight: 700;
-    align-items: center;
-    margin: 3rem 0rem;
+.Order_Details_Container {
+    display: block;
+    overflow: auto;
 }
-.Inavlid-request{
+
+.Order_Rows {
+    color: grey;
+}
+
+.Inavlid-request {
     color: red;
     margin: 50px 0px;
     font-size: 20px;
     text-align: center;
+}
+
+.table-container {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+    overflow-x: auto;
+}
+
+.table-cell {
+    padding: 10px;
+    white-space: nowrap;
 }

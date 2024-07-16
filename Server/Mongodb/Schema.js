@@ -1,9 +1,8 @@
-import mongoose from "mongoose";
-import { type } from "os";
+import mongoose, { Schema } from "mongoose";
 
 const Add_to_cart_Schema = new mongoose.Schema({
-    Pizza_id: {
-        type: Number,
+    Dish_Id: {
+        type: String,
     },
     quantity: { type: Number, default: 1 },
     Delivered: { type: Boolean, default: false },
@@ -73,6 +72,11 @@ const Order_Schema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    Payment_id:{
+        type:String,
+        required:true,
+        unique:true
+    },
     User_id: {
         type: String,
         required: true,
@@ -86,7 +90,7 @@ const Order_Schema = new mongoose.Schema({
         required: true,
     },
     Address:{
-        type: [Address],
+        type: Address,
     },
     Status: {
         type: String,
@@ -107,6 +111,38 @@ const OTP_Schema = new mongoose.Schema({
     }
 });
 export const OTP_Connect = mongoose.model('OTP', OTP_Schema);
+
+// Status Values 
+// wait => Notification send to Admin waiting to confirm order
+// Confirmed=> Order Confirmed
+// Dispatch => Order Dispathced
+// Delivered => Order Delivered
+
+const Notification_Schema = new mongoose.Schema({
+    Order_id:{
+        type :String,
+        required:true,
+        unique:true,
+    },
+    User_Name:{
+        type : String,
+        required:true,
+    },
+    User_id:{
+        type : Schema.Types.ObjectId,
+        ref:'Userdata',
+        required:true
+    },
+    Status:{
+        type:String,
+        default: "waiting"
+    },
+    createdAt:{
+        type : Date,
+        default:Date.now,
+    }
+})
+export const  Notification_Connect = new mongoose.model('Notification',Notification_Schema)
 const Admin_Schema = new mongoose.Schema({
     Email: {
         type: String,
@@ -130,6 +166,9 @@ const Admin_Schema = new mongoose.Schema({
     },
     Longitude: {
         type: Number
+    },
+    Notification: {
+        type: [],
     }
 });
 export const Admin_Connect = mongoose.model('Admin', Admin_Schema);
