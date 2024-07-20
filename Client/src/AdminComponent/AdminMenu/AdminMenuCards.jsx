@@ -25,7 +25,7 @@ const FoodItem = ({ SingleItem })=> {
     if (!value) {
       return ""
     }
-    await axios.delete(`http://localhost:4000/Admin/Delete_Item/${_id}`).then((res) => {
+    await axios.delete(`${import.meta.env.VITE_APP_Server}/Admin/Delete_Item/${_id}`).then((res) => {
       if (res.data.status) {
         setresponsemsg(res.data.msg);
         setTimeout(() => {

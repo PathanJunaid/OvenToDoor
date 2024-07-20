@@ -60,7 +60,7 @@ const MenuForm = ({ Data, Req_Type }) => {
         formDataToSend.append(key, formData[key]);
       }
       if (Req_Type) {
-        await axios.post('http://localhost:4000/Admin/NewPizza', formDataToSend, {
+        await axios.post(`${import.meta.env.VITE_APP_Server}/Admin/NewPizza`, formDataToSend, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
@@ -87,7 +87,7 @@ const MenuForm = ({ Data, Req_Type }) => {
           setresponsemsg('Unable to add Dish')
         });
       } else {
-        await axios.post(`http://localhost:4000/Admin/Edit_Item/${_id}`, formDataToSend, {
+        await axios.post(`${import.meta.env.VITE_APP_Server}/Admin/Edit_Item/${_id}`, formDataToSend, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }

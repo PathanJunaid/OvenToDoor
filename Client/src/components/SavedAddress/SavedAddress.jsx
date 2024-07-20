@@ -31,7 +31,7 @@ const SavedAddress = ({ onClose }) => {
   };
 
   const handleSave = async(index) => {
-    await axios.post(`http://localhost:4000/Address/edit`,{...editFormData,index},{withCredentials:true}).then((res)=>{
+    await axios.post(`${import.meta.env.VITE_APP_Server}/Address/edit`,{...editFormData,index},{withCredentials:true}).then((res)=>{
       console.log(res);
       setAddress(res.data.data)
       setmsg(res.data.msg);
@@ -46,7 +46,7 @@ const SavedAddress = ({ onClose }) => {
   };
 
   const handleDelete = async(index) => {
-    await axios.post(`http://localhost:4000/Address/delete`,{index},{withCredentials:true}).then((res)=>{
+    await axios.post(`${import.meta.env.VITE_APP_Server}/Address/delete`,{index},{withCredentials:true}).then((res)=>{
       console.log(res);
       setAddress(res.data.data)
       setmsg(res.data.msg);

@@ -22,7 +22,7 @@ const LoginPopup = ({ setShowLogin,setforgetPassword }) => {
   }
   const HandleformSubmit = async (e) => {
     e.preventDefault();
-    const res = await axios.post('http://localhost:4000/login', { ...formdata }, { withCredentials: true }).then((res) => {
+    const res = await axios.post(`${import.meta.env.VITE_APP_Server}/login`, { ...formdata }, { withCredentials: true }).then((res) => {
       return res.data
     }).catch((e) => {
       console.log(e)
@@ -43,7 +43,7 @@ const LoginPopup = ({ setShowLogin,setforgetPassword }) => {
   }
   const HandleformSubmitSign = async (e) => {
     e.preventDefault();
-    const res = await axios.post('http://localhost:4000/Signup', { ...formdata }, { withCredentials: true }).then((res) => {
+    const res = await axios.post(`${import.meta.env.VITE_APP_Server}/Signup`, { ...formdata }, { withCredentials: true }).then((res) => {
       return res.data
     }).catch((e) => {
       console.log(e)

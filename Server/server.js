@@ -2,7 +2,6 @@ import express from "express";
 import dotenv from 'dotenv';
 import http from 'http'
 import cookieParser from "cookie-parser";
-import fs from 'fs';
 import { Db_Connection } from './Mongodb/Db_Connection.js';
 import cors from 'cors';
 import User_routes from "./Routes/User_routes.js";
@@ -11,9 +10,6 @@ import multer from "multer";
 import { Server } from 'socket.io';
 import { setupSocket } from "./Socket/Socket.js";
 import logger from 'morgan'
-import path from "path";
-
-import { fileURLToPath } from 'url';
 dotenv.config();
 const app = express();
 const server = http.createServer(app);
@@ -27,7 +23,6 @@ const io = new Server(server, {
 });
 // Connect to MongoDB
 Db_Connection();
-
 const corsOptions = {
   origin: process.env.Client,
   methods: ["POST", "GET", "PUT", "DELETE"],
@@ -55,42 +50,8 @@ app.use((err, req, res, next) => {
 setupSocket(io);
 
 const port = process.env.port;
-// var ;
-// Reading json pizza Data 
-const Pizza_Data_Function = async () => {
-  return new Promise((resolve, reject) => {
-    fs.readFile('./API/Pizza.json', 'utf-8', (err, data) => {
-      if (err) {
-        console.error("Error reading the file:", err);
-        reject(err); // Reject the promise if there's an error
-        return;
-      }
-      try {
-        // Parse the JSON data and resolve the promise with it
-        const parsedData = JSON.parse(data);
-        resolve(parsedData);
-      } catch (error) {
-        console.error("Error parsing JSON data:", error);
-        reject(error); // Reject the promise if there's an error while parsing
-      }
-    });
-  });
-};
-const Pizza_Data = await Pizza_Data_Function()
-  .then((data) => {
-    return data;
-  })
-  .catch((error) => {
-    console.error("Error occurred:", error);
-  });
-// Get the current directory name
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-app.use(express.static(path.join(__dirname, '../Client')));
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public', 'index.html'));
-});
+
 server.listen(port, () => {
-  console.log(`Server running on port : ${port}`);
+  console.log(`Server running on port : ${port} ${process.env.Client}`);
 })
 export { io };

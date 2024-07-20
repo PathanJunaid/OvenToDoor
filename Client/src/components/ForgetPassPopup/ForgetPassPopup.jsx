@@ -31,7 +31,7 @@ const ForgetPassPopup = ({ setforgetPassword }) => {
     setLoading(true)
     e.preventDefault();
     const urlforgetpass  = AdminforgetPass? 'Admin/forgetpassword' : 'forgetpassword';
-    const res = await axios.post(`http://localhost:4000/${urlforgetpass}`, { ...formdata }).then((res) => {
+    const res = await axios.post(`${import.meta.env.VITE_APP_Server}/${urlforgetpass}`, { ...formdata }).then((res) => {
       setverifyOTP(true);
       console.log(res)
       return res.data
@@ -54,7 +54,7 @@ const ForgetPassPopup = ({ setforgetPassword }) => {
     setLoading(true)
     e.preventDefault();
     const urlvalidate  = AdminforgetPass? 'Admin/ValidateOTP' : 'ValidateOTP';
-    await axios.post(`http://localhost:4000/${urlvalidate}`, { ...formdata }).then((res) => {
+    await axios.post(`${import.meta.env.VITE_APP_Server}/${urlvalidate}`, { ...formdata }).then((res) => {
       seterror(res.data.msg)
       setTimeout(() => {
         setforgetPassword(false);

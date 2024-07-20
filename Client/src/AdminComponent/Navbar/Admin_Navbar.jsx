@@ -52,7 +52,7 @@ const Admin_Navbar = () => {
     if (data) {
       const res = await axios
         .post(
-          "http://localhost:4000/admin/logout",
+          `${import.meta.env.VITE_APP_Server}/admin/logout`,
           {},
           { withCredentials: true }
         )

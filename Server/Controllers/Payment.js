@@ -58,7 +58,7 @@ export const Payment = async (req, res) => {
         notes: {
             policy_name: "food Order"
         },
-        callback_url: `http://localhost:4000/payment/status/${Order_id}`,
+        callback_url: `${process.env.SERVER}/payment/status/${Order_id}`,
         callback_method: "get"
     }).then().catch((e) => { 
         console.log(e)
@@ -148,7 +148,7 @@ export const PaymentStatus = async (req, res) => {
             text: `Dear Admin,
                 Order with Order ID ${req.query.razorpay_payment_link_id} is confirmed.
                 Please Check your visit your order page.
-                http://localhost:5173/Admin/Order
+                ${process.env.Client}/Admin/Order
             ` 
             // Plaese add Order Link 
         };
@@ -160,7 +160,7 @@ export const PaymentStatus = async (req, res) => {
             text: `Dear ${update_order.User_Name},
                 Order with Order ID ${req.query.razorpay_payment_link_id} is confirmed.
                 Please Check your visit your order page.
-                http://localhost:5173/order
+                ${process.env.Client}/order
             ` 
             // Plaese add Order Link 
         };

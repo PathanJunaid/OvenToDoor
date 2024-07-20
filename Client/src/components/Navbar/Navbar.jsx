@@ -18,7 +18,7 @@ const Navbar = ({ setShowLogin, setShowAddressPopup }) => { // Add setShowAddres
   const { setCartItems, Authenticated, setAuthenticated, cartItems } = useContext(StoreContext);
   const [ShowSavedAddresses, setShowSavedAddresses] = useState(false)
   const fetchcartitems = async () => {
-    const res = await axios.post('http://localhost:4000/cartitems', {}, { withCredentials: true }).then((res) => { return res }).catch(() => { });
+    const res = await axios.post(`${import.meta.env.VITE_APP_Server}/cartitems`, {}, { withCredentials: true }).then((res) => { return res }).catch(() => { });
     console.log(res);
     if (!res.code || res.auth) {
       const transformData = () => {
@@ -35,7 +35,7 @@ const Navbar = ({ setShowLogin, setShowAddressPopup }) => { // Add setShowAddres
   const HandleLogout = async () => {
     const data = window.confirm("Do you want to Logout?")
     if (data) {
-      const res = await axios.post('http://localhost:4000/logout', {}, { withCredentials: true }).then((res) => {
+      const res = await axios.post(`${import.meta.env.VITE_APP_Server}/logout`, {}, { withCredentials: true }).then((res) => {
         console.log(res);
         navigate('/');
         return res.data;

@@ -50,11 +50,9 @@ const CartItem = ({setShowAddressPopup}) => {
             return;
         }
         setLoading(true);
-        await axios.post('http://localhost:4000/payment', { Amount, ChooseAddress }, { withCredentials: true }).then((res) => {
+        await axios.post(`${import.meta.env.VITE_APP_Server}/payment`, { Amount, ChooseAddress }, { withCredentials: true }).then((res) => {
             console.log(res)
             if (!res.data.error) {
-                // window.location.href = res.URL;
-                // setresponsemsg(res.data.msg);
                 window.location.replace(`${res.data.URL}?msg=${encodeURIComponent(res.data.msg)}`);
             }
         }).catch((e) => { console.log(e) })

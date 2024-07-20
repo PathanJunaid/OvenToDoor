@@ -16,7 +16,7 @@ const AdminStoreContextProvider = (props) => {
   const [MenuCategory, setMenuCategory] = useState("Salad")
   const fetchadminorders = async () => {
     try {
-      const response = await axios.post("http://localhost:4000/Admin/orders", {}, { withCredentials: true }).then((res) => {
+      const response = await axios.post(`${import.meta.env.VITE_APP_Server}/Admin/orders`, {}, { withCredentials: true }).then((res) => {
         return res.data;
       }).catch((e) => {
         console.log(e)
@@ -35,7 +35,7 @@ const AdminStoreContextProvider = (props) => {
   }
   const fetchadminMenu = async () => {
     try {
-      const response = await axios.post("http://localhost:4000/Admin/Menu", {}, { withCredentials: true }).then((res) => {
+      const response = await axios.post(`${import.meta.env.VITE_APP_Server}/Admin/Menu`, {}, { withCredentials: true }).then((res) => {
         return res.data;
       }).catch((e) => {
         console.log(e)
