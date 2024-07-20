@@ -27,7 +27,7 @@ const AddressForm = ({ setShowAddressPopup }) => {
   const handleSubmit = async(e) => {
     e.preventDefault();
     // Add logic here to handle form submission, such as sending data to backend
-    await axios.post('http://localhost:4000/Add/Address',{...formData},{withCredentials:true}).then(async(res)=>{
+    await axios.post(`${import.meta.env.VITE_APP_Server}/Add/Address`,{...formData},{withCredentials:true}).then(async(res)=>{
       setFormData({
         Name: '',
         House_No: '',

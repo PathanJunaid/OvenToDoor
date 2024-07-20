@@ -13,7 +13,7 @@ const StoreContextProvider = (props) => {
     const [Food_List, setFood_List] = useState([]);
     const addToCart = async (Dish_Id) => {
         try {
-            const res = await axios.put('http://localhost:4000/addtocart', { Dish_Id }, { withCredentials: true }).then((res) => {
+            const res = await axios.put(`${import.meta.env.VITE_APP_Server}/addtocart`, { Dish_Id }, { withCredentials: true }).then((res) => {
                 setCartItems((prev) => {
                     const updatedItems = { ...prev };
                     if (!updatedItems[Dish_Id]) {
@@ -36,7 +36,7 @@ const StoreContextProvider = (props) => {
 
     const removeFromCart = async (Dish_Id) => {
         try {
-            await axios.put('http://localhost:4000/removeitem', { Dish_Id }, { withCredentials: true });
+            await axios.put(`${import.meta.env.VITE_APP_Server}/removeitem`, { Dish_Id }, { withCredentials: true });
             // console.log(res);
 
             setCartItems((prev) => {
@@ -53,7 +53,7 @@ const StoreContextProvider = (props) => {
         }
     }
     const fetchFood_List = async () => {
-        await axios.post('http://localhost:4000/ShowMenu').then((res) => {
+        await axios.post(`${import.meta.env.VITE_APP_Server}/ShowMenu`).then((res) => {
             if (res.data.status) {
                 setFood_List(res.data.data);
 
@@ -67,7 +67,7 @@ const StoreContextProvider = (props) => {
         setLoading(false)
     }
     const fetchcartitems = async () => {
-        const res = await axios.post('http://localhost:4000/cartitems', {}, { withCredentials: true }).then((res) => { return res.data }).catch(() => { });
+        const res = await axios.post(`${import.meta.env.VITE_APP_Server}/cartitems`, {}, { withCredentials: true }).then((res) => { return res.data }).catch(() => { });
         if ((!res.code || res.auth) && res.data.length !== undefined) {
             // console.log(res.data)
             const transformData = () => {
@@ -82,7 +82,7 @@ const StoreContextProvider = (props) => {
     }
     const fetchOrdersdetails = async () => {
         try {
-            const response = await axios.post('http://localhost:4000/Orders', {}, { withCredentials: true });
+            const response = await axios.post(`${import.meta.env.VITE_APP_Server}/Orders`, {}, { withCredentials: true });
             setOrders_Details(response.data.data.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt))); // Assuming response.data is the array of orders
             // console.log(response.data)
             if (response.data.auth) {
@@ -97,7 +97,7 @@ const StoreContextProvider = (props) => {
     }
     const fetchAddressdetails = async () => {
         try {
-            const response = await axios.post('http://localhost:4000/Address', {}, { withCredentials: true });
+            const response = await axios.post(`${import.meta.env.VITE_APP_Server}/Address`, {}, { withCredentials: true });
             // console.log(response.data.data)
             setAddress(response.data.data); // Assuming response.data is the array of orders
             // console.log(response.data)

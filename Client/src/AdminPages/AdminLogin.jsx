@@ -22,7 +22,7 @@ const AdminLogin = () => {
   }
   const HandleformSubmit = async (e) => {
     e.preventDefault();
-    const res = await axios.post('http://localhost:4000/Admin/login', { ...formdata }, { withCredentials: true }).then((res) => {
+    const res = await axios.post(`${import.meta.env.VITE_APP_Server}/Admin/login`, { ...formdata }, { withCredentials: true }).then((res) => {
       return res.data
     }).catch((e) => {
       console.log(e)
