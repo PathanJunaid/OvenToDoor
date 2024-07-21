@@ -2,11 +2,13 @@ import React, { useContext, useState } from 'react'
 import { assets } from '../assets/assets';
 import { AdminStoreContext } from '../context/AdminStoreContextProvider';
 import axios from 'axios';
+import { StoreContext } from '../context/StoreContext';
 
 const AdminLogin = () => {
   const { setAdminAuthenticated, setShowloginModel,setresponsemsg,fetchadminMenu, fetchadminorders, setAdminforgetPass} = useContext(AdminStoreContext)
   const [currState, setCurrState] = useState("AdminLogin");
   const [error, seterror] = useState("");
+  const {setLoading} = useContext(StoreContext)
   const [formdata, setformdata] = useState({
     User_Name: "",
     Email: "",
@@ -21,6 +23,7 @@ const AdminLogin = () => {
     }));
   }
   const HandleformSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
     const res = await axios.post(`${import.meta.env.VITE_APP_Server}/Admin/login`, { ...formdata }, { withCredentials: true }).then((res) => {
       return res.data
@@ -51,6 +54,7 @@ const AdminLogin = () => {
       fetchadminMenu();
       fetchadminorders();
     }
+    setLoading(false);
   }
   const HandleformSubmitSign=(e)=>{
     e.preventDefault();
