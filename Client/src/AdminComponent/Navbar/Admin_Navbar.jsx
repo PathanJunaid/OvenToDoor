@@ -2,7 +2,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./Admin_Navbar.css";
 import { assets } from "../../assets/assets";
-import { Link, useLocation ,useNavigate} from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AdminStoreContext } from "../../context/AdminStoreContextProvider";
 import { socket } from "../../Socket/Socket";
@@ -78,40 +78,40 @@ const Admin_Navbar = () => {
   return (
     <div className="navbar navbar-expand-lg navbar-boxshadow" id="Navbar">
 
-    <div className="container">
-      <img className="logo" src={assets.logo} alt="" />
-      <div className='toggle-cart-navbar d-lg-none'>
-        <div className="admin-dropdown">
-          {AdminAuthenticated ? (
-            <>
-              <p
-                className="admin-dropdown-toggle"
-                onClick={() => {setshowNotification(!showNotification);setnewnoti(false)}}
-              >
-                <i className="fa-solid fa-bell fa-2xl"></i>
-              </p>
-              <span className="notification-count">3</span>
-            </>
-          ) : (
-            ""
-          )}
-          {showNotification ? (
-            <>
-              <div className="dropdown-arrow">
-                <i id="fa-bounce" className="fa-solid fa-caret-down"></i>
-              </div>
-              {notification.length != 0 ? (
-                <>
-                  <div className="admin-dropdown-menu">
-                    {notification.map((ele, index) => {
-                      // console.log(ele)
-                      if (index > 2) {
-                        // setnotificationlength(notification);
-                        // continue
-                      } else {
-                        const Date = DateTime(ele.createdAt);
-                        // console.log(ele);
-                        return (
+      <div className="container">
+        <img className="logo" src={assets.logo} alt="" />
+        <div className='toggle-cart-navbar d-lg-none'>
+          <div className="admin-dropdown">
+            {AdminAuthenticated ? (
+              <>
+                <p
+                  className="admin-dropdown-toggle"
+                  onClick={() => { setshowNotification(!showNotification); setnewnoti(false) }}
+                >
+                  <i className="fa-solid fa-bell fa-2xl"></i>
+                </p>
+                <span className="notification-count">{newnoti ? <i className="fa-solid fa-circle"></i> : ""}</span>
+              </>
+            ) : (
+              ""
+            )}
+            {showNotification ? (
+              <>
+                <div className="dropdown-arrow">
+                  <i id="fa-bounce" className="fa-solid fa-caret-down"></i>
+                </div>
+                {notification.length != 0 ? (
+                  <>
+                    <div className="admin-dropdown-menu">
+                      {notification.map((ele, index) => {
+                        // console.log(ele)
+                        if (index > 2) {
+                          // setnotificationlength(notification);
+                          // continue
+                        } else {
+                          const Date = DateTime(ele.createdAt);
+                          // console.log(ele);
+                          return (
                             <div
                               className="admin-notification"
                               key={ele._id}
@@ -146,105 +146,105 @@ const Admin_Navbar = () => {
                                 </Link>
                               </p>
                             </div>
-                        );
-                      }
-                    })}
-                    <p
-                      style={{ "textAlign": "right", padding: "10px 0px" }}
-                    >
-                      <Link
-                        className="Expand-text"
-                        to="/admin/notifications"
-                        onClick={() => {
-                          setshowNotification(false);
-                        }}
+                          );
+                        }
+                      })}
+                      <p
+                        style={{ "textAlign": "right", padding: "10px 0px" }}
                       >
-                        Expand
-                      </Link>
-                    </p>
-                  </div>
-                </>
-              ) : (
-                ""
-              )}
-            </>
-          ) : (
-            ""
-          )}
+                        <Link
+                          className="Expand-text"
+                          to="/admin/notifications"
+                          onClick={() => {
+                            setshowNotification(false);
+                          }}
+                        >
+                          Expand
+                        </Link>
+                      </p>
+                    </div>
+                  </>
+                ) : (
+                  ""
+                )}
+              </>
+            ) : (
+              ""
+            )}
+          </div>
+          <button className="btn btn-primary d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+            <span className="navbar-toggler-icon"></span>
+          </button>
         </div>
-        <button className="btn btn-primary d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
-          <span className="navbar-toggler-icon"></span>
-        </button>
-      </div>
-      <div className="collapse navbar-collapse justify-content-around" id="navbarSupportedContent">
-        <ul className="navbar-menu">
-          <Link
-            to="/admin"
-            onClick={() => setMenu(null)}
-            className={menu === null ? "active" : ""}
-          >
-            Menu
-          </Link>
-          {AdminAuthenticated ? (
-            <>
-              <Link
-                to="/admin/order"
-                onClick={() => setMenu("order")}
-                className={menu === "order" ? "active" : ""}
-              >
-                Order
-              </Link>
-              <Link to='/admin/Menuform' onClick={() => setMenu("Menuform")}
-                className={menu === "Menuform" ? "active" : ""}>
-                Add Dish
-              </Link>
-            </>
-          ) : (
-            ""
-          )}
-          <a
-            href="#footer"
-            onClick={() => setMenu("contact-us")}
-            className={menu === "contact-us" ? "active" : ""}
-          >
-            {" "}
-            contact-us
-          </a>
-        </ul>
-        <div className="navbar-right">
-          <div>
-            {/* <i className="fa-solid fa-bell fa-2xl"></i> */}
-            <div className="admin-dropdown">
-              {AdminAuthenticated ? (
-                <>
-                  <p
-                    className="admin-dropdown-toggle"
-                    onClick={() => {setshowNotification(!showNotification);setnewnoti(false)}}
-                  >
-                    <i className="fa-solid fa-bell fa-2xl"></i>
-                  </p>
-                  <span className="notification-count">{newnoti?<i className="fa-solid fa-circle"></i>:""}</span>
-                </>
-              ) : (
-                ""
-              )}
-              {showNotification ? (
-                <>
-                  <div className="dropdown-arrow">
-                    <i id="fa-bounce" className="fa-solid fa-caret-down"></i>
-                  </div>
-                  {notification.length != 0 ? (
-                    <>
-                      <div className="admin-dropdown-menu">
-                        {notification.map((ele, index) => {
-                          // console.log(ele)
-                          if (index > 2) {
-                            // setnotificationlength(notification);
-                            // continue
-                          } else {
-                            const Date = DateTime(ele.createdAt);
-                            // console.log(ele);
-                            return (
+        <div className="collapse navbar-collapse justify-content-around" id="navbarSupportedContent">
+          <ul className="navbar-menu">
+            <Link
+              to="/admin"
+              onClick={() => setMenu(null)}
+              className={menu === null ? "active" : ""}
+            >
+              Menu
+            </Link>
+            {AdminAuthenticated ? (
+              <>
+                <Link
+                  to="/admin/order"
+                  onClick={() => setMenu("order")}
+                  className={menu === "order" ? "active" : ""}
+                >
+                  Order
+                </Link>
+                <Link to='/admin/Menuform' onClick={() => setMenu("Menuform")}
+                  className={menu === "Menuform" ? "active" : ""}>
+                  Add Dish
+                </Link>
+              </>
+            ) : (
+              ""
+            )}
+            <a
+              href="#footer"
+              onClick={() => setMenu("contact-us")}
+              className={menu === "contact-us" ? "active" : ""}
+            >
+              {" "}
+              contact-us
+            </a>
+          </ul>
+          <div className="navbar-right">
+            <div>
+              {/* <i className="fa-solid fa-bell fa-2xl"></i> */}
+              <div className="admin-dropdown">
+                {AdminAuthenticated ? (
+                  <>
+                    <p
+                      className="admin-dropdown-toggle"
+                      onClick={() => { setshowNotification(!showNotification); setnewnoti(false) }}
+                    >
+                      <i className="fa-solid fa-bell fa-2xl"></i>
+                    </p>
+                    <span className="notification-count">{newnoti ? <i className="fa-solid fa-circle"></i> : ""}</span>
+                  </>
+                ) : (
+                  ""
+                )}
+                {showNotification ? (
+                  <>
+                    <div className="dropdown-arrow">
+                      <i id="fa-bounce" className="fa-solid fa-caret-down"></i>
+                    </div>
+                    {notification.length != 0 ? (
+                      <>
+                        <div className="admin-dropdown-menu">
+                          {notification.map((ele, index) => {
+                            // console.log(ele)
+                            if (index > 2) {
+                              // setnotificationlength(notification);
+                              // continue
+                            } else {
+                              const Date = DateTime(ele.createdAt);
+                              // console.log(ele);
+                              return (
                                 <div
                                   className="admin-notification"
                                   key={ele._id}
@@ -279,98 +279,98 @@ const Admin_Navbar = () => {
                                     </Link>
                                   </p>
                                 </div>
-                            );
-                          }
-                        })}
-                        <p
-                          style={{ "textAlign": "right", padding: "10px 0px" }}
-                        >
-                          <Link
-                            className="Expand-text"
-                            to="/admin/notifications"
-                            onClick={() => {
-                              setshowNotification(false);
-                            }}
+                              );
+                            }
+                          })}
+                          <p
+                            style={{ "textAlign": "right", padding: "10px 0px" }}
                           >
-                            Expand
-                          </Link>
-                        </p>
-                      </div>
-                    </>
-                  ) : (
-                    ""
-                  )}
-                </>
+                            <Link
+                              className="Expand-text"
+                              to="/admin/notifications"
+                              onClick={() => {
+                                setshowNotification(false);
+                              }}
+                            >
+                              Expand
+                            </Link>
+                          </p>
+                        </div>
+                      </>
+                    ) : (
+                      ""
+                    )}
+                  </>
+                ) : (
+                  ""
+                )}
+              </div>
+            </div>
+            <div>
+              {AdminAuthenticated ? (
+                <button
+                  onClick={() => {
+                    HandleLogout();
+                  }}
+                >
+                  Logout
+                </button>
               ) : (
-                ""
+                <button
+                  onClick={() => {
+                    setShowloginModel(true);
+                  }}
+                >
+                  Login
+                </button>
               )}
             </div>
           </div>
-          <div>
-            {AdminAuthenticated ? (
-              <button
-                onClick={() => {
-                  HandleLogout();
-                }}
+
+        </div>
+
+        {/* {for display width max width 980px navbar } */}
+        <div className="offcanvas offcanvas-start d-lg-none" tabIndex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+          <div className="offcanvas-header">
+            {/* <h5 className="offcanvas-title" id="offcanvasExampleLabel"></h5> */}
+            <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div className="offcanvas-body">
+            <ul className='navbar-menu'>
+              <Link
+                to="/admin"
+                onClick={() => { setMenu(null); HandleOffcanvas() }}
+                className={menu === null ? "active" : ""}
               >
-                Logout
-              </button>
-            ) : (
-              <button
-                onClick={() => {
-                  setShowloginModel(true);
-                }}
-              >
-                Login
-              </button>
-            )}
+                Menu
+              </Link>
+              {AdminAuthenticated ?
+                <>
+                  <Link
+                    to="/admin/order"
+                    onClick={() => { setMenu("order"); HandleOffcanvas() }}
+                    className={menu === "order" ? "active" : ""}
+                  >
+                    Order
+                  </Link>
+                  <Link to='/admin/Menuform' onClick={() => { setMenu("Menuform"); HandleOffcanvas() }}
+                    className={menu === "Menuform" ? "active" : ""}>
+                    Add Dish
+                  </Link>
+                </>
+                : ""}
+              <a href='#footer' onClick={() => { setMenu("contact-us"); HandleOffcanvas() }} className={menu === 'contact-us' ? 'active' : ''}>Contact-us</a>
+            </ul>
+            <ul className="navbar-right ms-auto"> {/* Added ms-auto for right alignment */}
+              <div>
+                {AdminAuthenticated ?
+                  <button onClick={() => { HandleLogout(); HandleOffcanvas() }}>Logout</button> :
+                  <button onClick={() => { setShowloginModel(true); HandleOffcanvas() }}>Sign In</button>}
+              </div>
+            </ul>
           </div>
         </div>
-
       </div>
-
-      {/* {for display width max width 980px navbar } */}
-      <div className="offcanvas offcanvas-start d-lg-none" tabIndex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-        <div className="offcanvas-header">
-          {/* <h5 className="offcanvas-title" id="offcanvasExampleLabel"></h5> */}
-          <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div className="offcanvas-body">
-          <ul className='navbar-menu'>
-            <Link
-              to="/admin"
-              onClick={() => { setMenu(null); HandleOffcanvas() }}
-              className={menu === null ? "active" : ""}
-            >
-              Menu
-            </Link>
-            {AdminAuthenticated ?
-              <>
-                <Link
-                  to="/admin/order"
-                  onClick={() => { setMenu("order"); HandleOffcanvas() }}
-                  className={menu === "order" ? "active" : ""}
-                >
-                  Order
-                </Link>
-                <Link to='/admin/Menuform' onClick={() => { setMenu("Menuform"); HandleOffcanvas() }}
-                  className={menu === "Menuform" ? "active" : ""}>
-                  Add Dish
-                </Link>
-              </>
-              : ""}
-            <a href='#footer' onClick={() => { setMenu("contact-us"); HandleOffcanvas() }} className={menu === 'contact-us' ? 'active' : ''}>Contact-us</a>
-          </ul>
-          <ul className="navbar-right ms-auto"> {/* Added ms-auto for right alignment */}
-            <div>
-              {AdminAuthenticated ?
-                <button onClick={() => { HandleLogout(); HandleOffcanvas() }}>Logout</button> :
-                <button onClick={() => { setShowloginModel(true); HandleOffcanvas() }}>Sign In</button>}
-            </div>
-          </ul>
-        </div>
-      </div>
-    </div>
     </div>
 
   );
