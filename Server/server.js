@@ -48,7 +48,9 @@ app.use((err, req, res, next) => {
 // MiddleWare Ends
 
 setupSocket(io);
-
+app.get('/',(req,res)=>{
+  res.send("Server Connected")
+})
 const port = process.env.port;
 
 server.listen(port, () => {

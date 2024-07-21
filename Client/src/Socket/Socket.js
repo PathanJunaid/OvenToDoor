@@ -1,5 +1,6 @@
 import { Manager} from 'socket.io-client';
-const manager =new Manager('http://localhost:5000',{
+import react from 'react';
+const manager =new Manager(`${import.meta.env.VITE_APP_Server}`,{
     reconnectionDelayMax: 10000,
 })
 const socket = manager.socket('/');
