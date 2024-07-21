@@ -21,16 +21,18 @@ const App = () => {
   const [forgetPassword, setforgetPassword] = useState(false)
   const [showAddressPopup, setShowAddressPopup] = useState(false);
   const { setresponsemsg, AdminforgetPass, setAdminforgetPass } = useContext(AdminStoreContext);
-  const { Authenticated, Loading, fetchFood_List, fetchAddressdetails, fetchOrdersdetails, fetchcartitems } = useContext(StoreContext);
+  const { Authenticated, Loading, setLoading, fetchFood_List, fetchAddressdetails, fetchOrdersdetails, fetchcartitems } = useContext(StoreContext);
   useEffect(() => {
     socket.on("Refresh_Data_Client", async () => {
       await fetchOrdersdetails();
     })
     const fetchData = async () => {
+      setLoading(true);
       await fetchFood_List();
       await fetchcartitems();
       await fetchOrdersdetails();
       await fetchAddressdetails();
+      setLoading(false);
     };
 
     fetchData();
