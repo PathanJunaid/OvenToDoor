@@ -63,7 +63,7 @@ export const Login_Cont = async (req, res) => {
         // console.log(req)
 
         const jwt_token = jwt.sign({ id: isuser._id }, process.env.jwtsecrettoken);
-        res.cookie(process.env.cookiename, jwt_token, { maxAge: 6000000, httpOnly: false,SameSite:'none' })
+        res.cookie(process.env.cookiename, jwt_token, { maxAge: 6000000, httpOnly: false,sameSite:'none' })
         response.error = false;
         response.msg = "Sign in Completed";
         response.auth = true
