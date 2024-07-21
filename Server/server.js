@@ -18,6 +18,7 @@ const io = new Server(server, {
   cors: {
     origin: process.env.Client, // Allow access from this origin
     methods: ['GET', 'POST'], // Allow methods
+    allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
   }
 });
@@ -26,6 +27,7 @@ Db_Connection();
 const corsOptions = {
   origin: process.env.Client,
   methods: ["POST", "GET", "PUT", "DELETE"],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
 };
 // MiddleWare 
