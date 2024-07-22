@@ -32,7 +32,7 @@ const App = () => {
       await fetchcartitems();
       await fetchOrdersdetails();
       await fetchAddressdetails();
-      setLoading(false);
+      // setLoading(false);
     };
 
     fetchData();

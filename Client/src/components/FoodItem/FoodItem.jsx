@@ -4,20 +4,39 @@ import { assets } from '../../assets/assets'
 import { StoreContext } from '../../context/StoreContext'
 import PropTypes from 'prop-types'
 const FoodItem = ({ Food_Item }) => {
-  const { cartItems, addToCart, removeFromCart } = useContext(StoreContext);
+  const { cartItems, addToCart, removeFromCart, Authenticated } = useContext(StoreContext);
   return (
     <div className='food-item'>
       <>
         <div className="food-item-img-container">
           <img className='food-item-image' src={Food_Item.Image} alt='' />
-          {!cartItems[Food_Item.Dish_Id]
-            ? <img className='add' onClick={() => addToCart(Food_Item.Dish_Id)} src={assets.add_icon_white} alt='' />
-            : <div className='food-item-counter'>
-              <img onClick={() => removeFromCart(Food_Item.Dish_Id)} src={assets.remove_icon_red} alt="" />
-              <p>{cartItems[Food_Item.Dish_Id]}</p>
-              <img onClick={() => addToCart(Food_Item.Dish_Id)} src={assets.add_icon_green} alt="" />
-
-            </div>
+          {
+            Authenticated ? (
+              !cartItems[Food_Item.Dish_Id] ? (
+                <img
+                  className='add'
+                  onClick={() => addToCart(Food_Item.Dish_Id)}
+                  src={assets.add_icon_white}
+                  alt='Add to cart'
+                />
+              ) : (
+                <div className='food-item-counter'>
+                  <img
+                    onClick={() => removeFromCart(Food_Item.Dish_Id)}
+                    src={assets.remove_icon_red}
+                    alt='Remove from cart'
+                  />
+                  <p>{cartItems[Food_Item.Dish_Id]}</p>
+                  <img
+                    onClick={() => addToCart(Food_Item.Dish_Id)}
+                    src={assets.add_icon_green}
+                    alt='Add to cart'
+                  />
+                </div>
+              )
+            ) : (
+              ""
+            )
           }
         </div>
         <div className="food-item-info">
@@ -38,7 +57,7 @@ const FoodItem = ({ Food_Item }) => {
 }
 FoodItem.propTypes = {
   Food_Item: PropTypes.shape({
-    Dish_Id:PropTypes.string,
+    Dish_Id: PropTypes.string,
     DishName: PropTypes.string,
     Category: PropTypes.string,
     Description: PropTypes.string,
