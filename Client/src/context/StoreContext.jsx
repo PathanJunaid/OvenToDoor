@@ -72,17 +72,22 @@ const StoreContextProvider = (props) => {
         setLoading(false)
     }
     const fetchcartitems = async () => {
-        const res = await axios.post(`${import.meta.env.VITE_APP_Server}/cartitems`, {}, { withCredentials: true }).then((res) => { return res.data }).catch(() => { });
-        if ((!res.code || res.auth) && res.data.length !== undefined) {
-            // console.log(res.data)
-            const transformData = () => {
-                return res.data.reduce((acc, item) => {
-                    // Convert Pizza_id to string to ensure it works as a key in Mongoose Map
-                    acc[item.Dish_Id] = item.quantity;
-                    return acc;
-                }, {});
-            };
-            setCartItems(transformData);
+        try{
+            const res = await axios.post(`${import.meta.env.VITE_APP_Server}/cartitems`, {}, { withCredentials: true }).then((res) => { return res.data }).catch(() => { });
+            if ((!res.code || res.auth) && res.data.length !== undefined) {
+                // console.log(res.data)
+                const transformData = () => {
+                    return res.data.reduce((acc, item) => {
+                        // Convert Pizza_id to string to ensure it works as a key in Mongoose Map
+                        acc[item.Dish_Id] = item.quantity;
+                        return acc;
+                    }, {});
+                };
+                setCartItems(transformData);
+            }
+
+        }catch(e){
+            console.log(e);
         }
     }
     const fetchOrdersdetails = async () => {

@@ -22,7 +22,8 @@ export const User_Authenticated = async (req, res, next) => {
         if (!isuser) {
             res.send({
                 msg: "User not available",
-                auth: false
+                auth: false,
+                data:[]
             });
             return
         }

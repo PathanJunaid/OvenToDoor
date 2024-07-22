@@ -21,6 +21,7 @@ const App = () => {
   const [forgetPassword, setforgetPassword] = useState(false)
   const [showAddressPopup, setShowAddressPopup] = useState(false);
   const { setresponsemsg, AdminforgetPass, setAdminforgetPass } = useContext(AdminStoreContext);
+  const [wait, setWait] = useState(true);
   const { Authenticated, Loading, setLoading, fetchFood_List, fetchAddressdetails, fetchOrdersdetails, fetchcartitems } = useContext(StoreContext);
   useEffect(() => {
     socket.on("Refresh_Data_Client", async () => {
@@ -32,7 +33,8 @@ const App = () => {
       await fetchcartitems();
       await fetchOrdersdetails();
       await fetchAddressdetails();
-      // setLoading(false);
+      setLoading(false);
+      setWait(false)
     };
 
     fetchData();
@@ -43,37 +45,39 @@ const App = () => {
         const decodedMsg = decodeURIComponent(msg);
         console.log(decodedMsg); // This will log your message
         setresponsemsg(decodedMsg);
-    }
+      }
     } catch (e) {
-      console.log("No msg",e)
+      console.log("No msg", e)
     }
   }, [Authenticated, AdminforgetPass, setAdminforgetPass])
-  if (Loading) {
+  if (wait) {
     return (
       <>
         <Spinner />
       </>
     )
-  }
-  return (
-    <>
-      {Loading ? <Spinner /> : <></>}
-      {showLogin ? <LoginPopup setShowLogin={setShowLogin} setforgetPassword={setforgetPassword} /> : <></>}
-      {forgetPassword || AdminforgetPass ? <ForgetPassPopup setShowLogin={setShowLogin} setforgetPassword={setforgetPassword} forgetPassword={forgetPassword} /> : <></>}
-      {showAddressPopup ? <AddressPopup setShowAddressPopup={setShowAddressPopup} /> : null}
+  } else {
 
-      <Navbar setShowLogin={setShowLogin} setShowAddressPopup={setShowAddressPopup} />
-      <div className='app container'>
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/cart' element={<Cart setShowAddressPopup={setShowAddressPopup}/>} />
-          <Route path='/order' element={<Placeholder />} />
-          <Route path='/order/:id' element={<Specific_Order />} />
-        </Routes>
-      </div>
-      <Footer />
-    </>
-  )
+    return (
+      <>
+        {Loading ? <Spinner /> : <></>}
+        {showLogin ? <LoginPopup setShowLogin={setShowLogin} setforgetPassword={setforgetPassword} /> : <></>}
+        {forgetPassword || AdminforgetPass ? <ForgetPassPopup setShowLogin={setShowLogin} setforgetPassword={setforgetPassword} forgetPassword={forgetPassword} /> : <></>}
+        {showAddressPopup ? <AddressPopup setShowAddressPopup={setShowAddressPopup} /> : null}
+
+        <Navbar setShowLogin={setShowLogin} setShowAddressPopup={setShowAddressPopup} />
+        <div className='app container'>
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/cart' element={<Cart setShowAddressPopup={setShowAddressPopup} />} />
+            <Route path='/order' element={<Placeholder />} />
+            <Route path='/order/:id' element={<Specific_Order />} />
+          </Routes>
+        </div>
+        <Footer />
+      </>
+    )
+  }
 
 }
 
