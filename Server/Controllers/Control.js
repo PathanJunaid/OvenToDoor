@@ -23,9 +23,9 @@ export const cartitems = async (req, res) => {
     // checking if pizza already in cart 
     const Cart_data = user.Cart;
     const response = {
-        data: Cart_data,
+        data: Cart_data || [],
         auth: true,
-        error
+        error:""
     }
     res.send(response);
 }
