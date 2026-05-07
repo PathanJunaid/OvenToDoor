@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Navbar from './components/Navbar/Navbar'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useLocation } from 'react-router-dom'
 import Home from './pages/Home/Home'
 import Cart from './pages/Cart/Cart'
 import Placeholder from './pages/Placeholder/Placeholder'
@@ -8,79 +8,78 @@ import Footer from './components/Footer/Footer'
 import LoginPopup from './components/LoginPopup/LoginPopup'
 import ForgetPassPopup from './components/ForgetPassPopup/ForgetPassPopup'
 import { StoreContext } from './context/StoreContext'
-import axios from 'axios'
 import Specific_Order from './pages/SpecificOrder/Specific_Order'
 import Spinner from './components/Spinner/Spinner'
 import AddressPopup from './components/AddressPopup/AddressPopup'
+import { AdminStoreContext } from './context/AdminStoreContextProvider'
+import { socket } from './Socket/Socket'
 
 
 const App = () => {
-
+  const location = useLocation();
   const [showLogin, setShowLogin] = useState(false)
   const [forgetPassword, setforgetPassword] = useState(false)
   const [showAddressPopup, setShowAddressPopup] = useState(false);
-  const { setCartItems, setOrders_Details,Authenticated ,setAuthenticated,Loading,setAddress} = useContext(StoreContext);
-  const fetchcartitems = async () => {
-    const res = await axios.post('http://localhost:4000/cartitems', {}, { withCredentials: true }).then((res) => { return res.data }).catch((e) => { });
-    if ((!res.code || res.auth)&& res.data.length!==undefined) {
-      const transformData = () => {
-        return res.data.reduce((acc, item) => {
-          // Convert Pizza_id to string to ensure it works as a key in Mongoose Map
-          acc[item.Pizza_id.toString()] = item.quantity;
-          return acc;
-        }, {});
-      };
-      setCartItems(transformData);
-    }
-  }
-  const fetchOrdersdetails = async() => {
+  const { setresponsemsg, AdminforgetPass, setAdminforgetPass } = useContext(AdminStoreContext);
+  const [wait, setWait] = useState(true);
+  const { Authenticated, Loading, setLoading, fetchFood_List, fetchAddressdetails, fetchOrdersdetails, fetchcartitems } = useContext(StoreContext);
+  useEffect(() => {
+    socket.on("Refresh_Data_Client", async () => {
+      await fetchOrdersdetails();
+    })
+    const fetchData = async () => {
+      setLoading(true);
+      await fetchFood_List();
+      await fetchcartitems();
+      await fetchOrdersdetails();
+      await fetchAddressdetails();
+      setLoading(false);
+      setWait(false)
+    };
+
+    fetchData();
     try {
-      const response = await axios.post('http://localhost:4000/Orders', {}, { withCredentials: true });
-      setOrders_Details(response.data.data); // Assuming response.data is the array of orders
-      // console.log(response.data)
-      if(response.data.auth){
-        setAuthenticated(true);
-        return;
-      }else{
-        return
+      const urlParams = new URLSearchParams(location.search);
+      const msg = urlParams.get('msg');
+      if (msg) {
+        const decodedMsg = decodeURIComponent(msg);
+        console.log(decodedMsg); // This will log your message
+        setresponsemsg(decodedMsg);
       }
     } catch (e) {
+      console.log("No msg", e)
     }
-  }
-  const fetchAddressdetails = async() => {
-    try {
-      const response = await axios.post('http://localhost:4000/Address', {}, { withCredentials: true });
-      console.log(response.data.data)
-      setAddress(response.data.data); // Assuming response.data is the array of orders
-      // console.log(response.data)
-    } catch (e) {
-    }
-  }
-  useEffect(() => {
-    fetchcartitems();
-    fetchOrdersdetails();
-    fetchAddressdetails();
-  }, [Authenticated]);
+  }, [Authenticated, AdminforgetPass, setAdminforgetPass])
+  if (wait) {
+    return (
+      <>
+        <Spinner />
+      </>
+    )
+  } else {
 
-  return (
-    <>
-    {Loading? <Spinner/>: <></>}
-      {showLogin ? <LoginPopup setShowLogin={setShowLogin} setforgetPassword={setforgetPassword} /> : <></>}
-      {forgetPassword ? <ForgetPassPopup setShowLogin={setShowLogin} setforgetPassword={setforgetPassword} forgetPassword={forgetPassword}/> : <></>}
-      {showAddressPopup ? <AddressPopup setShowAddressPopup={setShowAddressPopup} /> : null} 
-      
-      <div className='app'>
+    return (
+      <>
+        {Loading ? <Spinner /> : <></>}
+        {showLogin ? <LoginPopup setShowLogin={setShowLogin} setforgetPassword={setforgetPassword} /> : <></>}
+        {forgetPassword || AdminforgetPass ? <ForgetPassPopup setShowLogin={setShowLogin} setforgetPassword={setforgetPassword} forgetPassword={forgetPassword} /> : <></>}
+        {showAddressPopup ? <AddressPopup setShowAddressPopup={setShowAddressPopup} /> : null}
+
         <Navbar setShowLogin={setShowLogin} setShowAddressPopup={setShowAddressPopup} />
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/cart' element={<Cart />} />
-          <Route path='/order' element={<Placeholder />} />
-          <Route path ='/order/:id' element={<Specific_Order/>}/>
-        </Routes>
-      </div>
-      <Footer />
-    </>
-  )
+        <div className='app container'>
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/cart' element={<Cart setShowAddressPopup={setShowAddressPopup} />} />
+            <Route path='/order' element={<Placeholder />} />
+            <Route path='/order/:id' element={<Specific_Order />} />
+          </Routes>
+        </div>
+        <Footer />
+      </>
+    )
+  }
+
 }
+
 
 export default App

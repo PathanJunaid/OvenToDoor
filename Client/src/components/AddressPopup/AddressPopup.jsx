@@ -1,7 +1,7 @@
 // AddressPopup.js
 import React, { useState } from 'react';
 import './AddressPopup.css';
-
+import PropTypes from 'prop-types'
 import AddressForm from '../AddressForm/AddressForm';
 
 const AddressPopup = ({ setShowAddressPopup }) => {
@@ -39,5 +39,5 @@ const AddressPopup = ({ setShowAddressPopup }) => {
     </div>
   );
 };
-
+AddressPopup.propTypes = {setShowAddressPopup:PropTypes.func}
 export default AddressPopup;

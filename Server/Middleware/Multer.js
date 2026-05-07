@@ -1,30 +1,19 @@
-import multer from "multer";
-
-// const storage = multer.diskStorage({
-//     destination: function(req,file,cb){
-//         cb (null , './uploads');
-//     },
-//      filename : function(req,file,cb){
-//         cb(null, `${Date.now()}-${file.originalname}`);
-//     }}
-// )
-const fileFilter = (req, file, cb) => {
-    // Accept only images
-    if (file.mimetype.startsWith('image/')) {
-        cb(null, true); // Accept file
-    } else {
-        const error = new Error('Only images are allowed');
-        error.status = 400; // Set error status code
-        cb(error);
-    }
-};
-const storage = multer.memoryStorage();
-
-export const upload = multer({
-    storage:storage,
-    fileFilter: fileFilter,
-    // limits:{
-    //     fileSize:1024*1024
-    // }
-
+import multer from 'multer';
+import multerS3 from 'multer-s3';
+import s3 from './awsconfig.js';
+import dotenv from 'dotenv';
+dotenv.config();
+const upload = multer({
+    storage: multerS3({
+        s3: s3,
+        bucket: process.env.S3_BUCKET_NAME,
+        metadata: (req, file, cb) => {
+            cb(null, { fieldName: file.fieldname });
+        },
+        key: (req, file, cb) => {
+            cb(null, `menu${Date.now().toString()}`);
+        },
+    }),
 });
+
+export default upload;

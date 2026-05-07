@@ -1,12 +1,16 @@
 // AddressForm.jsx
 
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import './AddressForm.css'; // Import the CSS file for styling
 import {assets} from '../../assets/assets';
 import axios from "axios"
+import PropTypes from 'prop-types'
+import { StoreContext } from '../../context/StoreContext';
+import CustomLoadFile from '../CustomLoad/CustomLoadFile';
 // assets/cross_icon'; // Import the close icon image
 
 const AddressForm = ({ setShowAddressPopup }) => {
+  const {fetchAddressdetails,setCustomLoad,CustomLoad} =useContext(StoreContext)
   const [formData, setFormData] = useState({
     Name: '',
     House_No: '',
@@ -24,7 +28,8 @@ const AddressForm = ({ setShowAddressPopup }) => {
   const handleSubmit = async(e) => {
     e.preventDefault();
     // Add logic here to handle form submission, such as sending data to backend
-    const res = await axios.post('http://localhost:4000/Add/Address',{...formData},{withCredentials:true}).then((res)=>{
+    setCustomLoad(true);
+    await axios.post(`${import.meta.env.VITE_APP_Server}/Add/Address`,{...formData},{withCredentials:true}).then(async(res)=>{
       setFormData({
         Name: '',
         House_No: '',
@@ -32,17 +37,22 @@ const AddressForm = ({ setShowAddressPopup }) => {
         City: '',
         PIN: '',
         Mobile_No:""
-      })
+      });
+      await fetchAddressdetails();
       return res;
     }).catch((e)=>{
       console.log(e)
     })
-    console.log(formData);
+    setCustomLoad(false)
     setShowAddressPopup(false);
     // onClose(); // Close the address form popup after submission
   };
 
   return (
+    <>
+    {
+      CustomLoad? <CustomLoadFile/> : ""
+    }
     <div className="address-popup">
       <div className="address-popup-header">
       </div>
@@ -110,7 +120,9 @@ const AddressForm = ({ setShowAddressPopup }) => {
         </form>
       </div>
     </div>
+    </>
   );
 };
+AddressForm.propTypes = {setShowAddressPopup:PropTypes.func}
 
 export default AddressForm;

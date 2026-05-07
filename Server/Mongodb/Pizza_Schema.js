@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { type } from 'os';
 const Subcat = new mongoose.Schema({
     Price:{
         type:Number,
@@ -11,34 +12,35 @@ const Subcat = new mongoose.Schema({
         default:false,
     }
 })
-const Size = new mongoose.Schema({
-    Small : {
-        type : Subcat,
-        // default:true,
-    },
-    Medium : {
-        type:Subcat,
-        // default:true,
-    },
-    Large : {
-        type:Subcat,
-        // default:true,
-    }
-});
 const Add_New_Pizza_Schema = new mongoose.Schema({
-    Pizza_id: {
+    Dish_Id : {
         type:String,
         required:true,
         unique : true
     },
-    Pizza_Name: {
+    DishName: {
+        type:String,
+        required: true,
+        unique:true
+    },
+    Ingredients: {
         type:String,
         required: true,
         // unique:true
     },
-    Veg : {
-        type:Boolean,
-        // required:true,
+    Discounts: {
+        type:String,
+        // unique:true
+    },
+    PreparationTime: {
+        type:String,
+        required: true,
+        // unique:true
+    },
+
+    Category : {
+        type:String,
+        required:true,
     },
     Price : {
         type:Number,
@@ -52,9 +54,13 @@ const Add_New_Pizza_Schema = new mongoose.Schema({
         type:String,
         required:true,
     },
-    sizeandcrust : {
-        type: [Size],
-        // required:true
+    Availability : {
+        type:String,
+        // required:true,
+    },
+    ServingSize:{
+        type:Number,
+        required: true
     },
     created_at : {
         type:Date,

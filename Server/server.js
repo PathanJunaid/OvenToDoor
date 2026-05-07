@@ -1,23 +1,37 @@
 import express from "express";
 import dotenv from 'dotenv';
+import http from 'http'
 import cookieParser from "cookie-parser";
-import fs from 'fs';
 import { Db_Connection } from './Mongodb/Db_Connection.js';
 import cors from 'cors';
 import User_routes from "./Routes/User_routes.js";
 import Admin_Routes from './Routes/Admin_Routes.js'
 import multer from "multer";
+import { Server } from 'socket.io';
+import { setupSocket } from "./Socket/Socket.js";
+import logger from 'morgan'
 dotenv.config();
 const app = express();
+const server = http.createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: process.env.Client, // Allow access from this origin
+    methods: ['GET', 'POST'], // Allow methods
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+  }
+});
 // Connect to MongoDB
 Db_Connection();
-
 const corsOptions = {
-  origin: 'http://localhost:5173',
-  methods: ["POST", "GET", "PUT","DELETE"],
+  origin: process.env.Client,
+  methods: ["POST", "GET", "PUT", "DELETE"],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
 };
 // MiddleWare 
+app.use(logger('dev'));
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -33,39 +47,15 @@ app.use((err, req, res, next) => {
     next(err);
   }
 });
-
 // MiddleWare Ends
 
+setupSocket(io);
+app.get('/',(req,res)=>{
+  res.send("Server Connected")
+})
 const port = process.env.port;
-// var ;
-// Reading json pizza Data 
-const Pizza_Data_Function = async () => {
-  return new Promise((resolve, reject) => {
-    fs.readFile('./API/Pizza.json', 'utf-8', (err, data) => {
-      if (err) {
-        console.error("Error reading the file:", err);
-        reject(err); // Reject the promise if there's an error
-        return;
-      }
-      try {
-        // Parse the JSON data and resolve the promise with it
-        const parsedData = JSON.parse(data);
-        resolve(parsedData);
-      } catch (error) {
-        console.error("Error parsing JSON data:", error);
-        reject(error); // Reject the promise if there's an error while parsing
-      }
-    });
-  });
-};
-const Pizza_Data = await Pizza_Data_Function()
-  .then((data) => {
-    return data;
-  })
-  .catch((error) => {
-    console.error("Error occurred:", error);
-  });
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Server running on port : ${port}`);
 })
+export { io };

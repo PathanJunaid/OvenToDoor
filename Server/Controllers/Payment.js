@@ -1,16 +1,19 @@
 import Razorpay from 'razorpay'
 import jwt from 'jsonwebtoken'
-import { Admin_Connect, Order_Details_Connect, User_Connect } from '../Mongodb/Schema.js';
+import { Admin_Connect, Order_Details_Connect, User_Connect,Notification_Connect } from '../Mongodb/Schema.js';
 import nodemailer from 'nodemailer';
+import {io} from '../server.js'
 export const Payment = async (req, res) => {
     const {Amount,ChooseAddress} = req.body;
-    console.log(ChooseAddress)
+    // console.log(ChooseAddress)
     var response = {
         error:false,
         msg:"",
         URL:""
     }
     let total =Amount+"00";
+    const Order_id = `${Amount}${Date.now()}`;
+    console.log("Order_id" + "\t" + Order_id)
     // console.log(typeof(Amount))
     var instance = new Razorpay({ key_id: process.env.key, key_secret: process.env.secret })
     // finding if logged in or not 
@@ -55,7 +58,7 @@ export const Payment = async (req, res) => {
         notes: {
             policy_name: "food Order"
         },
-        callback_url: `http://localhost:4000/payment/status/${id}`,
+        callback_url: `${process.env.SERVER}/payment/status/${Order_id}`,
         callback_method: "get"
     }).then().catch((e) => { 
         console.log(e)
@@ -71,7 +74,8 @@ export const Payment = async (req, res) => {
     //Update to database 
     try{
         const Order = await Order_Details_Connect.create({
-            Order_id:data.id,
+            Payment_id:data.id,
+            Order_id:Order_id,
             User_id:user.Email,
             Items_id: Cart_data,
             Payment_of:Amount,
@@ -89,7 +93,7 @@ export const Payment = async (req, res) => {
         if (!data.error) {
             response = {
                 error:false,
-                msg: "Link Created",
+                msg: `Order placed Order id :${Order_id}`,
                 URL:data.short_url
             }
             res.send(response);
@@ -101,21 +105,21 @@ export const Payment = async (req, res) => {
     // res.send(data)
 }
 export const PaymentStatus = async (req, res) => {
-    const {id} = req.params
-    console.log(id)
+    const {Order_id} = req.params;
+    // console.log(id)
     let response = {
         error : false,
         msg: ""
     }
     // pending  Update to database 
-    const update_order = await Order_Details_Connect.findOneAndUpdate({Order_id:req.query.razorpay_payment_link_id},{Status:req.query.razorpay_payment_link_status,}).then().catch((e)=>{
-        console.log(e)
+    const update_order = await Order_Details_Connect.findOneAndUpdate({Order_id:Order_id},{Status:req.query.razorpay_payment_link_status,}).then().catch((e)=>{
+        // console.log(e)
         response = {
             error : true,
             msg: "Unable to update order"
         }
     })
-    console.log(response)
+    // console.log(response)
     if(response.error){
         res.send(response)
         return
@@ -144,7 +148,7 @@ export const PaymentStatus = async (req, res) => {
             text: `Dear Admin,
                 Order with Order ID ${req.query.razorpay_payment_link_id} is confirmed.
                 Please Check your visit your order page.
-                http://localhost:5173/Admin/Order
+                ${process.env.Client}/Admin/Order
             ` 
             // Plaese add Order Link 
         };
@@ -156,14 +160,14 @@ export const PaymentStatus = async (req, res) => {
             text: `Dear ${update_order.User_Name},
                 Order with Order ID ${req.query.razorpay_payment_link_id} is confirmed.
                 Please Check your visit your order page.
-                http://localhost:5173/order
+                ${process.env.Client}/order
             ` 
             // Plaese add Order Link 
         };
         // Sending mail 
         try {
-            let info = await transporter.sendMail(mailOptionsAdmin);
-            let infoUser = await transporter.sendMail(mailOptionsUser);
+            let info = transporter.sendMail(mailOptionsAdmin);
+            let infoUser = transporter.sendMail(mailOptionsUser);
             console.log('Email sent successfully:');
         } catch (error) {
             console.log('Error occurred:', error);
@@ -171,15 +175,38 @@ export const PaymentStatus = async (req, res) => {
             return
         }
     }
+    
+
+
     //pending Update admin regrading the order 
-    User_Connect.updateOne({ _id: id }, { $set: { Cart: [] } })
-    .then(() => {
+    const User = await User_Connect.findOneAndUpdate({ Email: update_order.User_id }, { $set: { Cart: [] } })
+    .then((res) => {
         console.log('Cart has been emptied successfully.');
+        // console.log(res)
+        return res;
     })
     .catch(err => {
         console.error('Error emptying the cart:', err);
     });
+    const Nt = await Notification_Connect.create({
+        Order_id: update_order.Order_id,
+        User_Name:User.User_Name,
+        User_id:User._id,
+    }).then((res)=>{
+        return res
+    }).catch((e)=>{
+        console.log(e)
+    });
+    const notification = {
+        User_Name : User.User_Name,
+        Order_id : update_order.Order_id,
+        _id : Nt._id,
+        Status: Nt.Status,
+        items : update_order.Items_id,
+        createdAt:Nt.createdAt
+    }
+    io.emit('Handle_Order',notification)
     // front end order page 
-    res.redirect('http://localhost:5173/order')
+    res.redirect(`${process.env.Client}/order`);
     // redirect to order page 
 }

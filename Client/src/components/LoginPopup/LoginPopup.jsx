@@ -2,9 +2,10 @@ import React, { useContext, useEffect, useState } from 'react'
 import './LoginPopup.css'
 import { assets } from '../../assets/assets'
 import axios from 'axios'
+import PropTypes from 'prop-types'
 import { StoreContext } from '../../context/StoreContext'
 const LoginPopup = ({ setShowLogin,setforgetPassword }) => {
-  const { setAuthenticated } = useContext(StoreContext);
+  const { setAuthenticated,setLoading } = useContext(StoreContext);
   const [currState, setCurrState] = useState("Login");
   const [error, seterror] = useState("");
   const [formdata, setformdata] = useState({
@@ -21,7 +22,8 @@ const LoginPopup = ({ setShowLogin,setforgetPassword }) => {
   }
   const HandleformSubmit = async (e) => {
     e.preventDefault();
-    const res = await axios.post('http://localhost:4000/login', { ...formdata }, { withCredentials: true }).then((res) => {
+    setLoading(true);
+    const res = await axios.post(`${import.meta.env.VITE_APP_Server}/login`, { ...formdata }, { withCredentials: true }).then((res) => {
       return res.data
     }).catch((e) => {
       console.log(e)
@@ -35,26 +37,28 @@ const LoginPopup = ({ setShowLogin,setforgetPassword }) => {
       setAuthenticated(true)
     } else {
       seterror(res.msg)
-      const timeot = setTimeout(() => {
+      setTimeout(() => {
         seterror("")
       }, 3000);
     }
+    setLoading(false)
   }
   const HandleformSubmitSign = async (e) => {
     e.preventDefault();
-    const res = await axios.post('http://localhost:4000/Signup', { ...formdata }, { withCredentials: true }).then((res) => {
+    setLoading(true);
+    const res = await axios.post(`${import.meta.env.VITE_APP_Server}/Signup`, { ...formdata }, { withCredentials: true }).then((res) => {
       return res.data
     }).catch((e) => {
       console.log(e)
     })
     if (res.error) {
       seterror(res.msg)
-      const timeot = setTimeout(() => {
+      setTimeout(() => {
         seterror("")
       }, 3000);
     } else {
       seterror(res.msg)
-      const timeot = setTimeout(() => {
+      setTimeout(() => {
         seterror("")
       }, 3000);
       setformdata({
@@ -64,6 +68,7 @@ const LoginPopup = ({ setShowLogin,setforgetPassword }) => {
       });
       setCurrState("Login")
     }
+    setLoading(false)
   }
   useEffect(() => {
     setformdata({
@@ -118,5 +123,8 @@ const LoginPopup = ({ setShowLogin,setforgetPassword }) => {
     </div>
   )
 }
-
+LoginPopup.propTypes = {
+  setShowLogin: PropTypes.func,
+  setforgetPassword:PropTypes.func
+}
 export default LoginPopup

@@ -1,7 +1,7 @@
 import React from 'react'
 import './Footer.css'
 import { assets } from '../../assets/assets'
-
+import {Link} from 'react-router-dom'
 const Footer = () => {
     return (
         <div className='footer' id='footer'>
@@ -24,9 +24,9 @@ const Footer = () => {
 
                     <h2>Company</h2>
                     <ul>
-                        <li>Home</li>
+                        <li><Link to='/'>Home</Link></li>
                         <li>About us</li>
-                        <li>Delivery</li>
+                        <li><Link to='/admin'>Admin Page</Link></li>
                         <li>Privacy policy</li>
                     </ul>
 

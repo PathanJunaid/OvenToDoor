@@ -23,9 +23,9 @@ export const cartitems = async (req, res) => {
     // checking if pizza already in cart 
     const Cart_data = user.Cart;
     const response = {
-        data: Cart_data,
+        data: Cart_data || [],
         auth: true,
-        error
+        error:""
     }
     res.send(response);
 }
@@ -191,11 +191,9 @@ export const Delete_Address = async (req, res) => {
 
     });
 }
-
-
 export const Addtocart = async (req, res) => {
     // Getting unique Pizza  id 
-    const { Pizza_id } = req.body;
+    const { Dish_Id } = req.body;
     // finding if logged in or not 
     const jwt_token = req.cookies[process.env.cookiename];
 
@@ -209,44 +207,43 @@ export const Addtocart = async (req, res) => {
     });
     // Getting user info using id 
     const user = await User_Connect.findById(id).then().catch((e) => { console.log(e) })
-    console.log(Pizza_id)
+    console.log(Dish_Id)
     // checking if pizza already in cart 
     const Cart_data = user.Cart;
     const isPizza = Cart_data.find(ele => {
-        return ele.Pizza_id == Pizza_id;
+        return ele.Dish_Id == Dish_Id;
     })
     // item was not in cart i.e  new item 
     if (!isPizza) {
         await User_Connect.findByIdAndUpdate(user._id, {
             Cart: [...user.Cart, {
-                Pizza_id: Pizza_id,
+                Dish_Id: Dish_Id,
                 quantity: 1,
             }]
         }).then((res) => {
+            console.log(res)
             return;
         }).catch((er) => {
+            console.log(er)
             // error = er;
             return;
         })
     }
     // item was already in cart only need to increase the quantity 
     else {
-        const updatedUser = await User_Connect.findOneAndUpdate({ _id: user._id, 'Cart.Pizza_id': Pizza_id },
+        const updatedUser = await User_Connect.findOneAndUpdate({ _id: user._id, 'Cart.Dish_Id': Dish_Id },
             { 'Cart.$.quantity': isPizza.quantity + 1 }
         ).then((res)).catch((err) => {
             // error = err;
         })
         res.send("Updated")
+        console.log(updatedUser)
         return;
     }
     res.send("Added to cart");
 }
-
-
-
-
 export const removeitem_cart = async (req, res) => {
-    const { Pizza_id } = req.body;
+    const { Dish_Id } = req.body;
     // console.log(typeof(pizza_id));
     // finding if logged in or not 
     const jwt_token = req.cookies[process.env.cookiename];
@@ -266,20 +263,19 @@ export const removeitem_cart = async (req, res) => {
     });
     // Finding specific Pizza id in cart 
     const isPizza = user.Cart.find(ele => {
-        return ele.Pizza_id == Pizza_id;
+        return ele.Dish_Id == Dish_Id;
     });
-    console.log()
     if (isPizza) {
         // quantity of item is less than 1
         if (isPizza.quantity <= 1) {
             const updatedCart = user.Cart.filter(item => {
-                return item.Pizza_id !== parseInt(Pizza_id)
+                return item.Dish_Id !== Dish_Id
             });
-            const us = await User_Connect.findByIdAndUpdate(user.id, { Cart: updatedCart });
+            const us = await User_Connect.findByIdAndUpdate(user.id, { Cart: updatedCart }).then((res)).catch((e)=>{console.log(e)});
         }
         // quantity of item is greater than 1
         else {
-            const updatedUser = await User_Connect.findOneAndUpdate({ _id: user._id, 'Cart.Pizza_id': Pizza_id },
+            const updatedUser = await User_Connect.findOneAndUpdate({ _id: user._id, 'Cart.Dish_Id': Dish_Id },
                 { 'Cart.$.quantity': isPizza.quantity - 1 }
             ).then((res)).catch((err) => {
                 return;
@@ -293,9 +289,6 @@ export const removeitem_cart = async (req, res) => {
     }
     res.send("Updated")
 }
-
-
-
 export const User_PreviousOrder = async (req, res) => {
     let error = false;
     const jwt_Token = req.cookies[process.env.cookiename];
@@ -318,13 +311,11 @@ export const User_PreviousOrder = async (req, res) => {
     res.send(response);
 
 }
-
-
-
-
-export const ShowPizza = async (req, res) => {
-    const data = await Add_Pizza_Db.find({}).then((res) => { return res }).catch((e) => { return "data not found" });
-    res.status(200).json(data);
+export const ShowMenu = async (req, res) => {
+    let status = true;
+    let msg = "Menu Fetched"
+    const data = await Add_Pizza_Db.find({Availability: {$ne: "Unavailable"}}).then((res) => { return res }).catch((e) => { status=false; msg=  "error while loading Menu"});
+    res.status(200).json({status,msg,data});
 }
 
 
